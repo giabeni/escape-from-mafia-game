@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/textures/Dark/texture_13.png" type="Texture" id=1]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 16, 40, 16 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 1 )
+uv1_triplanar = true
+
+[node name="Level" type="Spatial"]
+
+[node name="Building1" type="CSGMesh" parent="."]
+use_collision = true
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="Player" parent="Building1" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.059, 5.99647 )
+
+[node name="Camera" type="Camera" parent="Building1/Player"]
+transform = Transform( 1, 0, 0, 0, 0.960167, 0.279427, 0, -0.279427, 0.960167, 0, 6.97134, 12.8564 )
+current = true
+
+[node name="Building2" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26.4267 )
+use_collision = true
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="Building3" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -54.4429 )
+use_collision = true
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="Building4" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.254, 0, -54.4429 )
+use_collision = true
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="Building5" type="CSGMesh" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6449, 0, -54.4429 )
+use_collision = true
+mesh = SubResource( 1 )
+material = SubResource( 2 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.853578, 0.135706, -0.502979, -0.0259556, 0.9532, 0.301226, 0.520318, 0.270175, -0.810108, -49.4597, 31.7215, -56.5635 )
+shadow_enabled = true
