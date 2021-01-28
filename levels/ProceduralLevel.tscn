@@ -1,0 +1,22 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
+[ext_resource path="res://levels/sections/SimpleBuilding-CorridorSides.tscn" type="PackedScene" id=2]
+[ext_resource path="res://levels/sections/SimpleBuilding-Full.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/sections/SimpleBuilding-CorridorCenter.tscn" type="PackedScene" id=5]
+[ext_resource path="res://levels/sections/SimpleBuilding-CorridorLeft.tscn" type="PackedScene" id=6]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=7]
+[ext_resource path="res://levels/sections/SimpleBuilding-Large.tscn" type="PackedScene" id=8]
+
+[node name="Level" type="Spatial"]
+script = ExtResource( 1 )
+PLAYER_NODE = NodePath("Player")
+SECTIONS_ARRAY = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 8 ) ]
+CURVE_PROB = 0.0
+
+[node name="Sections" type="Spatial" parent="."]
+
+[node name="SimpleBuilding-Full" parent="Sections" instance=ExtResource( 4 )]
+
+[node name="Player" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.25599, 0 )
