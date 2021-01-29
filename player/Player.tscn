@@ -1,8 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
+[ext_resource path="res://player/PlayerUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://player/models/doctor.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
+radius = 0.827903
+height = 1.33091
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.870588, 0.984314, 0.796078, 1 )
@@ -46,11 +50,15 @@ collision_layer = 3
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.58167, -0.223718 )
 shape = SubResource( 1 )
+
+[node name="doctor" parent="." instance=ExtResource( 3 )]
+transform = Transform( -1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, 0 )
 
 [node name="Body" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
+visible = false
 mesh = SubResource( 3 )
 material/0 = null
 
@@ -67,6 +75,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.14125, 0.320914, -0.500222 )
 [node name="v" type="Spatial" parent="Gimbal/h"]
 
 [node name="CSGMesh" type="CSGMesh" parent="Gimbal/h/v"]
+visible = false
 mesh = SubResource( 6 )
 material = SubResource( 7 )
 
@@ -87,7 +96,9 @@ material = SubResource( 9 )
 [node name="ClippedCamera" type="ClippedCamera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.960167, 0.279427, 0, -0.279427, 0.960167, 0, 6.97134, 12.8564 )
 current = true
-far = 200.0
+far = 400.0
 __meta__ = {
 "_editor_description_": ""
 }
+
+[node name="PlayerUI" parent="." instance=ExtResource( 2 )]

@@ -22,19 +22,10 @@ mesh = SubResource( 1 )
 material = ExtResource( 1 )
 
 [node name="CSGBox" type="CSGBox" parent="SimpleBuilding-CorridorCenter"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0 )
 operation = 2
-width = 20.0
+width = 50.0
 height = 60.0
-depth = 50.0
-material = ExtResource( 1 )
-
-[node name="CSGBox2" type="CSGBox" parent="SimpleBuilding-CorridorCenter"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0 )
-operation = 2
-width = 20.0
-height = 60.0
-depth = 50.0
+depth = 18.0
 material = ExtResource( 1 )
 
 [node name="StartArrow" type="CSGMesh" parent="."]

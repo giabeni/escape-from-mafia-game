@@ -28,11 +28,13 @@ rings = 2
 [node name="Level" type="Spatial"]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -99.9942, 22.0911, -19.3613 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.994202, 22.0911, -19.3613 )
 
 [node name="Camera" type="Camera" parent="Player"]
 transform = Transform( 1, 0, 0, 0, 0.960167, 0.279427, 0, -0.279427, 0.960167, 0, 6.97134, 12.8564 )
 current = true
+size = 0.1
+far = 400.0
 
 [node name="Building2" type="CSGMesh" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26.4267 )

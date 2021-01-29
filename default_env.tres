@@ -7,10 +7,13 @@ sky_curve = 0.0811125
 ground_bottom_color = Color( 0.447059, 0.886275, 0.945098, 1 )
 ground_horizon_color = Color( 0.901961, 0.835294, 0.968627, 1 )
 ground_curve = 0.0721003
+sun_color = Color( 0.941176, 0.615686, 0.396078, 1 )
 
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
+ambient_light_color = Color( 0.909804, 0.752941, 0.752941, 1 )
+ambient_light_sky_contribution = 0.12
 fog_enabled = true
 fog_color = Color( 0.501961, 0.6, 0.701961, 0.780392 )
 fog_sun_color = Color( 0.956863, 0.619608, 0.415686, 1 )
@@ -18,3 +21,11 @@ fog_sun_amount = 0.34
 fog_height_enabled = true
 fog_height_min = 1.5
 fog_height_max = -40.4
+tonemap_mode = 2
+tonemap_exposure = 0.89
+tonemap_white = 1.57
+dof_blur_far_distance = 200.0
+dof_blur_far_amount = 0.13
+dof_blur_far_quality = 0
+glow_strength = 1.03
+glow_bloom = 0.11
