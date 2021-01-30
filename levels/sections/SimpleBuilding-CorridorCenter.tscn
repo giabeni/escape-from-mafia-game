@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://levels/materials/Grid.material" type="Material" id=1]
+[ext_resource path="res://levels/models/Wide/Main.material" type="Material" id=1]
 [ext_resource path="res://levels/sections/Section.gd" type="Script" id=2]
+[ext_resource path="res://levels/buildings/2Story_Wide_2Doors_Mat.tscn" type="PackedScene" id=3]
+[ext_resource path="res://enemies/covid/covid.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 50, 60, 50 )
@@ -16,7 +18,7 @@ albedo_color = Color( 0.976471, 0.658824, 0.211765, 1 )
 script = ExtResource( 2 )
 
 [node name="SimpleBuilding-CorridorCenter" type="CSGMesh" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0 )
+transform = Transform( 1, 0, 0, 0, 3.36, 0, 0, 0, 1, 0, -129, 0 )
 use_collision = true
 mesh = SubResource( 1 )
 material = ExtResource( 1 )
@@ -42,3 +44,21 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 1
 visible = false
 mesh = SubResource( 2 )
 material = SubResource( 3 )
+
+[node name="2Story_Wide_2Doors_Mat" parent="." instance=ExtResource( 3 )]
+transform = Transform( -3.12536e-07, 0, -7.15, 0, 10, 0, 7.15, 0, -3.12536e-07, 0, 0, 0 )
+
+[node name="EnemySpots" type="Spatial" parent="."]
+
+[node name="Covid" parent="EnemySpots" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125963, 1.68326, -22.9657 )
+SPOTS_PATHS = [ NodePath("../1"), NodePath("../2") ]
+
+[node name="1" type="Position3D" parent="EnemySpots"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.020443, 2.30994, -23.0481 )
+
+[node name="2" type="Position3D" parent="EnemySpots"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0207434, 2.31, 20.5169 )
+__meta__ = {
+"_editor_description_": ""
+}
