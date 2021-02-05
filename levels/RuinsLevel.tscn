@@ -1,0 +1,252 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
+[ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
+[ext_resource path="res://levels/buildings/main/Building1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://levels/buildings/main/Building3.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/buildings/main/Building4.tscn" type="PackedScene" id=5]
+[ext_resource path="res://levels/buildings/main/Building5.tscn" type="PackedScene" id=6]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=7]
+[ext_resource path="res://levels/buildings/main/Building9.tscn" type="PackedScene" id=8]
+[ext_resource path="res://levels/buildings/main/Building6.tscn" type="PackedScene" id=9]
+[ext_resource path="res://levels/buildings/main/Building8.tscn" type="PackedScene" id=10]
+[ext_resource path="res://levels/buildings/main/Building10.tscn" type="PackedScene" id=11]
+[ext_resource path="res://enemies/covid/covid.tscn" type="PackedScene" id=12]
+[ext_resource path="res://assets/songs/soundtrack.wav" type="AudioStream" id=13]
+[ext_resource path="res://levels/buildings/main/Building7.tscn" type="PackedScene" id=14]
+[ext_resource path="res://items/pill.tscn" type="PackedScene" id=15]
+[ext_resource path="res://assets/fonts/Kaharsa.ttf" type="DynamicFontData" id=16]
+[ext_resource path="res://assets/fonts/BebasNeue.otf" type="DynamicFontData" id=17]
+
+[sub_resource type="ProceduralSky" id=1]
+sky_top_color = Color( 0.45098, 0.960784, 0.854902, 1 )
+sky_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
+sky_curve = 0.0811125
+ground_bottom_color = Color( 0.447059, 0.713726, 0.658824, 1 )
+ground_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
+ground_curve = 0.0721003
+sun_color = Color( 1, 0.356863, 0, 1 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+ambient_light_color = Color( 0.909804, 0.752941, 0.752941, 1 )
+ambient_light_sky_contribution = 0.12
+fog_enabled = true
+fog_color = Color( 0.501961, 0.6, 0.701961, 0.780392 )
+fog_sun_color = Color( 0.956863, 0.619608, 0.415686, 1 )
+fog_sun_amount = 0.34
+fog_height_enabled = true
+fog_height_min = 1.5
+fog_height_max = -106.0
+tonemap_mode = 2
+tonemap_exposure = 0.89
+tonemap_white = 1.57
+dof_blur_far_distance = 200.0
+dof_blur_far_amount = 0.13
+dof_blur_far_quality = 0
+glow_strength = 1.03
+glow_bloom = 0.11
+
+[sub_resource type="DynamicFont" id=3]
+size = 51
+use_filter = true
+extra_spacing_char = 2
+font_data = ExtResource( 16 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 18
+use_filter = true
+extra_spacing_char = 1
+font_data = ExtResource( 17 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 20
+use_filter = true
+extra_spacing_char = 1
+font_data = ExtResource( 17 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.611765, 0.376471, 0.0313726, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+expand_margin_top = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="DynamicFont" id=7]
+size = 43
+font_data = ExtResource( 16 )
+
+[node name="Level" type="Spatial"]
+script = ExtResource( 1 )
+PLAYER_NODE = NodePath("Player")
+SECTIONS_ARRAY = [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 11 ) ]
+ENEMIES_ARRAY = [ ExtResource( 12 ) ]
+CURVE_PROB = 0.5
+ENEMY_PROB = 0.8
+GENERATION_TRIGGER_DISTANCE_FACTOR = 3.0
+MIN_ACTIVE_SECTIONS = 8
+
+[node name="Sections" type="Spatial" parent="."]
+
+[node name="full-section" parent="Sections" instance=ExtResource( 2 )]
+
+[node name="Player" parent="." instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.84359, 0 )
+MAX_SPEED = 15.0
+JUMP_FORCE = 20.0
+THROW_FORCE = 150.0
+PILL_SCENE = ExtResource( 15 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.853578, 0.135706, -0.502979, -0.0259556, 0.9532, 0.301226, 0.520318, 0.270175, -0.810108, -49.4597, 31.7215, -56.5635 )
+shadow_enabled = true
+
+[node name="Soundtrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -15.147
+autoplay = true
+
+[node name="Screen" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0980392, 0.0823529, 0.0823529, 0.909804 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartScreen" type="MarginContainer" parent="Screen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = -20.0
+margin_bottom = -20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/StartScreen"]
+margin_right = 1104.0
+margin_bottom = 590.0
+
+[node name="Top" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
+margin_right = 1104.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+
+[node name="Title" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Top"]
+margin_right = 500.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 500, 0 )
+custom_fonts/normal_font = SubResource( 3 )
+custom_colors/default_color = Color( 1, 0.654902, 0.00392157, 1 )
+text = "PANDEMIC RUNNER"
+scroll_active = false
+
+[node name="Middle" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
+margin_top = 74.0
+margin_right = 1104.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="Intro" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Middle"]
+margin_right = 950.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 950, 0 )
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0.968627, 0.964706, 0.643137, 1 )
+text = "You just found the last missed dose of the vaccine that could save the world from the worst pandemic in history. Escape from the evil creatures that want the end of humanity!"
+scroll_active = false
+
+[node name="Middle2" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
+margin_top = 138.0
+margin_right = 1104.0
+margin_bottom = 498.0
+rect_min_size = Vector2( 0.031, 360 )
+
+[node name="HowTo" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Middle2"]
+margin_right = 700.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 700, 360 )
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
+text = "Keys:
+
+W = start game
+A = soft move left
+D = soft move right
+
+SPACE = jump
+S = FORCE LANDING
+
+SHIFT + A or LEFT KEY = turn left 
+SHIFT + D or RIGHT KEY = turn right
+
+MOUSE MOVEMENT = AIM
+MOUSE CLICK = shoot pills"
+scroll_active = false
+
+[node name="Credits" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Middle2"]
+margin_left = 704.0
+margin_right = 1104.0
+margin_bottom = 360.0
+rect_min_size = Vector2( 400, 360 )
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
+text = "CREDITS:
+
+Dev: @giabeni
+Art: @Roots3d
+MUSIC: @Bell
+
+Thanks to:
+- Quaternius (3d assets)
+- GOdot engine
+- freesound.org
+- cc0 textures
+- ggj
+"
+scroll_active = false
+
+[node name="Bottom" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
+margin_top = 502.0
+margin_right = 1104.0
+margin_bottom = 582.0
+rect_min_size = Vector2( 0, 80 )
+
+[node name="Control" type="Control" parent="Screen/StartScreen/VBoxContainer/Bottom"]
+margin_right = 600.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 600, 0 )
+
+[node name="Button" type="Button" parent="Screen/StartScreen/VBoxContainer/Bottom"]
+margin_left = 604.0
+margin_right = 946.0
+margin_bottom = 80.0
+custom_styles/hover = SubResource( 6 )
+custom_styles/normal = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
+text = "START RUNNING!"
+
+[node name="DifficultyTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="pressed" from="Screen/StartScreen/VBoxContainer/Bottom/Button" to="." method="_on_Button_pressed"]
+[connection signal="timeout" from="DifficultyTimer" to="Player" method="_on_DifficultyTimer_timeout"]
+[connection signal="timeout" from="DifficultyTimer" to="." method="_on_DifficultyTimer_timeout"]

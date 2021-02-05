@@ -1,0 +1,149 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=33 format=2]
+
+[sub_resource type="AnimationNodeAnimation" id=1]
+animation = "falling"
+
+[sub_resource type="AnimationNodeAnimation" id=2]
+animation = "falling-idle"
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "running-jump"
+
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "running"
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "falling-land"
+
+[sub_resource type="AnimationNodeBlend2" id=6]
+
+[sub_resource type="AnimationNodeTimeScale" id=7]
+
+[sub_resource type="AnimationNodeBlendTree" id=8]
+graph_offset = Vector2( 0, 33.0685 )
+nodes/Animation/node = SubResource( 5 )
+nodes/Animation/position = Vector2( 266.667, 133.333 )
+"nodes/Animation 2/node" = SubResource( 4 )
+"nodes/Animation 2/position" = Vector2( 480, 346.667 )
+nodes/Blend2/node = SubResource( 6 )
+nodes/Blend2/position = Vector2( 800, 133.333 )
+nodes/TimeScale/node = SubResource( 7 )
+nodes/TimeScale/position = Vector2( 588.333, 129.667 )
+nodes/output/position = Vector2( 1066.67, 160 )
+node_connections = [ "output", 0, "Blend2", "TimeScale", 0, "Animation", "Blend2", 0, "TimeScale", "Blend2", 1, "Animation 2" ]
+
+[sub_resource type="AnimationNodeAnimation" id=9]
+animation = "running-jump"
+
+[sub_resource type="AnimationNodeOneShot" id=10]
+
+[sub_resource type="AnimationNodeTimeScale" id=11]
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "running-left"
+
+[sub_resource type="AnimationNodeAnimation" id=13]
+animation = "running"
+
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "running-right"
+
+[sub_resource type="AnimationNodeAnimation" id=15]
+animation = "looking-around"
+
+[sub_resource type="AnimationNodeAnimation" id=16]
+animation = "running-left"
+
+[sub_resource type="AnimationNodeAnimation" id=17]
+animation = "running-right"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=18]
+blend_point_0/node = SubResource( 12 )
+blend_point_0/pos = Vector2( -1, 1 )
+blend_point_1/node = SubResource( 13 )
+blend_point_1/pos = Vector2( 0, 1 )
+blend_point_2/node = SubResource( 14 )
+blend_point_2/pos = Vector2( 1, 1 )
+blend_point_3/node = SubResource( 15 )
+blend_point_3/pos = Vector2( 0, 0 )
+blend_point_4/node = SubResource( 16 )
+blend_point_4/pos = Vector2( -1, 0 )
+blend_point_5/node = SubResource( 17 )
+blend_point_5/pos = Vector2( 1, 0 )
+min_space = Vector2( -1.03, -0.95 )
+max_space = Vector2( 1.03, 1.08 )
+
+[sub_resource type="AnimationNodeBlendTree" id=19]
+graph_offset = Vector2( 0, 66.6667 )
+nodes/Animation/node = SubResource( 9 )
+nodes/Animation/position = Vector2( 293.333, 346.667 )
+nodes/Jump/node = SubResource( 10 )
+nodes/Jump/position = Vector2( 613.333, 80 )
+nodes/Speed/node = SubResource( 11 )
+nodes/Speed/position = Vector2( 373.333, 106.667 )
+nodes/Strafe/node = SubResource( 18 )
+nodes/Strafe/position = Vector2( 133.333, 106.667 )
+nodes/output/position = Vector2( 1253.33, 160 )
+node_connections = [ "output", 0, "Jump", "Speed", 0, "Strafe", "Jump", 0, "Speed", "Jump", 1, "Animation" ]
+
+[sub_resource type="AnimationNodeAnimation" id=20]
+animation = "looking-around"
+
+[sub_resource type="AnimationNodeAnimation" id=21]
+animation = "falling-hit"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=24]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=25]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+xfade_time = 0.5
+priority = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=29]
+xfade_time = 1.0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=30]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=31]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=32]
+xfade_time = 0.2
+
+[resource]
+states/FALLING/node = SubResource( 1 )
+states/FALLING/position = Vector2( 1057, 139.778 )
+states/FALLING_JUMP/node = SubResource( 2 )
+states/FALLING_JUMP/position = Vector2( 792.369, 146.025 )
+states/JUMP/node = SubResource( 3 )
+states/JUMP/position = Vector2( 791.889, -10.3333 )
+states/LAND/node = SubResource( 8 )
+states/LAND/position = Vector2( 791.57, 282.491 )
+states/RUNNING/node = SubResource( 19 )
+states/RUNNING/position = Vector2( 495, 277.376 )
+states/START/node = SubResource( 20 )
+states/START/position = Vector2( 256.333, 275.889 )
+states/STUMBLE/node = SubResource( 21 )
+states/STUMBLE/position = Vector2( 467.333, 39.667 )
+transitions = [ "START", "RUNNING", SubResource( 22 ), "RUNNING", "JUMP", SubResource( 23 ), "JUMP", "FALLING_JUMP", SubResource( 24 ), "FALLING_JUMP", "FALLING", SubResource( 25 ), "FALLING_JUMP", "LAND", SubResource( 26 ), "LAND", "RUNNING", SubResource( 27 ), "RUNNING", "FALLING_JUMP", SubResource( 28 ), "RUNNING", "STUMBLE", SubResource( 29 ), "JUMP", "STUMBLE", SubResource( 30 ), "FALLING_JUMP", "STUMBLE", SubResource( 31 ), "LAND", "STUMBLE", SubResource( 32 ) ]
+start_node = "START"
+graph_offset = Vector2( -215.681, -66 )
