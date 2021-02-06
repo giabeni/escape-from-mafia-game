@@ -101,7 +101,7 @@ MIN_ACTIVE_SECTIONS = 8
 [node name="full-section" parent="Sections" instance=ExtResource( 2 )]
 
 [node name="Player" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.84359, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.68444, 0 )
 MAX_SPEED = 15.0
 JUMP_FORCE = 20.0
 THROW_FORCE = 150.0

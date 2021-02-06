@@ -6,6 +6,7 @@ export(Array, PackedScene) var SECTIONS_ARRAY = []
 export(Array, PackedScene) var ENEMIES_ARRAY = []
 export(float, 0, 1) var CURVE_PROB = 0.3
 export(float, 0, 1) var ENEMY_PROB = 1
+export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.1
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.04
 export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 5
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
@@ -42,6 +43,7 @@ var sections_queue = []
 var start_screen_exited = false
 var section_id = 0
 var difficulty = 0.75
+var last_height_offset = 0
 
 func _ready():
 	rng.randomize()
@@ -139,6 +141,10 @@ func _generate_section(forward_axis, angle):
 	var random_angle = section.ALLOWED_ANGLES[random_angle_index]
 	section.rotation_degrees.y = random_angle
 	
+	# Set random offset in y
+	var height_offset = _get_random_height_offset(difficulty)
+	section.translation.y = height_offset
+	
 	# Add random enemy if is suitable
 	if randf() <= ENEMY_PROB:
 		var enemy_scene = _get_random_enemy()
@@ -161,6 +167,15 @@ func _get_random_section_by_difficulty(difficulty):
 	# @TODO avoid uncompatible sections
 	
 	return section
+	
+func _get_random_height_offset(difficulty):
+	var height_offset = rng.randf_range(-6, 6) + last_height_offset
+	
+	if randf() < HEIGHT_OFFSET_PROB:
+		last_height_offset = height_offset
+		return height_offset
+	else:
+		return last_height_offset
 
 
 func _get_player_forward_axis():
@@ -178,4 +193,5 @@ func _on_DifficultyTimer_timeout():
 	if start_screen_exited:
 		CURVE_PROB = CURVE_PROB * DIFFICULTY_INCREASE_FACTOR
 		ENEMY_PROB = ENEMY_PROB * DIFFICULTY_INCREASE_FACTOR
+		HEIGHT_OFFSET_PROB = HEIGHT_OFFSET_PROB * DIFFICULTY_INCREASE_FACTOR
 		difficulty = difficulty * DIFFICULTY_INCREASE_FACTOR

@@ -30,7 +30,7 @@ nodes/Blend2/position = Vector2( 800, 133.333 )
 nodes/TimeScale/node = SubResource( 7 )
 nodes/TimeScale/position = Vector2( 588.333, 129.667 )
 nodes/output/position = Vector2( 1066.67, 160 )
-node_connections = [ "output", 0, "Blend2", "TimeScale", 0, "Animation", "Blend2", 0, "TimeScale", "Blend2", 1, "Animation 2" ]
+node_connections = [ "output", 0, "Blend2", "Blend2", 0, "TimeScale", "Blend2", 1, "Animation 2", "TimeScale", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeAnimation" id=9]
 animation = "running-jump"
