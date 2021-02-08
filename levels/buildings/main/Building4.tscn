@@ -105,7 +105,7 @@ surfaces/0 = {
 
 [node name="DoubleCorridor" type="Spatial"]
 script = ExtResource( 3 )
-DIFFICULTY = 2
+DIFFICULTY = 3
 WALLS_SURFACE = 0
 ROOF_SURFACE = 0
 GLASS_SURFACE = 1
