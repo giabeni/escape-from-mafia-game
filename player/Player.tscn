@@ -359,7 +359,6 @@ emission_on_uv2 = false
 ]]
 collision_layer = 3
 script = ExtResource( 1 )
-MAX_SPEED = 18.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 2.33921, -0.223718 )
@@ -550,7 +549,7 @@ material/6 = null
 material/7 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.951766, -0.249116, 0.179118, -0.0461992, 0.460764, 0.886319, -0.303327, -0.851843, 0.42703, -0.0361186, 0.042719, -1.84181 )
+transform = Transform( 0.954135, -0.2678, -0.13383, 0.222756, 0.336386, 0.914999, -0.200018, -0.902844, 0.380611, -0.0194285, 0.0299775, -1.84611 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Doctor/Armature/Skeleton/NeckBone"]
@@ -565,11 +564,11 @@ process_material = SubResource( 11 )
 draw_pass_1 = SubResource( 13 )
 
 [node name="HandBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.18559, 0.606821, -0.772868, -0.185454, 0.794028, 0.578901, 0.964968, 0.0358929, 0.2599, 0.534916, 0.402251, -1.06122 )
+transform = Transform( 0.0101893, -0.104161, -0.994508, -0.0756093, 0.991632, -0.104634, 0.997085, 0.0762593, 0.00222897, 0.0259318, 0.555965, -1.01869 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.406502, -0.303013, 0.861939, 0.107314, 0.952705, 0.284311, -0.907325, -0.0230756, 0.419793, -0.402586, 0.378686, -1.04656 )
+transform = Transform( 0.432806, -0.64851, 0.626189, 0.393642, 0.76085, 0.515896, -0.811002, 0.0232109, 0.584581, -0.599678, 0.132687, -1.08807 )
 bone_name = "mixamorig_right_hand"
 
 [node name="seringa_01" parent="Doctor/Armature/Skeleton/RightHandBone" instance=ExtResource( 19 )]

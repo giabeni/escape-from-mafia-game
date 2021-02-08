@@ -98,6 +98,12 @@ surfaces/0 = {
 [node name="CenterSlimSection" type="Spatial"]
 script = ExtResource( 3 )
 DIFFICULTY = 2
+WALLS_SURFACE = 0
+ROOF_SURFACE = 0
+GLASS_SURFACE = 1
+DETAIL_SURFACE = 2
+WALLS_BODIES = [ NodePath("center-slim-section/Building3") ]
+ROOFS_BODIES = [ NodePath("center-slim-section/Roof3") ]
 
 [node name="Ground003" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -123, 0 )

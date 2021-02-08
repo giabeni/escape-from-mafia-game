@@ -10,7 +10,7 @@ export(float) var ANGULAR_ACC = 10
 export(float) var JUMP_FORCE = 21
 export(Vector2) var MOUSE_SENSITIVITY = Vector2(5, 3)
 export(Vector2) var AIM_LIMIT = Vector2(45, 60)
-export(float) var LINEAR_SPEED_FACTOR_RATE = 1.05
+export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
 export(float) var THROW_FORCE = 100
 export(NodePath) var AIM_GIMBAL = "Gimbal"
 export(PackedScene) var PILL_SCENE: PackedScene = null
@@ -155,6 +155,9 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
+
+func get_horizontal_speed():
+	return Vector2(velocity.x, velocity.z).length()
 
 func _aim(delta):
 	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)

@@ -4,13 +4,16 @@ export(NodePath) var PLAYER_NODE
 export(Vector2) var SECTION_SIZE = Vector2(50, 50)
 export(Array, PackedScene) var SECTIONS_ARRAY = []
 export(Array, PackedScene) var ENEMIES_ARRAY = []
+export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
 export(float, 0, 1) var ENEMY_PROB = 1
-export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.1
-export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.04
+export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.4
+export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
 export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 5
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
 export(int, 1, 100) var BATCH_SIZE = 5
+export(float, 0, 100) var MAX_HEIGHT_OFFSET = 7.5
+export(float, 0, 100) var DISTANCE_FACTOR = 2
 
 enum States {
 	START,
@@ -44,10 +47,12 @@ var start_screen_exited = false
 var section_id = 0
 var difficulty = 0.75
 var last_height_offset = 0
+var initial_speed = 15
 
 func _ready():
 	rng.randomize()
 	player = get_node(PLAYER_NODE)
+	initial_speed = player.MAX_SPEED
 	last_axis = _get_player_forward_axis()
 	
 	for section_scene in SECTIONS_ARRAY:
@@ -103,7 +108,7 @@ func _generate_next_sections(count, forward_axis, angle):
 			var distance_to_section =  next_origin.distance_to(section.global_transform.origin)
 #			print("========> Checking i and section", i, "  ", section.name, " |  Distance = ", distance_to_section)
 			if distance_to_section <= SECTION_SIZE.length():
-				print("!!!! RETRYING GENERATE SECTIONS !!!!")
+#				print("!!!! RETRYING GENERATE SECTIONS !!!!")
 				return false
 			
 	for i in range(0, count):
@@ -113,9 +118,13 @@ func _generate_next_sections(count, forward_axis, angle):
 	return true
 
 
-func _generate_section(forward_axis, angle):
+func _generate_section(forward_axis: Vector3, angle):
 	
 	var origin: Vector3 = last_section_origin + forward_axis * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y)
+	
+	# Adds offset to compensate speed
+	var horizontal_offset = ((player.get_horizontal_speed() / initial_speed) - 1) * DISTANCE_FACTOR
+	origin = origin + forward_axis.normalized() * Vector3(horizontal_offset, 0, horizontal_offset)
 	
 #	print(">> Last origin = ", last_section_origin)
 #	print(">> Next origin = ", origin)
@@ -152,12 +161,20 @@ func _generate_section(forward_axis, angle):
 		
 	sections.call_deferred("add_child", section)
 	
+	# Adds random materials
+	if BUILDING_MATERIALS.size() > 0:
+		section.call_deferred("set_surface_material", 0, _get_random_material())
+		section.call_deferred("set_surface_material", 1, _get_random_material())
+		section.call_deferred("set_surface_material", 2, _get_random_material())
+	
 func _get_random_enemy():
 	var enemy_index = rng.randi_range(0, ENEMIES_ARRAY.size() - 1)
 	return ENEMIES_ARRAY[enemy_index]
 
 
 func _get_random_section_by_difficulty(difficulty):
+	randomize()
+
 	var allowed_sections = sections_by_difficulty[str(difficulty)]
 	var section_index = rng.randi_range(0, allowed_sections.size() - 1)
 #	print(">> Section index = ", section_index)
@@ -169,14 +186,19 @@ func _get_random_section_by_difficulty(difficulty):
 	return section
 	
 func _get_random_height_offset(difficulty):
-	var height_offset = rng.randf_range(-6, 6) + last_height_offset
+	var max_height = clamp(difficulty * MAX_HEIGHT_OFFSET * 0.75, 0, 1)
+	
+	var height_offset = rng.randf_range(-max_height, max_height) + last_height_offset
 	
 	if randf() < HEIGHT_OFFSET_PROB:
 		last_height_offset = height_offset
 		return height_offset
 	else:
 		return last_height_offset
-
+		
+func _get_random_material():
+	BUILDING_MATERIALS.shuffle()
+	return BUILDING_MATERIALS[0]
 
 func _get_player_forward_axis():
 	return -player.global_transform.basis.z.normalized()
@@ -195,3 +217,4 @@ func _on_DifficultyTimer_timeout():
 		ENEMY_PROB = ENEMY_PROB * DIFFICULTY_INCREASE_FACTOR
 		HEIGHT_OFFSET_PROB = HEIGHT_OFFSET_PROB * DIFFICULTY_INCREASE_FACTOR
 		difficulty = difficulty * DIFFICULTY_INCREASE_FACTOR
+#		print("Difficulty increased to = ", difficulty)

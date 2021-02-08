@@ -181,6 +181,11 @@ data = PoolVector3Array( -20.1499, 74.6753, 11.7242, -20.4233, 74.9848, 20.4233,
 
 [node name="FullSection" type="Spatial"]
 script = ExtResource( 2 )
+WALLS_SURFACE = 3
+ROOF_SURFACE = 1
+DETAIL_SURFACE = 2
+WALLS_BODIES = [ NodePath("full-section/Building2") ]
+ROOFS_BODIES = [ NodePath("full-section/Roof2") ]
 
 [node name="full-section" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -124, 0 )
