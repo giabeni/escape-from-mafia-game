@@ -46,7 +46,7 @@ var game_running = false
 var anim_playback: AnimationNodeStateMachinePlayback
 var anim_root_motion
 var jumping = false
-var pill_count = 1000
+var pill_count = 0
 var state = PlayerStates.IDLE
 
 
@@ -180,6 +180,8 @@ func _throw_pill(delta):
 		anim_tree["parameters/Throw/active"] = true
 		$ThrowSound.play()
 		pill.throw(forward * THROW_FORCE, aim_cast.global_transform.origin)
+		pill_count = pill_count - 1
+		ui.set_pill_count(pill_count)
 
 
 func _set_animations(delta):

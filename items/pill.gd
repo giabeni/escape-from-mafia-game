@@ -97,7 +97,6 @@ func _on_PickupArea_body_entered(body):
 			var point = body.global_transform.origin
 			pickup_area.monitoring = false
 			body.on_Pill_Hit()
-			print("Player = ", player)
 			if player and is_instance_valid(player):
 				player.on_Enemy_Killed()
 			_on_hit()

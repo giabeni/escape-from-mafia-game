@@ -55,19 +55,22 @@ func set_surface_material(surface: int, material: SpatialMaterial):
 #			print("setting WALLS  material...", walls.size())
 			if WALLS_SURFACE != -1 and walls.size() > 0:
 				for wall in walls:
-#					print("Setting wall material", material, surface)
-					wall.set_surface_material(WALLS_SURFACE, material)
+					if is_instance_valid(wall):
+						wall.set_surface_material(WALLS_SURFACE, material)
 		Materials.ROOF:
 			if ROOF_SURFACE != -1 and roofs.size() > 0:
 				for roof in roofs:
-					roof.set_surface_material(ROOF_SURFACE, material)
+					if is_instance_valid(roof):
+						roof.set_surface_material(ROOF_SURFACE, material)
 		Materials.DETAIL:
 			if DETAIL_SURFACE != -1 and walls.size() > 0:
 				for wall in walls:
-					wall.set_surface_material(DETAIL_SURFACE, material)
+					if is_instance_valid(wall):
+						wall.set_surface_material(DETAIL_SURFACE, material)
 		Materials.GLASS:
 			if GLASS_SURFACE != -1 and walls.size() > 0:
 				for wall in walls:
-					wall.set_surface_material(GLASS_SURFACE, material)
+					if is_instance_valid(wall):
+						wall.set_surface_material(GLASS_SURFACE, material)
 		
 		

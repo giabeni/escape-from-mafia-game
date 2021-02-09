@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://levels/models/Pack/Vines_002.material" type="Material" id=1]
+[ext_resource path="res://levels/models/Pack/Vines.material" type="Material" id=1]
 [ext_resource path="res://levels/models/Pack/Floor_004.material" type="Material" id=2]
 [ext_resource path="res://levels/sections/Section.gd" type="Script" id=3]
 [ext_resource path="res://levels/models/Pack/ExternalWalls_004.material" type="Material" id=4]

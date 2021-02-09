@@ -49,16 +49,15 @@ scroll_active = false
 
 [node name="CenterSpacer" type="Control" parent="MarginContainer/VBoxContainer/Top"]
 margin_left = 354.0
-margin_right = 984.0
+margin_right = 680.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 
 [node name="Pills" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Top"]
-visible = false
-margin_left = 834.0
+margin_left = 684.0
 margin_right = 984.0
 margin_bottom = 50.0
-rect_min_size = Vector2( 150, 0 )
+rect_min_size = Vector2( 300, 0 )
 custom_fonts/normal_font = SubResource( 1 )
 custom_colors/default_color = Color( 0.0745098, 0.631373, 0.34902, 1 )
 text = "Pills: 0"

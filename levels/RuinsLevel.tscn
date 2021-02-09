@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
 [ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://levels/buildings/main/Building3.tscn" type="PackedScene" id=4]
 [ext_resource path="res://levels/buildings/main/Building4.tscn" type="PackedScene" id=5]
 [ext_resource path="res://levels/buildings/main/Building5.tscn" type="PackedScene" id=6]
-[ext_resource path="res://player/Player.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/Player.tscn" type="PackedScene" id=7]
 [ext_resource path="res://levels/buildings/main/Building9.tscn" type="PackedScene" id=8]
 [ext_resource path="res://levels/buildings/main/Building6.tscn" type="PackedScene" id=9]
 [ext_resource path="res://levels/buildings/main/Building8.tscn" type="PackedScene" id=10]
@@ -27,14 +27,19 @@
 [ext_resource path="res://levels/materials/walls/brown-wall.material" type="Material" id=25]
 [ext_resource path="res://levels/materials/walls/orange-wall.material" type="Material" id=26]
 [ext_resource path="res://levels/materials/walls/grey-wall.material" type="Material" id=27]
+[ext_resource path="res://addons/cloud/Cloud.shader" type="Shader" id=28]
+[ext_resource path="res://addons/cloud/Cloud.gd" type="Script" id=29]
+[ext_resource path="res://assets/particles/smoke_02.png" type="Texture" id=30]
+[ext_resource path="res://levels/clouds/Clouds.gd" type="Script" id=31]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.45098, 0.960784, 0.854902, 1 )
 sky_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
 sky_curve = 0.0811125
-ground_bottom_color = Color( 0.447059, 0.713726, 0.658824, 1 )
+ground_bottom_color = Color( 0.588235, 0.776471, 0.643137, 1 )
 ground_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
 ground_curve = 0.0721003
+ground_energy = 0.5
 sun_color = Color( 1, 0.356863, 0, 1 )
 
 [sub_resource type="Environment" id=2]
@@ -55,8 +60,12 @@ tonemap_white = 1.57
 dof_blur_far_distance = 200.0
 dof_blur_far_amount = 0.13
 dof_blur_far_quality = 0
+glow_enabled = true
 glow_strength = 1.03
 glow_bloom = 0.11
+adjustment_enabled = true
+adjustment_contrast = 1.55
+adjustment_saturation = 1.58
 
 [sub_resource type="DynamicFont" id=3]
 size = 51
@@ -95,6 +104,62 @@ expand_margin_bottom = 10.0
 [sub_resource type="DynamicFont" id=7]
 size = 43
 font_data = ExtResource( 16 )
+
+[sub_resource type="ShaderMaterial" id=8]
+render_priority = -127
+shader = ExtResource( 28 )
+shader_param/seed = 50.0
+shader_param/speed = Vector2( 10, 150 )
+shader_param/transform_speed = Vector2( 0.01, 0.01 )
+shader_param/min_density = 0.6
+shader_param/max_density = 6.0
+shader_param/altitude = 2000.0
+shader_param/color = Color( 0.909804, 0.760784, 0.603922, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = true
+
+[sub_resource type="ShaderMaterial" id=9]
+render_priority = -128
+next_pass = SubResource( 8 )
+shader = ExtResource( 28 )
+shader_param/seed = 50.0
+shader_param/speed = Vector2( 10, 150 )
+shader_param/transform_speed = Vector2( 0.01, 0.01 )
+shader_param/min_density = 0.529466
+shader_param/max_density = 9.52671
+shader_param/altitude = 2156.0
+shader_param/color = Color( 1, 1, 1, 1 )
+shader_param/detail_noise = false
+shader_param/upper_enabled = true
+shader_param/lower_enabled = true
+
+[sub_resource type="CubeMesh" id=10]
+flip_faces = true
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 100, 100 )
+spread = 180.0
+flatness = 0.7
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.01
+initial_velocity_random = 0.15
+angle = -0.1
+scale = 37.27
+scale_random = 1.0
+color = Color( 0.756863, 0.427451, 0.764706, 1 )
+
+[sub_resource type="SpatialMaterial" id=12]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+albedo_texture = ExtResource( 30 )
+
+[sub_resource type="QuadMesh" id=13]
+material = SubResource( 12 )
+size = Vector2( 20, 10 )
 
 [node name="Level" type="Spatial"]
 script = ExtResource( 1 )
@@ -256,6 +321,70 @@ text = "START RUNNING!"
 [node name="DifficultyTimer" type="Timer" parent="."]
 wait_time = 5.0
 autostart = true
+
+[node name="CloudDome" type="MeshInstance" parent="."]
+transform = Transform( 200.025, 0, 0, 0, 200.025, 0, 0, 0, 200.025, -2.99952e-06, 10.8219, 12.518 )
+visible = false
+material_override = SubResource( 9 )
+mesh = SubResource( 10 )
+material/0 = null
+script = ExtResource( 29 )
+shade_color = Color( 0.909804, 0.760784, 0.603922, 1 )
+draw_count = 2
+cloud_seed = 50.0
+cloud_speed = Vector2( 10, 150 )
+cloud_transform_speed = Vector2( 0.01, 0.01 )
+cloud_lower_enabled = true
+
+[node name="Clouds" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -112.912, 0 )
+script = ExtResource( 31 )
+player_node = NodePath("../Player")
+
+[node name="CloudsForward" type="Particles" parent="Clouds"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.233, 250, 117.145 )
+amount = 5
+lifetime = 200.0
+explosiveness = 1.0
+visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
+process_material = SubResource( 11 )
+draw_pass_1 = SubResource( 13 )
+
+[node name="CloudsBack" type="Particles" parent="Clouds"]
+transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, -0.233, -250, 117.145 )
+amount = 5
+lifetime = 200.0
+explosiveness = 1.0
+visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
+process_material = SubResource( 11 )
+draw_passes = 3
+draw_pass_1 = SubResource( 13 )
+draw_pass_2 = null
+draw_pass_3 = null
+
+[node name="CloudsRight" type="Particles" parent="Clouds"]
+transform = Transform( -4.37114e-08, 0, -1, -1, -4.37114e-08, 4.37114e-08, -4.37114e-08, 1, 1.91069e-15, 250, 0, 117.145 )
+amount = 5
+lifetime = 200.0
+explosiveness = 1.0
+visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
+process_material = SubResource( 11 )
+draw_passes = 3
+draw_pass_1 = SubResource( 13 )
+draw_pass_2 = null
+draw_pass_3 = null
+
+[node name="CloudsLeft" type="Particles" parent="Clouds"]
+transform = Transform( 4.37114e-08, -1.19209e-07, 1, 1, -3.69553e-07, -4.37114e-08, 3.69553e-07, 1, 1.19209e-07, -420, 0, 117.145 )
+amount = 5
+lifetime = 200.0
+explosiveness = 1.0
+visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
+process_material = SubResource( 11 )
+draw_passes = 3
+draw_pass_1 = SubResource( 13 )
+draw_pass_2 = null
+draw_pass_3 = null
 
 [connection signal="pressed" from="Screen/StartScreen/VBoxContainer/Bottom/Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="DifficultyTimer" to="Player" method="_on_DifficultyTimer_timeout"]

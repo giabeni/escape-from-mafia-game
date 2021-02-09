@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "MeshInstance",
+"class": "CloudDome",
+"language": "GDScript",
+"path": "res://addons/cloud/Cloud.gd"
+}, {
 "base": "KinematicBody",
 "class": "Player",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://player/PlayerUI.gd"
 } ]
 _global_script_class_icons={
+"CloudDome": "",
 "Player": "",
 "Section": "",
 "UIPlayer": ""
@@ -40,6 +46,10 @@ config/icon="res://icon.png"
 [display]
 
 window/size/height=650
+
+[editor_plugins]
+
+enabled=PoolStringArray( "cloud" )
 
 [input]
 

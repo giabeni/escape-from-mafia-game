@@ -13,7 +13,7 @@ export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 5
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
 export(int, 1, 100) var BATCH_SIZE = 5
 export(float, 0, 100) var MAX_HEIGHT_OFFSET = 7.5
-export(float, 0, 100) var DISTANCE_FACTOR = 2
+export(float, 0, 100) var DISTANCE_FACTOR = 0
 
 enum States {
 	START,

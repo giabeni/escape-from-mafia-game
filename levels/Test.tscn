@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://levels/materials/Grid.material" type="Material" id=1]
-[ext_resource path="res://player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://items/pill.tscn" type="PackedScene" id=3]
 [ext_resource path="res://enemies/covid/covid.tscn" type="PackedScene" id=4]
 
