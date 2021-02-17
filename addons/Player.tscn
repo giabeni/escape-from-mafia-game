@@ -309,29 +309,31 @@ albedo_texture = ExtResource( 15 )
 material = SubResource( 12 )
 size = Vector2( 3, 3 )
 
-[sub_resource type="AnimationNodeAnimation" id=14]
-animation = "throw"
+[sub_resource type="AnimationNodeAnimation" id=30]
+animation = "Throw (copy)"
 
-[sub_resource type="AnimationNodeOneShot" id=15]
+[sub_resource type="AnimationNodeOneShot" id=31]
+filter_enabled = true
+filters = [ "Armature/Skeleton:mixamorig_head", "Armature/Skeleton:mixamorig_head_top_end", "Armature/Skeleton:mixamorig_hips", "Armature/Skeleton:mixamorig_left_arm", "Armature/Skeleton:mixamorig_left_fore_arm", "Armature/Skeleton:mixamorig_left_hand", "Armature/Skeleton:mixamorig_left_hand_index_1", "Armature/Skeleton:mixamorig_left_hand_index_2", "Armature/Skeleton:mixamorig_left_hand_index_3", "Armature/Skeleton:mixamorig_left_hand_index_4", "Armature/Skeleton:mixamorig_left_hand_middle_1", "Armature/Skeleton:mixamorig_left_hand_middle_2", "Armature/Skeleton:mixamorig_left_hand_middle_3", "Armature/Skeleton:mixamorig_left_hand_middle_4", "Armature/Skeleton:mixamorig_left_hand_thumb_1", "Armature/Skeleton:mixamorig_left_hand_thumb_2", "Armature/Skeleton:mixamorig_left_hand_thumb_3", "Armature/Skeleton:mixamorig_left_hand_thumb_4", "Armature/Skeleton:mixamorig_left_shoulder", "Armature/Skeleton:mixamorig_neck", "Armature/Skeleton:mixamorig_right_arm", "Armature/Skeleton:mixamorig_right_fore_arm", "Armature/Skeleton:mixamorig_right_hand", "Armature/Skeleton:mixamorig_right_hand_index_1", "Armature/Skeleton:mixamorig_right_hand_index_2", "Armature/Skeleton:mixamorig_right_hand_index_3", "Armature/Skeleton:mixamorig_right_hand_index_4", "Armature/Skeleton:mixamorig_right_hand_middle_1", "Armature/Skeleton:mixamorig_right_hand_middle_2", "Armature/Skeleton:mixamorig_right_hand_middle_3", "Armature/Skeleton:mixamorig_right_hand_middle_4", "Armature/Skeleton:mixamorig_right_hand_thumb_1", "Armature/Skeleton:mixamorig_right_hand_thumb_2", "Armature/Skeleton:mixamorig_right_hand_thumb_3", "Armature/Skeleton:mixamorig_right_hand_thumb_4", "Armature/Skeleton:mixamorig_right_shoulder" ]
 
 [sub_resource type="AnimationNodeBlendTree" id=16]
-graph_offset = Vector2( 0, 96.3333 )
-nodes/Animation/node = SubResource( 14 )
+graph_offset = Vector2( 0, 213.333 )
+nodes/Animation/node = SubResource( 30 )
 nodes/Animation/position = Vector2( 586.667, 426.667 )
 nodes/Main/node = ExtResource( 17 )
 nodes/Main/position = Vector2( 400, 213.333 )
-nodes/Throw/node = SubResource( 15 )
+nodes/Throw/node = SubResource( 31 )
 nodes/Throw/position = Vector2( 853.333, 213.333 )
 nodes/output/position = Vector2( 1413.33, 266.667 )
 node_connections = [ "output", 0, "Throw", "Throw", 0, "Main", "Throw", 1, "Animation" ]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=17]
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=34]
 albedo_color = Color( 0.870588, 0.984314, 0.796078, 1 )
 
 [sub_resource type="CapsuleMesh" id=19]
-material = SubResource( 18 )
+material = SubResource( 34 )
 mid_height = 2.0
 
 [sub_resource type="SpatialMaterial" id=20]
@@ -370,6 +372,7 @@ transform = Transform( -1.5, -2.26494e-07, 9.90035e-15, 0, -6.55671e-08, -1.5, 2
 [node name="Armature" type="Spatial" parent="Doctor"]
 
 [node name="Skeleton" type="Skeleton" parent="Doctor/Armature"]
+transform = Transform( 0.946162, 0.299666, -0.122382, -0.301936, 0.953328, 0, 0.11667, 0.0369514, 0.992483, 0, 0, 0 )
 bones/0/name = "mixamorig_hips"
 bones/0/parent = -1
 bones/0/rest = Transform( 0.948554, 0.0456945, -0.3133, 0.316585, -0.123272, 0.94052, 0.0043554, -0.99132, -0.131396, 0.0108292, -0.0383379, -1.05968 )
@@ -549,7 +552,7 @@ material/6 = null
 material/7 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.954337, -0.293366, 0.0563626, 0.0589037, 0.369764, 0.927256, -0.292866, -0.881595, 0.370159, -0.0425363, 0.0443521, -1.84073 )
+transform = Transform( 0.785555, 0.291362, 0.545905, -0.579952, 0.0390361, 0.813715, 0.215776, -0.955815, 0.19964, 0.630036, 3.98846, -1.74846 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Doctor/Armature/Skeleton/NeckBone"]
@@ -564,11 +567,11 @@ process_material = SubResource( 11 )
 draw_pass_1 = SubResource( 13 )
 
 [node name="HandBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.17689, 0.413917, -0.892962, -0.104657, 0.910036, 0.401099, 0.97865, 0.0225034, 0.204295, 0.389204, 0.532687, -1.05967 )
+transform = Transform( -0.111965, 0.104159, -0.988239, -0.944822, 0.296938, 0.138341, 0.307856, 0.949198, 0.065164, 0.632247, 3.64184, -0.793547 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Doctor/Armature/Skeleton"]
-transform = Transform( 0.422641, -0.406549, 0.809994, 0.187451, 0.913626, 0.360755, -0.886699, -0.000636838, 0.462344, -0.464241, 0.316233, -1.04778 )
+transform = Transform( 0.952402, 0.279764, 0.12108, -0.216293, 0.900055, -0.378308, -0.214817, 0.334112, 0.917725, 0.100119, 4.4619, -1.09207 )
 bone_name = "mixamorig_right_hand"
 
 [node name="seringa_01" parent="Doctor/Armature/Skeleton/RightHandBone" instance=ExtResource( 19 )]
@@ -599,7 +602,7 @@ parameters/Main/LAND/Blend2/blend_amount = 0.61
 parameters/Main/LAND/TimeScale/scale = 1.0
 parameters/Main/RUNNING/Jump/active = false
 parameters/Main/RUNNING/Speed/scale = 1.0
-parameters/Main/RUNNING/Strafe/blend_position = Vector2( 0, 0.9 )
+parameters/Main/RUNNING/Strafe/blend_position = Vector2( -0.645467, 0.837843 )
 parameters/Throw/active = false
 
 [node name="ClippedCamera" type="ClippedCamera" parent="Doctor"]

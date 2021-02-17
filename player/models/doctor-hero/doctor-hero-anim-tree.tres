@@ -1,0 +1,25 @@
+[gd_resource type="AnimationNodeBlendTree" load_steps=5 format=2]
+
+[ext_resource path="res://player/AnimTreeStateMachine.tres" type="AnimationNodeStateMachine" id=1]
+
+[sub_resource type="AnimationNodeAnimation" id=30]
+animation = "Throw (copy)"
+
+[sub_resource type="AnimationNodeOneShot" id=31]
+filter_enabled = true
+filters = [ "Armature/Skeleton:mixamorig_head", "Armature/Skeleton:mixamorig_head_top_end", "Armature/Skeleton:mixamorig_hips", "Armature/Skeleton:mixamorig_left_arm", "Armature/Skeleton:mixamorig_left_fore_arm", "Armature/Skeleton:mixamorig_left_hand", "Armature/Skeleton:mixamorig_left_hand_index_1", "Armature/Skeleton:mixamorig_left_hand_index_2", "Armature/Skeleton:mixamorig_left_hand_index_3", "Armature/Skeleton:mixamorig_left_hand_index_4", "Armature/Skeleton:mixamorig_left_hand_middle_1", "Armature/Skeleton:mixamorig_left_hand_middle_2", "Armature/Skeleton:mixamorig_left_hand_middle_3", "Armature/Skeleton:mixamorig_left_hand_middle_4", "Armature/Skeleton:mixamorig_left_hand_thumb_1", "Armature/Skeleton:mixamorig_left_hand_thumb_2", "Armature/Skeleton:mixamorig_left_hand_thumb_3", "Armature/Skeleton:mixamorig_left_hand_thumb_4", "Armature/Skeleton:mixamorig_left_shoulder", "Armature/Skeleton:mixamorig_neck", "Armature/Skeleton:mixamorig_right_arm", "Armature/Skeleton:mixamorig_right_fore_arm", "Armature/Skeleton:mixamorig_right_hand", "Armature/Skeleton:mixamorig_right_hand_index_1", "Armature/Skeleton:mixamorig_right_hand_index_2", "Armature/Skeleton:mixamorig_right_hand_index_3", "Armature/Skeleton:mixamorig_right_hand_index_4", "Armature/Skeleton:mixamorig_right_hand_middle_1", "Armature/Skeleton:mixamorig_right_hand_middle_2", "Armature/Skeleton:mixamorig_right_hand_middle_3", "Armature/Skeleton:mixamorig_right_hand_middle_4", "Armature/Skeleton:mixamorig_right_hand_thumb_1", "Armature/Skeleton:mixamorig_right_hand_thumb_2", "Armature/Skeleton:mixamorig_right_hand_thumb_3", "Armature/Skeleton:mixamorig_right_hand_thumb_4", "Armature/Skeleton:mixamorig_right_shoulder" ]
+
+[sub_resource type="AnimationNodeTimeScale" id=32]
+
+[resource]
+graph_offset = Vector2( 216, 307 )
+nodes/Animation/node = SubResource( 30 )
+nodes/Animation/position = Vector2( 380, 400 )
+nodes/Main/node = ExtResource( 1 )
+nodes/Main/position = Vector2( 400, 213.333 )
+nodes/Throw/node = SubResource( 31 )
+nodes/Throw/position = Vector2( 853.333, 213.333 )
+nodes/TimeScale/node = SubResource( 32 )
+nodes/TimeScale/position = Vector2( 640, 340 )
+nodes/output/position = Vector2( 1413.33, 266.667 )
+node_connections = [ "output", 0, "Throw", "TimeScale", 0, "Animation", "Throw", 0, "Main", "Throw", 1, "TimeScale" ]

@@ -17,12 +17,12 @@ export(PackedScene) var PILL_SCENE: PackedScene = null
 
 onready var collision_shape: CollisionShape = $CollisionShape
 onready var ui: UIPlayer = $PlayerUI
-onready var doctor = $Doctor
-onready var anim_player: AnimationPlayer = $Doctor/AnimationPlayer
-onready var anim_tree: AnimationTree = $Doctor/AnimationTree
-onready var camera: ClippedCamera = $Doctor/ClippedCamera
-onready var infected_paricles: Particles = $Doctor/Armature/Skeleton/NeckBone/InfectedParticles
-onready var hand_bone: BoneAttachment = $Doctor/Armature/Skeleton/HandBone
+#onready var doctor = $Doctor
+onready var anim_player: AnimationPlayer = $AnimationPlayer
+onready var anim_tree: AnimationTree = $AnimationTree
+onready var camera: ClippedCamera = $ClippedCamera
+onready var infected_paricles: Particles = $Armature/Skeleton/NeckBone/InfectedParticles
+onready var hand_bone: BoneAttachment = $Armature/Skeleton/RightHandBone
 onready var aim_cast: RayCast = $Gimbal/h/v/RayCast
 
 enum PlayerStates {
@@ -85,7 +85,8 @@ func _physics_process(delta):
 	_set_animations(delta)
 	
 	if not game_running and not state == PlayerStates.IDLE:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		pass
+#		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
 		if Input.is_action_just_pressed("ui_cancel") and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -175,6 +176,7 @@ func _throw_pill(delta):
 		pill.state = 1 # THROWN State
 		pill.translation = Vector3(0, 0.4, 0)
 		pill.rotation_degrees.x = 90
+		pill.scale = Vector3(50, 50, 50)
 		pill.set_player(self)
 		hand_bone.add_child(pill)
 		anim_tree["parameters/Throw/active"] = true
@@ -204,7 +206,7 @@ func _set_animations(delta):
 				elif global_transform.origin.y < -60:
 					anim_tree.root_motion_track = ""
 					anim_playback.travel("FALLING")
-					doctor.get_node("Armature").rotation_degrees.x += delta * 30
+#					doctor.get_node("Armature").rotation_degrees.x += delta * 30
 			elif not jumping:
 				anim_tree.root_motion_track = anim_root_motion
 				anim_playback.travel("RUNNING")
@@ -266,8 +268,8 @@ func _on_ScoreTimer_timeout():
 		var last_position = Vector2(last_score_position.x, last_score_position.z)
 		var position_direction = last_position.direction_to(cur_position)
 		var vel_direction = Vector2(velocity.x, velocity.z).normalized()
-		
-		if vel_direction.dot(position_direction) >= 0:
+		print("Dot =  ", vel_direction.dot(position_direction))
+		if position_direction.dot(vel_direction) >= -0.75:
 			var distance_traveled = cur_position.distance_to(last_position)
 			score_acc += distance_traveled * 0.5
 			score_acc = round(score_acc)
