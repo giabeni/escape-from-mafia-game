@@ -72,5 +72,19 @@ func set_surface_material(surface: int, material: SpatialMaterial):
 				for wall in walls:
 					if is_instance_valid(wall):
 						wall.set_surface_material(GLASS_SURFACE, material)
+						
+func get_obstacles_count():
+	if is_instance_valid($Obstacles):
+		return $Obstacles.get_child_count()
+	else:
+		return 0
+		
+func set_obstacle_group(index: int):
+	for group in $Obstacles.get_children():
+		if group.name != str(index):
+			group.call_deferred("queue_free")
+
+func set_collectable():
+	pass
 		
 		

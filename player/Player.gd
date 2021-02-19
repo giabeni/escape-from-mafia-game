@@ -14,6 +14,7 @@ export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
 export(float) var THROW_FORCE = 100
 export(NodePath) var AIM_GIMBAL = "Gimbal"
 export(PackedScene) var PILL_SCENE: PackedScene = null
+export(PackedScene) var CAPSULE_SCENE: PackedScene = null
 
 onready var collision_shape: CollisionShape = $CollisionShape
 onready var ui: UIPlayer = $PlayerUI
@@ -47,6 +48,7 @@ var anim_playback: AnimationNodeStateMachinePlayback
 var anim_root_motion
 var jumping = false
 var pill_count = 0
+var capsule_count = 0
 var state = PlayerStates.IDLE
 
 
@@ -99,6 +101,8 @@ func _physics_process(delta):
 		
 	if Input.is_action_just_pressed("throw"):
 		_throw_pill(delta)
+	elif Input.is_action_just_pressed("throw_2"):
+		_throw_capsule(delta)	
 		
 	if state == PlayerStates.IDLE:
 		ui.hide()
@@ -184,6 +188,23 @@ func _throw_pill(delta):
 		pill.throw(forward * THROW_FORCE, aim_cast.global_transform.origin)
 		pill_count = pill_count - 1
 		ui.set_pill_count(pill_count)
+		
+func _throw_capsule(delta):
+	if state == PlayerStates.RUNNING and is_instance_valid(CAPSULE_SCENE) and capsule_count > 0:
+#		var forward = -global_transform.basis.z.normalized()
+		var forward = -aim_cast.global_transform.basis.z.normalized()
+		var capsule: RigidBody = CAPSULE_SCENE.instance()
+		capsule.state = 1 # THROWN State
+		capsule.translation = Vector3(0, 0.4, 0)
+		capsule.rotation_degrees.x = 90
+		capsule.scale = Vector3(50, 50, 50)
+		capsule.set_player(self)
+		hand_bone.add_child(capsule)
+		anim_tree["parameters/Throw/active"] = true
+		$ThrowSound.play()
+		capsule.throw(forward * THROW_FORCE, aim_cast.global_transform.origin)
+		capsule_count = capsule_count - 1
+#		ui.set_pill_count(pill_count)
 
 
 func _set_animations(delta):
@@ -260,6 +281,12 @@ func _on_CheckPoint_reached(body: CollisionObject):
 func on_Collected_Pill():
 	pill_count = pill_count + 1
 	ui.set_pill_count(pill_count)
+	
+func on_PowerUp_Collected(power_up = "CAPSULE"):
+	match power_up:
+		"CAPSULE":
+			capsule_count = capsule_count + 1
+#			ui.set_pill_count(pill_count)
 
 func _on_ScoreTimer_timeout():
 	if state == PlayerStates.RUNNING:
