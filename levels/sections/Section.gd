@@ -11,6 +11,7 @@ export(int, -1, 10) var GLASS_SURFACE = -1
 export(int, -1, 10) var DETAIL_SURFACE = -1
 export(Array, NodePath) var WALLS_BODIES = [null]
 export(Array, NodePath) var ROOFS_BODIES = [null]
+export var is_start_point = false
 
 var walls: Array
 var roofs: Array
@@ -35,6 +36,11 @@ func _ready():
 	for roof in ROOFS_BODIES:
 		if roof is NodePath:
 			roofs.append(get_node(roof))
+			
+	if is_start_point:
+		$Obstacles.queue_free()
+		$ItemsPath.queue_free()
+		$PillsPaths.queue_free()
 	
 func set_enemy(scene: PackedScene):
 	ENEMY_SCENE = scene
@@ -74,17 +80,33 @@ func set_surface_material(surface: int, material: SpatialMaterial):
 						wall.set_surface_material(GLASS_SURFACE, material)
 						
 func get_obstacles_count():
-	if is_instance_valid($Obstacles):
+	if $Obstacles:
 		return $Obstacles.get_child_count()
 	else:
 		return 0
 		
-func set_obstacle_group(index: int):
+func set_obstacle_group(show, index = 1):
+	if not $Obstacles:
+		return
 	for group in $Obstacles.get_children():
 		if group.name != str(index):
 			group.call_deferred("queue_free")
+						
+func get_pills_count():
+	if $Obstacles:
+		return $Obstacles.get_child_count()
+	else:
+		return 0
+		
+func set_pill_path(show, index = 1):
+	if not $PillsPaths:
+		return
+	for group in $PillsPaths.get_children():
+		if group.name != str(index):
+			group.call_deferred("queue_free")
 
-func set_collectable():
-	pass
+func set_item(show):
+	if not show and $ItemsPath:
+		$ItemsPath.call_deferred("queue_free")
 		
 		

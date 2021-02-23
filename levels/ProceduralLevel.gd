@@ -8,6 +8,9 @@ export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
 export(float, 0, 1) var ENEMY_PROB = 1
 export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.4
+export(float, 0, 1) var OBSTACLES_PROB = 0.3
+export(float, 0, 1) var ITEMS_PROB = 0.3
+export(float, 0, 1) var PILLS_PROB = 0.75
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
 export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 5
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
@@ -158,6 +161,27 @@ func _generate_section(forward_axis: Vector3, angle):
 	if randf() <= ENEMY_PROB:
 		var enemy_scene = _get_random_enemy()
 		section.set_enemy(enemy_scene)
+	
+	# Show obstacles
+	if randf() <= OBSTACLES_PROB:
+		var obstacles_count = section.get_obstacles_count()
+		section.set_obstacle_group(true, round(rand_range(1, obstacles_count)))
+	else:
+		section.set_obstacle_group(false, 0)
+	
+	# Show obstacles
+	if randf() <= PILLS_PROB:
+		var pills_path_count = section.get_pills_count()
+		section.set_pill_path(true, round(rand_range(1, pills_path_count)))
+	else:
+		section.set_pill_path(false, 0)
+
+	
+	# Show special items
+	if randf() <= ITEMS_PROB:
+		section.set_item(true)
+	else:
+		section.set_item(false)
 		
 	sections.call_deferred("add_child", section)
 	
@@ -216,5 +240,6 @@ func _on_DifficultyTimer_timeout():
 		CURVE_PROB = CURVE_PROB * DIFFICULTY_INCREASE_FACTOR
 		ENEMY_PROB = ENEMY_PROB * DIFFICULTY_INCREASE_FACTOR
 		HEIGHT_OFFSET_PROB = HEIGHT_OFFSET_PROB * DIFFICULTY_INCREASE_FACTOR
+		OBSTACLES_PROB = OBSTACLES_PROB * DIFFICULTY_INCREASE_FACTOR
 		difficulty = difficulty * DIFFICULTY_INCREASE_FACTOR
 #		print("Difficulty increased to = ", difficulty)

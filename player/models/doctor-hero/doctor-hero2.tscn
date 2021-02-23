@@ -5125,7 +5125,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.894731, 0.00659944, 0.446557, -0.445807, 0.0729504, 0.892151, -0.0266888, -0.997313, 0.0682131, -3.75709, 4.31883, -375.885 )
+transform = Transform( 0.984952, 0.0854872, -0.150207, 0.148009, 0.0315395, 0.988483, 0.0892401, -0.99584, 0.018412, 4.8476, -3.29738, -375.29 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -5140,14 +5140,14 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.562006, 0.441317, -0.699563, -0.814614, 0.441916, -0.375652, 0.143368, 0.780992, 0.607862, 115.371, 5.39138, -259.963 )
+transform = Transform( 0.779478, 0.229831, -0.582745, -0.611681, 0.479923, -0.628903, 0.135133, 0.84667, 0.514673, 102.034, 38.2488, -248.872 )
 bone_name = "mixamorig_left_hand"
 
 [node name="seringa_01" parent="Armature/Skeleton/LeftHandBone" instance=ExtResource( 11 )]
 transform = Transform( 5.4766, -18.7722, 4.19654, 17.8615, 6.5824, 6.13506, -7.1396, 2.06786, 18.5674, 0.897629, 24.4265, 5.24414 )
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.956172, -0.0046717, 0.292767, 0.250494, 0.530792, -0.809637, -0.151615, 0.84749, 0.508699, -65.5243, 83.4843, -251.124 )
+transform = Transform( 0.828547, -0.213081, 0.517789, 0.542102, 0.536702, -0.646589, -0.140121, 0.816424, 0.560194, -91.0567, 52.5987, -261.424 )
 bone_name = "mixamorig_right_hand"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
