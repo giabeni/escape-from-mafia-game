@@ -94,6 +94,7 @@ func _physics_process(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		elif Input.is_action_just_pressed("ui_cancel") and Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			
 		
 		
 	if game_running and state == PlayerStates.RUNNING:
@@ -295,7 +296,7 @@ func _on_ScoreTimer_timeout():
 		var last_position = Vector2(last_score_position.x, last_score_position.z)
 		var position_direction = last_position.direction_to(cur_position)
 		var vel_direction = Vector2(velocity.x, velocity.z).normalized()
-		print("Dot =  ", vel_direction.dot(position_direction))
+#		print("Dot =  ", vel_direction.dot(position_direction))
 		if position_direction.dot(vel_direction) >= -0.75:
 			var distance_traveled = cur_position.distance_to(last_position)
 			score_acc += distance_traveled * 0.5

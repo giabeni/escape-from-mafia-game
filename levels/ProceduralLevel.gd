@@ -4,19 +4,21 @@ export(NodePath) var PLAYER_NODE
 export(Vector2) var SECTION_SIZE = Vector2(50, 50)
 export(Array, PackedScene) var SECTIONS_ARRAY = []
 export(Array, PackedScene) var ENEMIES_ARRAY = []
+export(Array, PackedScene) var LATERALS_ARRAY = []
 export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
 export(float, 0, 1) var ENEMY_PROB = 1
-export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.4
+export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.5
 export(float, 0, 1) var OBSTACLES_PROB = 0.3
 export(float, 0, 1) var ITEMS_PROB = 0.3
 export(float, 0, 1) var PILLS_PROB = 0.75
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
-export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 5
+export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 15
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
-export(int, 1, 100) var BATCH_SIZE = 5
+export(int, 1, 100) var BATCH_SIZE = 15
 export(float, 0, 100) var MAX_HEIGHT_OFFSET = 7.5
 export(float, 0, 100) var DISTANCE_FACTOR = 0
+export(float, 0, 1000) var LATERAL_OFFSET = 65
 
 enum States {
 	START,
@@ -65,7 +67,7 @@ func _ready():
 				sections_by_difficulty[str(i)].push_back(section_scene)
 		section.queue_free()
 	
-	_generate_next_sections(5, last_axis, last_angle)
+	_generate_next_sections(BATCH_SIZE, last_axis, last_angle)
 	
 
 func _process(delta):
@@ -91,7 +93,7 @@ func _process(delta):
 			last_axis = forward_axis
 			last_angle = angle + new_angle
 #			print("----- Attempting to generate sections :   axis = ", forward_axis, "   angle =  ", angle)
-		_generate_next_sections(3, forward_axis, last_angle)
+		_generate_next_sections(BATCH_SIZE, forward_axis, last_angle)
 
 func _update_state():
 	if state == States.START and start_screen_exited:
@@ -106,6 +108,7 @@ func _generate_next_sections(count, forward_axis, angle):
 	# Check if new origin would overlap previous sections
 	for i in range(1, count + 1):
 		var next_origin: Vector3 = last_section_origin + forward_axis * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * i
+		
 		for s in range(0, sections_queue.size() - count):
 			var section: Section = sections_queue[s]
 			var distance_to_section =  next_origin.distance_to(section.global_transform.origin)
@@ -143,11 +146,11 @@ func _generate_section(forward_axis: Vector3, angle):
 				sections_queue.remove(0)
 				section_to_delete.call_deferred("queue_free")
 	
-#	section.request_ready()
+
 	sections_queue.push_back(section)
 	section.global_transform.origin = origin
 	last_section_origin = origin
-	
+		
 	# Set rotation based on section possibilities
 	var random_angle_index = rng.randi_range(0, section.ALLOWED_ANGLES.size() - 1)
 	var random_angle = section.ALLOWED_ANGLES[random_angle_index]
@@ -183,14 +186,40 @@ func _generate_section(forward_axis: Vector3, angle):
 	else:
 		section.set_item(false)
 		
+		
+	# Generating laterals
+	var left_lateral: Lateral = _get_random_lateral(origin, true)
+	var right_lateral: Lateral = _get_random_lateral(origin, false)
+	
+	var left_lateral_height = rng.randf_range(25, 120)
+	left_lateral.section_origin = origin
+	left_lateral.x_offset = -LATERAL_OFFSET
+	left_lateral.y_offset = left_lateral_height
+	
+	var right_lateral_height = rng.randf_range(25, 120)
+	right_lateral.section_origin = origin
+	right_lateral.x_offset = LATERAL_OFFSET
+	right_lateral.y_offset = right_lateral_height
+	
+	# Adding objects to the three
 	sections.call_deferred("add_child", section)
+	section.add_child(left_lateral)
+	section.add_child(right_lateral)
+
 	
 	# Adds random materials
 	if BUILDING_MATERIALS.size() > 0:
 		section.call_deferred("set_surface_material", 0, _get_random_material())
 		section.call_deferred("set_surface_material", 1, _get_random_material())
 		section.call_deferred("set_surface_material", 2, _get_random_material())
-	
+
+
+func _get_random_lateral(origin, left):
+	LATERALS_ARRAY.shuffle()
+	var lateral: Spatial = (LATERALS_ARRAY[0] as PackedScene).instance()
+	return lateral
+
+
 func _get_random_enemy():
 	var enemy_index = rng.randi_range(0, ENEMIES_ARRAY.size() - 1)
 	return ENEMIES_ARRAY[enemy_index]
@@ -208,21 +237,26 @@ func _get_random_section_by_difficulty(difficulty):
 	# @TODO avoid uncompatible sections
 	
 	return section
-	
+
+
 func _get_random_height_offset(difficulty):
-	var max_height = clamp(difficulty * MAX_HEIGHT_OFFSET * 0.75, 0, 1)
+	var up = randf() > 0.5
+	var max_height = MAX_HEIGHT_OFFSET if up else 0
+	var min_height = 0 if up else -MAX_HEIGHT_OFFSET * 2
 	
-	var height_offset = rng.randf_range(-max_height, max_height) + last_height_offset
+	var height_offset = rng.randf_range(min_height, max_height) + last_height_offset
 	
 	if randf() < HEIGHT_OFFSET_PROB:
 		last_height_offset = height_offset
 		return height_offset
 	else:
 		return last_height_offset
-		
+
+	
 func _get_random_material():
 	BUILDING_MATERIALS.shuffle()
 	return BUILDING_MATERIALS[0]
+
 
 func _get_player_forward_axis():
 	return -player.global_transform.basis.z.normalized()
