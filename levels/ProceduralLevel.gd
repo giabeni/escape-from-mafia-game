@@ -13,10 +13,11 @@ export(float, 0, 1) var OBSTACLES_PROB = 0.3
 export(float, 0, 1) var ITEMS_PROB = 0.3
 export(float, 0, 1) var PILLS_PROB = 0.75
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
-export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = 15
+export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = SECTION_SIZE.length()
+export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 4
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
-export(int, 1, 100) var BATCH_SIZE = 15
-export(float, 0, 100) var MAX_HEIGHT_OFFSET = 7.5
+export(int, 1, 100) var BATCH_SIZE = 10
+export(float, 0, 100) var MAX_HEIGHT_OFFSET = 6
 export(float, 0, 100) var DISTANCE_FACTOR = 0
 export(float, 0, 1000) var LATERAL_OFFSET = 65
 
@@ -32,6 +33,7 @@ onready var sections: Spatial = $Sections
 var state = States.START
 var rng = RandomNumberGenerator.new()
 var player: Player
+var next_trigger_point = Vector3.ZERO
 var last_section_origin: Vector3 = Vector3.ZERO
 var last_axis: Vector3 = Vector3.FORWARD
 var last_angle = 0
@@ -59,6 +61,7 @@ func _ready():
 	player = get_node(PLAYER_NODE)
 	initial_speed = player.MAX_SPEED
 	last_axis = _get_player_forward_axis()
+	next_trigger_point = last_section_origin + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * last_axis 
 	
 	for section_scene in SECTIONS_ARRAY:
 		var section: Section = section_scene.instance()
@@ -83,8 +86,8 @@ func _process(delta):
 
 	var player_origin = Vector2(player.global_transform.origin.x, player.global_transform.origin.z)
 	
-	var linear_distance = Vector2(last_section_origin.x, last_section_origin.z).distance_to(player_origin)
-	if linear_distance < SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR:
+	var distance_to_trigger = Vector2(next_trigger_point.x, next_trigger_point.z).distance_to(player_origin)
+	if distance_to_trigger < GENERATION_TRIGGER_DISTANCE_FACTOR:
 #		print("-- Linear Distance = ", linear_distance)
 		var forward_axis: Vector3 = last_axis
 		var angle = last_angle
@@ -96,6 +99,7 @@ func _process(delta):
 			last_axis = forward_axis
 			last_angle = angle + new_angle
 #			print("----- Attempting to generate sections :   axis = ", forward_axis, "   angle =  ", angle)
+
 		_generate_next_sections(BATCH_SIZE, forward_axis, last_angle)
 
 func _update_state():
@@ -121,10 +125,12 @@ func _generate_next_sections(count, forward_axis, angle):
 ##				print("!!!! RETRYING GENERATE SECTIONS !!!!")
 #				return false
 			
+	next_trigger_point = last_section_origin + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * forward_axis
+	
 	for i in range(0, count):
 #		print("GENERATING SECTION i = ", i)
 		_generate_section(forward_axis, angle)
-		
+	
 	return true
 
 
@@ -141,14 +147,14 @@ func _generate_section(forward_axis: Vector3, angle):
 	var section: Section = _get_random_section_by_difficulty(ceil(difficulty))
 	
 	# Remove previous sections
-	if sections_queue.size() >= MIN_ACTIVE_SECTIONS:
-		var section_to_delete: Section = sections_queue[0]
-		if is_instance_valid(section_to_delete):
-			var distance_to_player = section_to_delete.global_transform.origin.distance_to(player.global_transform.origin)
-#			print("DISTANCE FROM REMOVING SECTION = ", distance_to_player, "COMPARTE TO = ", SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR)
-			if distance_to_player > SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR * 0.1:
-				sections_queue.remove(0)
-				section_to_delete.call_deferred("queue_free")
+#	if sections_queue.size() >= MIN_ACTIVE_SECTIONS:
+#		var section_to_delete: Section = sections_queue[0]
+#		if is_instance_valid(section_to_delete):
+#			var distance_to_player = section_to_delete.global_transform.origin.distance_to(player.global_transform.origin)
+##			print("DISTANCE FROM REMOVING SECTION = ", distance_to_player, "COMPARTE TO = ", SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR)
+#			if distance_to_player > SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR * 0.1:
+#				sections_queue.remove(0)
+#				section_to_delete.call_deferred("queue_free")
 	
 
 	sections_queue.push_back(section)
@@ -164,6 +170,9 @@ func _generate_section(forward_axis: Vector3, angle):
 	var height_offset = _get_random_height_offset(difficulty)
 	section.translation.y = height_offset
 	
+	# Sets the camera to trigger curvature
+	section.set_camera_node(player.camera.get_path())
+	
 	# Add random enemy if is suitable
 	if randf() <= ENEMY_PROB:
 		var enemy_scene = _get_random_enemy()
@@ -176,7 +185,7 @@ func _generate_section(forward_axis: Vector3, angle):
 	else:
 		section.set_obstacle_group(false, 0)
 	
-	# Show obstacles
+	# Show pills
 	if randf() <= PILLS_PROB:
 		var pills_path_count = section.get_pills_count()
 		section.set_pill_path(true, round(rand_range(1, pills_path_count)))

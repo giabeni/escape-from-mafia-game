@@ -13,8 +13,15 @@ export(Array, NodePath) var WALLS_BODIES = [null]
 export(Array, NodePath) var ROOFS_BODIES = [null]
 export var is_start_point = false
 
+export(float) var DELETE_DISTANCE: float = 80
+export(float) var CURVATURE_START_DISTANCE: float = 350
+export(float, 0, 360) var CURVATURE_ANGLE: float = 70
+export(NodePath) var CAMERA_PATH = null
+
+var camera: Camera
 var walls: Array
 var roofs: Array
+var initial_rotation: Vector3
 
 enum Materials {
 	WALLS,
@@ -26,8 +33,14 @@ enum Materials {
 onready var enemy_spots = $EnemySpots
 
 func _ready():
+	
+	initial_rotation = rotation
+	
 	if is_instance_valid(ENEMY_SCENE) and is_instance_valid(enemy_spots):
 		call_deferred("spawn_enemy")
+		
+	if CAMERA_PATH:
+		camera = get_node(CAMERA_PATH)
 	
 	for wall in WALLS_BODIES:
 		if wall is NodePath:
@@ -41,6 +54,26 @@ func _ready():
 		$Obstacles.queue_free()
 		$ItemsPath.queue_free()
 		$PillsPaths.queue_free()
+
+func _process(delta):
+	if is_instance_valid(camera):
+		var distance_to_camera = global_transform.origin - camera.global_transform.origin
+#		if abs(distance_to_camera.z) > CURVATURE_START_DISTANCE:
+		var angle = CURVATURE_ANGLE * (distance_to_camera.z / CURVATURE_START_DISTANCE)
+		global_transform.origin.x = distance_to_camera.z * tan(deg2rad(CURVATURE_ANGLE)) * 0.01
+		rotation.y = initial_rotation.y + deg2rad(angle)
+#			if name == "Section 14":
+#				print("Dist = ", distance_to_camera.z)
+#				print(name, " ", translation.x, " ", rotation.y)
+#		else:
+#			translation.x = 0
+#			rotation = initial_rotation
+		if distance_to_camera.z > DELETE_DISTANCE:
+			call_deferred("queue_free")
+
+	
+func set_camera_node(path: NodePath):
+	CAMERA_PATH = path
 	
 func set_enemy(scene: PackedScene):
 	ENEMY_SCENE = scene

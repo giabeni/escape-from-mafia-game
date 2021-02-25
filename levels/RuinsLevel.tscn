@@ -54,10 +54,11 @@ background_sky = SubResource( 2 )
 ambient_light_color = Color( 0.909804, 0.752941, 0.752941, 1 )
 ambient_light_sky_contribution = 0.12
 fog_enabled = true
-fog_color = Color( 0.501961, 0.6, 0.701961, 0.25098 )
+fog_color = Color( 0.517647, 0.705882, 0.733333, 0.505882 )
 fog_sun_color = Color( 0.956863, 0.619608, 0.415686, 1 )
 fog_sun_amount = 0.62
-fog_depth_end = 150.0
+fog_depth_begin = 0.0
+fog_depth_end = 239.9
 fog_depth_curve = 4.28709
 fog_height_enabled = true
 fog_height_min = -39.3
@@ -153,25 +154,24 @@ MIN_ACTIVE_SECTIONS = 8
 [node name="Sections" type="Spatial" parent="."]
 
 [node name="full-section" parent="Sections" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 is_start_point = true
 
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.80136, 0 )
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.96114, 0 )
 THROW_FORCE = 150.0
 
-[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
-bones/4/bound_children = [ NodePath("NeckBone") ]
-bones/10/bound_children = [ NodePath("LeftHandBone") ]
-bones/26/bound_children = [ NodePath("RightHandBone") ]
-
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.986703, 0.0465527, -0.155727, 0.151324, 0.0865646, 0.984686, 0.0593202, -0.995158, 0.0783689, 3.01175, 2.73969, -374.985 )
+transform = Transform( 0.661436, -0.133634, -0.738, 0.748067, 0.188167, 0.636387, 0.0538247, -0.973003, 0.224428, -6.32431, 5.3091, -373.749 )
+
+[node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
+transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.883151, 0.132703, -0.449926, -0.456657, 0.462563, -0.759933, 0.107275, 0.876598, 0.469113, 90.7151, 54.7159, -247.698 )
+transform = Transform( 0.96027, -0.207278, 0.186862, 0.259315, 0.41528, -0.87195, 0.103138, 0.885763, 0.452531, 20.7593, 91.4097, -242.542 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.740837, -0.242867, 0.62624, 0.652009, 0.484036, -0.583605, -0.161383, 0.84067, 0.516942, -93.6777, 43.5614, -254.463 )
+transform = Transform( 0.0921287, -0.490804, 0.866386, 0.982297, 0.18732, 0.00166088, -0.163106, 0.850896, 0.499372, -108.072, -31.8327, -251.917 )
 
 [node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 1 )
@@ -180,7 +180,7 @@ parameters/Main/playback = SubResource( 1 )
 environment = SubResource( 3 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.990522, 0.136765, -0.0126829, 0.124698, 0.934135, 0.334428, 0.0575857, 0.329676, -0.942336, -5.05096, 29.3759, -69.7346 )
+transform = Transform( -0.995816, 0.0713581, -0.0570833, -0.0143371, 0.494934, 0.868812, 0.0902493, 0.865995, -0.49184, 6.17446, 27.7094, -44.1829 )
 shadow_enabled = true
 
 [node name="Soundtrack" type="AudioStreamPlayer" parent="."]
@@ -386,6 +386,7 @@ texture = ExtResource( 33 )
 
 [node name="BgFrontLeft" type="Spatial" parent="."]
 transform = Transform( 0.714936, 0, 0.699189, 0, 1, 0, -0.699189, 0, 0.714936, -196.324, 22.5715, -80.0789 )
+visible = false
 script = ExtResource( 35 )
 follow_node = NodePath("../doctor-hero")
 
@@ -406,6 +407,7 @@ texture = ExtResource( 33 )
 
 [node name="BgFrontRight" type="Spatial" parent="."]
 transform = Transform( 0.714936, 0, -0.699189, 0, 1, 0, 0.699189, 0, 0.714936, 200.617, 22.571, -69.5408 )
+visible = false
 script = ExtResource( 35 )
 follow_node = NodePath("../doctor-hero")
 
@@ -426,6 +428,7 @@ texture = ExtResource( 33 )
 
 [node name="BgFront2" type="Spatial" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.29386, 22.5715, 151.573 )
+visible = false
 script = ExtResource( 35 )
 follow_node = NodePath("../doctor-hero")
 
@@ -446,6 +449,7 @@ texture = ExtResource( 33 )
 
 [node name="BgFrontLeft2" type="Spatial" parent="."]
 transform = Transform( -0.714936, 0, -0.699189, 0, 1, 0, 0.699189, 0, -0.714936, 200.617, 22.5715, 78.9759 )
+visible = false
 script = ExtResource( 35 )
 follow_node = NodePath("../doctor-hero")
 
@@ -466,6 +470,7 @@ texture = ExtResource( 33 )
 
 [node name="BgFrontRight2" type="Spatial" parent="."]
 transform = Transform( -0.714937, 0, 0.699189, 0, 1, 0, -0.699189, 0, -0.714937, -196.324, 22.571, 68.4378 )
+visible = false
 script = ExtResource( 35 )
 follow_node = NodePath("../doctor-hero")
 

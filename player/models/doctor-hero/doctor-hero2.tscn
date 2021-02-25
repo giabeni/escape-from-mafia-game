@@ -15,7 +15,7 @@
 [ext_resource path="res://assets/particles/flame_02.png" type="Texture" id=13]
 [ext_resource path="res://assets/sounds/burn-defeat.wav" type="AudioStream" id=14]
 [ext_resource path="res://assets/particles/star_09.png" type="Texture" id=15]
-[ext_resource path="res://assets/particles/light_01.png" type="Texture" id=16]
+[ext_resource path="res://assets/particles/magic_05.png" type="Texture" id=16]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "BodyWithJacket"
@@ -307,7 +307,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3, 0.378648 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 98.5562, 128.137, 150 ), Vector3( 150, 100, 130 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 110, 180, 160 ), Vector3( 180, 150, 130 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("PillCollected:visible")
@@ -4985,7 +4985,7 @@ bones/4/name = "mixamorig_neck"
 bones/4/parent = 3
 bones/4/rest = Transform( 1, 4.54747e-13, -8.52651e-14, -4.46612e-13, 0.996889, 0.0788163, 1.20841e-13, -0.0788163, 0.996889, 0, 36.3234, -1.1958e-06 )
 bones/4/enabled = true
-bones/4/bound_children = [  ]
+bones/4/bound_children = [ NodePath("NeckBone") ]
 bones/5/name = "mixamorig_head"
 bones/5/parent = 4
 bones/5/rest = Transform( 1, -5.04742e-28, 9.80909e-45, 5.04742e-28, 1, -4.16334e-17, 9.80909e-45, 4.16334e-17, 1, 0, 26.7453, -3.83089 )
@@ -5015,7 +5015,7 @@ bones/10/name = "mixamorig_left_hand"
 bones/10/parent = 9
 bones/10/rest = Transform( 0.825233, -0.204053, 0.526643, 0.240039, 0.970763, -7.37607e-07, -0.511246, 0.126415, 0.850086, 1.15455e-05, 82.9816, 8.7254e-06 )
 bones/10/enabled = true
-bones/10/bound_children = [  ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
 bones/11/name = "mixamorig_left_hand_thumb_1"
 bones/11/parent = 10
 bones/11/rest = Transform( 0.941701, -0.242897, 0.232811, 0.319818, 0.861117, -0.395215, -0.104481, 0.446631, 0.888597, -6.38271, 8.07716, 1.26817 )
@@ -5095,7 +5095,7 @@ bones/26/name = "mixamorig_right_hand"
 bones/26/parent = 25
 bones/26/rest = Transform( 0.946974, 0.232193, -0.222094, -0.23814, 0.971231, 5.58793e-08, 0.215704, 0.0528894, 0.975025, -1.19209e-06, 82.97, -2.46167e-05 )
 bones/26/enabled = true
-bones/26/bound_children = [  ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
 bones/27/name = "mixamorig_right_hand_thumb_1"
 bones/27/parent = 26
 bones/27/rest = Transform( 0.93686, 0.254989, -0.23932, -0.333585, 0.857007, -0.392758, 0.10495, 0.447793, 0.887956, 6.06476, 7.72522, 1.55508 )
@@ -5233,7 +5233,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.794281, 0.0467899, -0.605746, 0.604268, 0.0426611, 0.795638, 0.0630697, -0.997993, 0.00561122, 5.78781, -1.66671, -375.422 )
+transform = Transform( 0.841954, 0.0404236, 0.538033, -0.539326, 0.0343277, 0.841397, 0.0155428, -0.998593, 0.0507038, -1.45598, 1.90081, -375.433 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -5248,14 +5248,14 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.989095, -0.0544408, -0.136845, -0.084596, 0.550576, -0.830487, 0.120557, 0.833007, 0.539967, 63.8875, 83.756, -252.375 )
+transform = Transform( 0.386595, 0.487971, -0.782578, -0.90603, 0.359397, -0.22348, 0.172206, 0.795435, 0.581057, 115.282, -12.4185, -255.789 )
 bone_name = "mixamorig_left_hand"
 
 [node name="seringa_01" parent="Armature/Skeleton/LeftHandBone" instance=ExtResource( 11 )]
 transform = Transform( 5.4766, -18.7722, 4.19654, 17.8615, 6.5824, 6.13506, -7.1396, 2.06786, 18.5674, 0.897629, 24.4265, 5.24414 )
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.445797, -0.464195, 0.765368, 0.875071, 0.406012, -0.26345, -0.188456, 0.787197, 0.587202, -110.683, 2.58256, -263.895 )
+transform = Transform( 0.981619, 0.0891988, 0.168719, 0.0918702, 0.554032, -0.827411, -0.167279, 0.827704, 0.535654, -50.6237, 90.8203, -253.82 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -5278,7 +5278,6 @@ texture = ExtResource( 15 )
 
 [node name="CapsuleCollected" type="Sprite3D" parent="CollectedEffects"]
 transform = Transform( 0, 0, 0, 0, 0, 0, 0, 0, 0, -2.6226e-05, 72.2016, -1.14441e-05 )
-visible = false
 modulate = Color( 0.992157, 1, 0, 1 )
 billboard = 2
 texture = ExtResource( 16 )
