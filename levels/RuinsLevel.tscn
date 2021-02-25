@@ -72,8 +72,9 @@ glow_enabled = true
 glow_strength = 1.03
 glow_bloom = 0.11
 adjustment_enabled = true
-adjustment_contrast = 1.55
-adjustment_saturation = 1.58
+adjustment_brightness = 1.05
+adjustment_contrast = 1.16
+adjustment_saturation = 1.3
 
 [sub_resource type="DynamicFont" id=4]
 size = 51
@@ -113,7 +114,7 @@ expand_margin_bottom = 10.0
 size = 43
 font_data = ExtResource( 16 )
 
-[sub_resource type="ParticlesMaterial" id=12]
+[sub_resource type="ParticlesMaterial" id=9]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 100, 100 )
 spread = 180.0
@@ -126,15 +127,15 @@ scale = 37.27
 scale_random = 1.0
 color = Color( 0.756863, 0.427451, 0.764706, 1 )
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=10]
 flags_transparent = true
 flags_unshaded = true
 vertex_color_use_as_albedo = true
 params_blend_mode = 1
 albedo_texture = ExtResource( 30 )
 
-[sub_resource type="QuadMesh" id=14]
-material = SubResource( 13 )
+[sub_resource type="QuadMesh" id=11]
+material = SubResource( 10 )
 size = Vector2( 20, 10 )
 
 [node name="Level" type="Spatial"]
@@ -158,23 +159,28 @@ is_start_point = true
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.80136, 0 )
 THROW_FORCE = 150.0
 
+[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
+bones/4/bound_children = [ NodePath("NeckBone") ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
+
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( -0.0684349, -0.0785346, -0.994559, 0.996103, -0.0609751, -0.0637264, -0.0556386, -0.995045, 0.0824013, 4.53223, 0.808906, -372.631 )
+transform = Transform( 0.986703, 0.0465527, -0.155727, 0.151324, 0.0865646, 0.984686, 0.0593202, -0.995158, 0.0783689, 3.01175, 2.73969, -374.985 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.637925, -0.479353, 0.60272, 0.768237, 0.341735, -0.541321, 0.0535151, 0.808354, 0.586258, -35.754, 93.8965, -256.304 )
+transform = Transform( 0.883151, 0.132703, -0.449926, -0.456657, 0.462563, -0.759933, 0.107275, 0.876598, 0.469113, 90.7151, 54.7159, -247.698 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( -0.592812, -0.580223, 0.558494, 0.773199, -0.216095, 0.596209, -0.225246, 0.785268, 0.576732, -61.8719, -95.9262, -257.774 )
+transform = Transform( 0.740837, -0.242867, 0.62624, 0.652009, 0.484036, -0.583605, -0.161383, 0.84067, 0.516942, -93.6777, 43.5614, -254.463 )
 
-[node name="AnimationTree" parent="doctor-hero" index="2"]
+[node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 1 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 3 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.853578, 0.135706, -0.502979, -0.0259556, 0.9532, 0.301226, 0.520318, 0.270175, -0.810108, -49.4597, 31.7215, -56.5635 )
+transform = Transform( -0.990522, 0.136765, -0.0126829, 0.124698, 0.934135, 0.334428, 0.0575857, 0.329676, -0.942336, -5.05096, 29.3759, -69.7346 )
 shadow_enabled = true
 
 [node name="Soundtrack" type="AudioStreamPlayer" parent="."]
@@ -218,7 +224,7 @@ margin_bottom = 70.0
 rect_min_size = Vector2( 500, 0 )
 custom_fonts/normal_font = SubResource( 4 )
 custom_colors/default_color = Color( 1, 0.654902, 0.00392157, 1 )
-text = "PANDEMIC RUNNER"
+text = "PANDEMIC HERO"
 scroll_active = false
 
 [node name="Middle" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
@@ -293,13 +299,11 @@ margin_bottom = 582.0
 rect_min_size = Vector2( 0, 80 )
 
 [node name="Control" type="Control" parent="Screen/StartScreen/VBoxContainer/Bottom"]
-margin_right = 600.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 600, 0 )
 
 [node name="Button" type="Button" parent="Screen/StartScreen/VBoxContainer/Bottom"]
-margin_left = 604.0
-margin_right = 946.0
+margin_left = 4.0
+margin_right = 346.0
 margin_bottom = 80.0
 custom_styles/hover = SubResource( 7 )
 custom_styles/normal = SubResource( 7 )
@@ -312,6 +316,7 @@ autostart = true
 
 [node name="Clouds" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -112.912, 0 )
+visible = false
 script = ExtResource( 31 )
 
 [node name="CloudsForward" type="Particles" parent="Clouds"]
@@ -320,8 +325,8 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 12 )
-draw_pass_1 = SubResource( 14 )
+process_material = SubResource( 9 )
+draw_pass_1 = SubResource( 11 )
 
 [node name="CloudsBack" type="Particles" parent="Clouds"]
 transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, -0.233, -250, 117.145 )
@@ -329,9 +334,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 12 )
+process_material = SubResource( 9 )
 draw_passes = 3
-draw_pass_1 = SubResource( 14 )
+draw_pass_1 = SubResource( 11 )
 draw_pass_2 = null
 draw_pass_3 = null
 
@@ -341,9 +346,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 12 )
+process_material = SubResource( 9 )
 draw_passes = 3
-draw_pass_1 = SubResource( 14 )
+draw_pass_1 = SubResource( 11 )
 draw_pass_2 = null
 draw_pass_3 = null
 
@@ -353,9 +358,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 12 )
+process_material = SubResource( 9 )
 draw_passes = 3
-draw_pass_1 = SubResource( 14 )
+draw_pass_1 = SubResource( 11 )
 draw_pass_2 = null
 draw_pass_3 = null
 

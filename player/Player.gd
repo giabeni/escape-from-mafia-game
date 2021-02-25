@@ -25,6 +25,8 @@ onready var camera: ClippedCamera = $ClippedCamera
 onready var infected_paricles: Particles = $Armature/Skeleton/NeckBone/InfectedParticles
 onready var hand_bone: BoneAttachment = $Armature/Skeleton/RightHandBone
 onready var aim_cast: RayCast = $Gimbal/h/v/RayCast
+onready var burn_sound: AudioStreamPlayer = $BurnSound
+onready var collect_anim_player: AnimationPlayer = $CollectedEffects/CollectSpriteAnimationPlayer
 
 enum PlayerStates {
 	IDLE,
@@ -82,7 +84,7 @@ func _physics_process(delta):
 	
 	
 	if state in [PlayerStates.RUNNING, PlayerStates.FALLING]:
-		resultant_velocity = move_and_slide(velocity.rotated(Vector3.UP, self.rotation.y), Vector3.UP)
+		resultant_velocity = move_and_slide(velocity.rotated(Vector3.UP, self.rotation.y), Vector3.UP, true, 4, deg2rad(70))
 	
 	_set_animations(delta)
 	
@@ -225,7 +227,7 @@ func _set_animations(delta):
 					anim_tree.root_motion_track = anim_root_motion
 #					camera.add_trauma(0.05)
 					anim_playback.travel("RUNNING")
-				elif global_transform.origin.y < -60:
+				elif global_transform.origin.y < -45:
 					anim_tree.root_motion_track = ""
 					anim_playback.travel("FALLING")
 #					doctor.get_node("Armature").rotation_degrees.x += delta * 30
@@ -242,7 +244,7 @@ func _set_animations(delta):
 func _check_for_death():
 	
 	# Death if falling
-	if self.global_transform.origin.y < -100:
+	if self.global_transform.origin.y < -140:
 		state = PlayerStates.FALLING
 		_die()
 		
@@ -271,6 +273,7 @@ func on_Touch_Enemy():
 	state = PlayerStates.STUMBLED
 	anim_playback.travel("STUMBLE")
 	camera.add_trauma(0.2)
+	burn_sound.play()
 	var wait: GDScriptFunctionState = yield(get_tree().create_timer(4), "timeout")
 	_die()
 	
@@ -280,12 +283,15 @@ func _on_CheckPoint_reached(body: CollisionObject):
 		speed_factor += LINEAR_SPEED_FACTOR_RATE
 
 func on_Collected_Pill():
+	$CollectedEffects/PillCollected.rotate_z(deg2rad(rand_range(-45, 45)))
+	collect_anim_player.play("pill_collected")
 	pill_count = pill_count + 1
 	ui.set_pill_count(pill_count)
 	
 func on_PowerUp_Collected(power_up = "CAPSULE"):
 	match power_up:
 		"CAPSULE":
+			collect_anim_player.play("capsule_collected")
 			capsule_count = capsule_count + 1
 #			ui.set_pill_count(pill_count)
 

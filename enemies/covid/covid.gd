@@ -40,11 +40,18 @@ func _physics_process(delta):
 	# Move to next spot
 	var direction =  (next_spot - transform.origin).normalized()
 	velocity = velocity.linear_interpolate(direction * SPEED, delta * ACC)
-	translate_object_local(velocity * delta)
-#	move_and_slide(velocity, Vector3.UP)
 	
-	# Fixed Rotation
-	$Mesh.rotate_y(deg2rad(ANGULAR_ACC))
+#	if (velocity.normalized().dot($Mesh.transform.basis.y) < 0.9):
+#	$Mesh.look_at($Mesh.transform.origin + velocity.normalized(), $Mesh.global_transform.basis.y)
+	$Mesh.rotation.y = Vector2(-velocity.z, -velocity.x).angle()
+	$Mesh.rotation = $Mesh.rotation.linear_interpolate(Vector3(-Vector2(-velocity.z, -velocity.y).angle(), Vector2(-velocity.z, -velocity.x).angle(), $Mesh.rotation.z ), delta)
+#	$Mesh.rotation.z = deg2rad(180)
+	
+	translate_object_local(velocity * delta)
+	
+	
+#	# Fixed Rotation
+#	$Mesh.rotate_y(deg2rad(ANGULAR_ACC))
 	
 	# Check if spot has reached and set new target
 	var distance_to_next_spot = next_spot.distance_to(transform.origin)

@@ -8,10 +8,12 @@ onready var default_timer: Timer = $DefaultTimer
 onready var explosion: Particles = $Explosion
 onready var body: MeshInstance = $Capsula
 onready var explosion_area: Area = $ExplosionArea
+onready var collect_sound: AudioStreamPlayer = $CollectSound
 
 enum PillStates {
 	IDLE,
-	THROWN
+	THROWN,
+	COLLECTED
 }
 
 var state = PillStates.IDLE
@@ -88,7 +90,10 @@ func _explode():
 	
 
 func _on_collected():
-#	print("on collected")
+	state = PillStates.COLLECTED
+	self.hide()
+	collect_sound.play()
+	yield(get_tree().create_timer(1.2), "timeout")
 	self.call_deferred("queue_free")
 
 func _on_hit():

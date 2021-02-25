@@ -8,7 +8,7 @@ export(Array, PackedScene) var LATERALS_ARRAY = []
 export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
 export(float, 0, 1) var ENEMY_PROB = 1
-export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.5
+export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.6
 export(float, 0, 1) var OBSTACLES_PROB = 0.3
 export(float, 0, 1) var ITEMS_PROB = 0.3
 export(float, 0, 1) var PILLS_PROB = 0.75
@@ -75,6 +75,9 @@ func _process(delta):
 	if not start_screen_exited:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
+	if state == States.START and Input.is_action_just_pressed("jump"):
+		_on_Button_pressed()
+		
 	
 	_update_state()
 
@@ -105,17 +108,18 @@ func _generate_next_sections(count, forward_axis, angle):
 #	print("\n*** NEXT BATCH = ", count, "   | ACTIVE SECTIONS = ", sections_queue.size(), " ***")
 #	print("> Forwad = ", forward_axis, " | Angle = ", angle)
 	
+	# Uncomment if curves are enabled
 	# Check if new origin would overlap previous sections
-	for i in range(1, count + 1):
-		var next_origin: Vector3 = last_section_origin + forward_axis * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * i
+#	for i in range(1, count + 1):
+#		var next_origin: Vector3 = last_section_origin + forward_axis * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * i
 		
-		for s in range(0, sections_queue.size() - count):
-			var section: Section = sections_queue[s]
-			var distance_to_section =  next_origin.distance_to(section.global_transform.origin)
-#			print("========> Checking i and section", i, "  ", section.name, " |  Distance = ", distance_to_section)
-			if distance_to_section <= SECTION_SIZE.length():
-#				print("!!!! RETRYING GENERATE SECTIONS !!!!")
-				return false
+#		for s in range(0, sections_queue.size() - count):
+#			var section: Section = sections_queue[s]
+#			var distance_to_section =  next_origin.distance_to(section.global_transform.origin)
+##			print("========> Checking i and section", i, "  ", section.name, " |  Distance = ", distance_to_section)
+#			if distance_to_section <= SECTION_SIZE.length():
+##				print("!!!! RETRYING GENERATE SECTIONS !!!!")
+#				return false
 			
 	for i in range(0, count):
 #		print("GENERATING SECTION i = ", i)
@@ -142,7 +146,7 @@ func _generate_section(forward_axis: Vector3, angle):
 		if is_instance_valid(section_to_delete):
 			var distance_to_player = section_to_delete.global_transform.origin.distance_to(player.global_transform.origin)
 #			print("DISTANCE FROM REMOVING SECTION = ", distance_to_player, "COMPARTE TO = ", SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR)
-			if distance_to_player > SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR * 0.75:
+			if distance_to_player > SECTION_SIZE.length() * GENERATION_TRIGGER_DISTANCE_FACTOR * 0.1:
 				sections_queue.remove(0)
 				section_to_delete.call_deferred("queue_free")
 	
@@ -203,8 +207,8 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 	# Adding objects to the three
 	sections.call_deferred("add_child", section)
-	section.add_child(left_lateral)
-	section.add_child(right_lateral)
+	section.call_deferred("add_child", left_lateral)
+	section.call_deferred("add_child", right_lateral)
 
 	
 	# Adds random materials
@@ -240,15 +244,15 @@ func _get_random_section_by_difficulty(difficulty):
 
 
 func _get_random_height_offset(difficulty):
-	var up = randf() > 0.5
-	var max_height = MAX_HEIGHT_OFFSET if up else 0
-	var min_height = 0 if up else -MAX_HEIGHT_OFFSET * 2
-	
-	var height_offset = rng.randf_range(min_height, max_height) + last_height_offset
 	
 	if randf() < HEIGHT_OFFSET_PROB:
-		last_height_offset = height_offset
-		return height_offset
+		var up = randf() > 0.5 or last_height_offset <= -35
+		var max_height = MAX_HEIGHT_OFFSET if up else 0
+		var min_height = 0 if up else -MAX_HEIGHT_OFFSET * 2
+		
+		var height_offset = rng.randf_range(min_height, max_height) + last_height_offset
+		last_height_offset = max(height_offset, -40) 
+		return max(height_offset, -40) 
 	else:
 		return last_height_offset
 

@@ -4,10 +4,12 @@ export(float, 0, 100) var ANGULAR_ACC = 2
 
 onready var pickup_area: Area = $PickupArea
 onready var timer: Timer = $Timer
+onready var collect_sound: AudioStreamPlayer = $CollectedSound
 
 enum PillStates {
 	IDLE,
-	THROWN
+	THROWN,
+	COLLECTED
 }
 
 var state = PillStates.IDLE
@@ -78,7 +80,10 @@ func _check_collisions():
 
 
 func _on_collected():
-#	print("on collected")
+	state = PillStates.COLLECTED
+	collect_sound.pitch_scale = rand_range(1.5, 5)
+	collect_sound.play()
+	yield(get_tree().create_timer(0.3), "timeout")
 	self.call_deferred("queue_free")
 
 func _on_hit():

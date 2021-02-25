@@ -105,7 +105,6 @@ surfaces/0 = {
 
 [node name="CenterSlimSection" type="Spatial"]
 script = ExtResource( 3 )
-DIFFICULTY = 2
 ALLOWED_ANGLES = [ 0, 180 ]
 WALLS_SURFACE = 0
 ROOF_SURFACE = 0
