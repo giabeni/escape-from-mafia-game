@@ -5233,7 +5233,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.841954, 0.0404236, 0.538033, -0.539326, 0.0343277, 0.841397, 0.0155428, -0.998593, 0.0507038, -1.45598, 1.90081, -375.433 )
+transform = Transform( 0.996488, -0.00260086, -0.0836962, 0.083667, 0.0716531, 0.993914, 0.00341208, -0.997426, 0.071619, 2.10654, 0.0681844, -376.136 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -5248,14 +5248,14 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.386595, 0.487971, -0.782578, -0.90603, 0.359397, -0.22348, 0.172206, 0.795435, 0.581057, 115.282, -12.4185, -255.789 )
+transform = Transform( 0.824592, 0.220941, -0.520801, -0.549414, 0.532237, -0.644101, 0.134883, 0.817256, 0.560266, 108.674, 44.1737, -258.033 )
 bone_name = "mixamorig_left_hand"
 
 [node name="seringa_01" parent="Armature/Skeleton/LeftHandBone" instance=ExtResource( 11 )]
 transform = Transform( 5.4766, -18.7722, 4.19654, 17.8615, 6.5824, 6.13506, -7.1396, 2.06786, 18.5674, 0.897629, 24.4265, 5.24414 )
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.981619, 0.0891988, 0.168719, 0.0918702, 0.554032, -0.827411, -0.167279, 0.827704, 0.535654, -50.6237, 90.8203, -253.82 )
+transform = Transform( 0.654173, -0.355732, 0.667467, 0.73892, 0.488924, -0.463628, -0.161412, 0.796498, 0.582699, -107.757, 30.9287, -260.547 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -5324,6 +5324,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.464608, 2.16458, -3.02265 )
 
 [node name="RayCast" type="RayCast" parent="Gimbal/h/v"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.767957, 0.575968, 0 )
+visible = false
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 524292

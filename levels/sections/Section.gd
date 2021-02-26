@@ -3,25 +3,36 @@ extends Spatial
 class_name Section
 
 export(int) var DIFFICULTY = 1
-export(PackedScene) var ENEMY_SCENE = null
 export(Array, float) var ALLOWED_ANGLES = [0, 90, -90, 180]
+
+export(PackedScene) var ENEMY_SCENE: PackedScene = null
+export(PackedScene) var PILL_SCENE: PackedScene = preload("res://items/pill.tscn")
+
 export(int, -1, 10) var WALLS_SURFACE = -1
 export(int, -1, 10) var ROOF_SURFACE = -1
 export(int, -1, 10) var GLASS_SURFACE = -1
 export(int, -1, 10) var DETAIL_SURFACE = -1
 export(Array, NodePath) var WALLS_BODIES = [null]
 export(Array, NodePath) var ROOFS_BODIES = [null]
-export var is_start_point = false
+
+export(bool) var IS_START_POINT = false
 
 export(float) var DELETE_DISTANCE: float = 80
 export(float) var CURVATURE_START_DISTANCE: float = 350
 export(float, 0, 360) var CURVATURE_ANGLE: float = 70
 export(NodePath) var CAMERA_PATH = null
 
+export(float, -100, 100) var LEFT_LANE_LIMIT = -15 
+export(float, -100, 100) var RIGHT_LANE_LIMIT = 15
+export(float, -100, 100) var LANE_INTERVAL = 5
+export(float, -100, 100) var LANE_HEIGHT = 3
+
 var camera: Camera
 var walls: Array
 var roofs: Array
 var initial_rotation: Vector3
+var pills_count = 0
+var item: Spatial = null
 
 enum Materials {
 	WALLS,
@@ -50,16 +61,19 @@ func _ready():
 		if roof is NodePath:
 			roofs.append(get_node(roof))
 			
-	if is_start_point:
+	if IS_START_POINT:
 		$Obstacles.queue_free()
 		$ItemsPath.queue_free()
-		$PillsPaths.queue_free()
+		
+	if pills_count or is_instance_valid(item):
+		add_pills(pills_count, item)
 
 func _process(delta):
 	if is_instance_valid(camera):
 		var distance_to_camera = global_transform.origin - camera.global_transform.origin
-#		if abs(distance_to_camera.z) > CURVATURE_START_DISTANCE:
-		var angle = CURVATURE_ANGLE * (distance_to_camera.z / CURVATURE_START_DISTANCE)
+		var angle = 0
+		if not is_nan(distance_to_camera.z / CURVATURE_START_DISTANCE):
+			angle = CURVATURE_ANGLE * pow(distance_to_camera.z / CURVATURE_START_DISTANCE, 2) * 1.2
 		global_transform.origin.x = distance_to_camera.z * tan(deg2rad(CURVATURE_ANGLE)) * 0.01
 		rotation.y = initial_rotation.y + deg2rad(angle)
 #			if name == "Section 14":
@@ -125,21 +139,45 @@ func set_obstacle_group(show, index = 1):
 		if group.name != str(index):
 			group.call_deferred("queue_free")
 						
-func get_pills_count():
-	if $Obstacles:
-		return $Obstacles.get_child_count()
-	else:
-		return 0
-		
-func set_pill_path(show, index = 1):
-	if not $PillsPaths:
-		return
-	for group in $PillsPaths.get_children():
-		if group.name != str(index):
-			group.call_deferred("queue_free")
 
-func set_item(show):
-	if not show and $ItemsPath:
-		$ItemsPath.call_deferred("queue_free")
+func set_pills_count(count):
+	pills_count = count
+
+func add_pills(count: int, item_instance: Spatial):
+	if not PILL_SCENE:
+		return
+
+	var x = rand_range(LEFT_LANE_LIMIT, RIGHT_LANE_LIMIT)
+	var y = LANE_HEIGHT
+	var z = LANE_INTERVAL * count / 2
+	if $ItemsPath:
+		$ItemsPath.rotation.y = rotation.y
+		
+	var item_index = -1
+	if is_instance_valid(item_instance):
+		item_index = round(rand_range(0, count))
+	
+	for i in range(0, count):
+		if i != 0 and randf() < 0.5:
+			x = clamp(x + (LANE_INTERVAL if randf() < 0.5 else -LANE_INTERVAL), LEFT_LANE_LIMIT, RIGHT_LANE_LIMIT)
+			
+		var collectable: Spatial
+		if i == item_index:
+			collectable = item_instance
+			collectable.name = "Item_" + str(i + 1)
+		else:
+			collectable = PILL_SCENE.instance()
+			collectable.name = "Pill_" + str(i + 1)
+			
+		if $ItemsPath:
+			$ItemsPath.add_child(collectable)
+			collectable.translate_object_local(Vector3(x, y, z))
+#			print(collectable.name, " = ", collectable.translation)
+		z = z - LANE_INTERVAL
+			
+
+
+func set_item(item_scene: PackedScene):
+	item = item_scene.instance()
 		
 		

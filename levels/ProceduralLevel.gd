@@ -4,6 +4,7 @@ export(NodePath) var PLAYER_NODE
 export(Vector2) var SECTION_SIZE = Vector2(50, 50)
 export(Array, PackedScene) var SECTIONS_ARRAY = []
 export(Array, PackedScene) var ENEMIES_ARRAY = []
+export(Array, PackedScene) var ITEMS_ARRAY = []
 export(Array, PackedScene) var LATERALS_ARRAY = []
 export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
@@ -11,15 +12,18 @@ export(float, 0, 1) var ENEMY_PROB = 1
 export(float, 0, 1) var HEIGHT_OFFSET_PROB = 0.6
 export(float, 0, 1) var OBSTACLES_PROB = 0.3
 export(float, 0, 1) var ITEMS_PROB = 0.3
-export(float, 0, 1) var PILLS_PROB = 0.75
+export(float, 0, 1) var PILLS_PROB = 0.6
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
 export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = SECTION_SIZE.length()
-export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 4
-export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 5
-export(int, 1, 100) var BATCH_SIZE = 10
+export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 1
+export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 8
+export(int, 1, 100) var BATCH_SIZE = 1
 export(float, 0, 100) var MAX_HEIGHT_OFFSET = 6
 export(float, 0, 100) var DISTANCE_FACTOR = 0
 export(float, 0, 1000) var LATERAL_OFFSET = 65
+export(int, 1, 100) var MIN_PILLS_COUNT = 3
+export(int, 1, 100) var MAX_PILLS_COUNT = 8
+
 
 enum States {
 	START,
@@ -61,7 +65,7 @@ func _ready():
 	player = get_node(PLAYER_NODE)
 	initial_speed = player.MAX_SPEED
 	last_axis = _get_player_forward_axis()
-	next_trigger_point = last_section_origin + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * last_axis 
+	next_trigger_point = next_trigger_point + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * last_axis 
 	
 	for section_scene in SECTIONS_ARRAY:
 		var section: Section = section_scene.instance()
@@ -69,8 +73,8 @@ func _ready():
 			if section.DIFFICULTY <= i:
 				sections_by_difficulty[str(i)].push_back(section_scene)
 		section.queue_free()
-	
-	_generate_next_sections(BATCH_SIZE, last_axis, last_angle)
+
+	_generate_next_sections(MIN_ACTIVE_SECTIONS * BATCH_SIZE, last_axis, last_angle)
 	
 
 func _process(delta):
@@ -87,7 +91,10 @@ func _process(delta):
 	var player_origin = Vector2(player.global_transform.origin.x, player.global_transform.origin.z)
 	
 	var distance_to_trigger = Vector2(next_trigger_point.x, next_trigger_point.z).distance_to(player_origin)
-	if distance_to_trigger < GENERATION_TRIGGER_DISTANCE_FACTOR:
+#	print(next_trigger_point, "    ", player_origin, "  ", distance_to_trigger)
+	
+	if next_trigger_point.z >= player.global_transform.origin.z:
+#	if distance_to_trigger < GENERATION_TRIGGER_DISTANCE_FACTOR:
 #		print("-- Linear Distance = ", linear_distance)
 		var forward_axis: Vector3 = last_axis
 		var angle = last_angle
@@ -125,7 +132,7 @@ func _generate_next_sections(count, forward_axis, angle):
 ##				print("!!!! RETRYING GENERATE SECTIONS !!!!")
 #				return false
 			
-	next_trigger_point = last_section_origin + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * forward_axis
+	next_trigger_point = next_trigger_point + NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION * Vector3(SECTION_SIZE.x, 0, SECTION_SIZE.y) * forward_axis
 	
 	for i in range(0, count):
 #		print("GENERATING SECTION i = ", i)
@@ -187,17 +194,12 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 	# Show pills
 	if randf() <= PILLS_PROB:
-		var pills_path_count = section.get_pills_count()
-		section.set_pill_path(true, round(rand_range(1, pills_path_count)))
-	else:
-		section.set_pill_path(false, 0)
-
+		section.set_pills_count(rand_range(MIN_PILLS_COUNT, MAX_PILLS_COUNT))
 	
 	# Show special items
-	if randf() <= ITEMS_PROB:
-		section.set_item(true)
-	else:
-		section.set_item(false)
+	if ITEMS_ARRAY.size() > 0 and randf() <= ITEMS_PROB:
+		ITEMS_ARRAY.shuffle()
+		section.set_item(ITEMS_ARRAY[0])
 		
 		
 	# Generating laterals

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://levels/models/Pack/Vines.material" type="Material" id=1]
 [ext_resource path="res://levels/models/Pack/Floor_004.material" type="Material" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://levels/models/Pack/ExternalWalls_004.material" type="Material" id=4]
 [ext_resource path="res://levels/models/Pack/EdgesDoors.material" type="Material" id=5]
 [ext_resource path="res://levels/models/Pack/Windows_005.material" type="Material" id=6]
-[ext_resource path="res://items/capsula.tscn" type="PackedScene" id=7]
-[ext_resource path="res://items/pill.tscn" type="PackedScene" id=8]
 [ext_resource path="res://levels/obstacles/air-conditioner.tscn" type="PackedScene" id=9]
 
 [sub_resource type="ArrayMesh" id=1]
@@ -156,204 +154,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7693, 130.31, -14.2086 )
 [node name="4" type="Position3D" parent="EnemySpots"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7693, 130.31, 18.7914 )
 
-[node name="PillsPaths" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
-
-[node name="1" type="Spatial" parent="PillsPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.22708, 29.5052 )
-
-[node name="Pill1" parent="PillsPaths/1" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/1" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/1" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/1" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="9" type="Spatial" parent="PillsPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.091, 6.22708, 29.5052 )
-
-[node name="Pill1" parent="PillsPaths/9" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/9" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/9" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/9" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="10" type="Spatial" parent="PillsPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5191, 6.22708, 29.5052 )
-
-[node name="Pill1" parent="PillsPaths/10" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/10" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/10" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/10" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="11" type="Spatial" parent="PillsPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.42809, 6.22708, -31.8327 )
-
-[node name="Pill1" parent="PillsPaths/11" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/11" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/11" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/11" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="12" type="Spatial" parent="PillsPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -13.5191, 6.22708, -31.8327 )
-
-[node name="Pill1" parent="PillsPaths/12" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/12" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/12" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/12" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="13" type="Spatial" parent="PillsPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 12.091, 6.22708, -31.8327 )
-
-[node name="Pill1" parent="PillsPaths/13" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0406532, -3.59169, -9.09995 )
-
-[node name="Pill2" parent="PillsPaths/13" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.219715, 0.982988, -4.10492 )
-
-[node name="Pill3" parent="PillsPaths/13" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0601087, 3.17581, 1.15974 )
-
-[node name="Pill4" parent="PillsPaths/13" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.119526, 4.57468, 6.72684 )
-
-[node name="2" type="Spatial" parent="PillsPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 6.54437, 0 )
-
-[node name="Pill1" parent="PillsPaths/2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/2" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="3" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 6.83024, 0 )
-
-[node name="Pill1" parent="PillsPaths/3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/3" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="4" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 12.0445, 2.07263, 0.14142 )
-
-[node name="Pill1" parent="PillsPaths/4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/4" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="5" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -9.82436, 2.07263, 0 )
-
-[node name="Pill1" parent="PillsPaths/5" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/5" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/5" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/5" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="6" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.108275, 6.77196, -1.61282 )
-
-[node name="Pill1" parent="PillsPaths/6" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/6" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/6" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/6" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="7" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -0.0331454, 2.07263, 8.28667 )
-
-[node name="Pill1" parent="PillsPaths/7" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/7" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/7" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/7" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
-[node name="8" type="Spatial" parent="PillsPaths"]
-transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.108276, 2.07263, -11.4372 )
-
-[node name="Pill1" parent="PillsPaths/8" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -8.5 )
-
-[node name="Pill2" parent="PillsPaths/8" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-
-[node name="Pill3" parent="PillsPaths/8" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5 )
-
-[node name="Pill4" parent="PillsPaths/8" instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 6.5 )
-
 [node name="Obstacles" type="Spatial" parent="."]
 
 [node name="1" type="Spatial" parent="Obstacles"]
@@ -393,6 +193,3 @@ transform = Transform( 0.866025, -0.0387772, -0.498494, 0, 0.996988, -0.0775543,
 transform = Transform( -0.258764, 0.00534804, -0.965926, 0.0206632, 0.999786, -1.57656e-10, 0.96572, -0.0199591, -0.258819, -16.4526, 2.94896, -9.29168 )
 
 [node name="ItemsPath" type="Spatial" parent="."]
-
-[node name="capsula" parent="ItemsPath" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.72572, 10.7504 )

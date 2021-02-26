@@ -1,13 +1,22 @@
 extends RayCast
 
 export(NodePath) var aim_pointer_node
-export(Color) var NORMAL_AIM_COLOR = Color("#d251c185")
+export(Color) var PILL_AIM_COLOR = Color("#d251c185")
+export(Color) var CAPSULE_AIM_COLOR = Color("#ab0a66f7")
+export(Color) var EMPTY_AIM_COLOR = Color("#d4282828")
 export(Color) var ENEMY_AIM_COLOR = Color("#e2ff0000")
 
 var aim_pointer: CSGTorus
+var current_color: Color
 
 onready var aim_line: CSGCylinder = $AimLine
 onready var aim_arrow: CSGCylinder = $AimLine/AimArrow
+
+enum BulletType {
+	PILL,
+	CAPSULE,
+	EMPTY,
+}
 
 func _ready():
 	if aim_pointer_node:
@@ -29,14 +38,25 @@ func _physics_process(delta):
 		if is_instance_valid(colider) and (colider as Spatial).is_in_group("Enemies"):
 			_set_color(ENEMY_AIM_COLOR)
 		else:
-			_set_color(NORMAL_AIM_COLOR)
+			_set_color(current_color)
 	else:
 		aim_pointer.translation = Vector3(0, 0, -200)
 		aim_line.height = abs(self.cast_to.z)
 		aim_line.translation.z = -aim_line.height / 2
 		aim_arrow.translation.y = aim_line.height / 2 - 2
 		
-		_set_color(NORMAL_AIM_COLOR)
+		_set_color(current_color)
+
+func set_bullet_type(bullet_type):
+	match bullet_type:
+		BulletType.CAPSULE:
+			current_color = CAPSULE_AIM_COLOR
+		BulletType.PILL:
+			current_color = PILL_AIM_COLOR
+		BulletType.EMPTY:
+			current_color = EMPTY_AIM_COLOR
+	_set_color(current_color)
+	
 
 func _set_color(color):
 	aim_pointer.material.albedo_color = color

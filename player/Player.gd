@@ -36,6 +36,12 @@ enum PlayerStates {
 	FALLEN,
 }
 
+enum BulletType {
+	PILL,
+	CAPSULE,
+	EMPTY,
+}
+
 var direction = Vector3.ZERO
 var velocity = Vector3.ZERO
 var resultant_velocity = Vector3.ZERO
@@ -64,7 +70,19 @@ func _ready():
 func _physics_process(delta):
 	_get_input_direction()
 	_get_jump()
-	_aim(delta)
+	
+	
+		
+	if Input.is_action_just_released("throw"):
+		_throw_pill(delta)
+	elif Input.is_action_just_released("throw_2"):
+		_throw_capsule(delta)
+	elif Input.is_action_pressed("throw"):
+		_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY)
+	elif Input.is_action_pressed("throw_2"):
+		_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY)
+	else:
+		_reset_aim()
 
 	
 	if state == PlayerStates.IDLE:
@@ -101,11 +119,6 @@ func _physics_process(delta):
 		
 	if game_running and state == PlayerStates.RUNNING:
 		_check_for_death()
-		
-	if Input.is_action_just_pressed("throw"):
-		_throw_pill(delta)
-	elif Input.is_action_just_pressed("throw_2"):
-		_throw_capsule(delta)	
 		
 	if state == PlayerStates.IDLE:
 		ui.hide()
@@ -167,12 +180,19 @@ func _input(event):
 func get_horizontal_speed():
 	return Vector2(velocity.x, velocity.z).length()
 
-func _aim(delta):
+func _aim(delta, bullet_type: int):
+	aim_cast.visible = true
+	aim_cast.set_bullet_type(bullet_type)
 	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)
 	gimbal.rotate_x(deg2rad(-mouse_motion.y) * delta * MOUSE_SENSITIVITY.y)
 	gimbal.rotation_degrees.y = clamp(gimbal.rotation_degrees.y, -AIM_LIMIT.y, AIM_LIMIT.y)
 	gimbal.rotation_degrees.x = clamp(gimbal.rotation_degrees.x, -AIM_LIMIT.x, AIM_LIMIT.x)
 	mouse_motion = Vector2()
+	
+func _reset_aim():
+	aim_cast.visible = false
+	gimbal.rotation_degrees.y = 0
+	gimbal.rotation_degrees.x = 0
 
 
 func _throw_pill(delta):

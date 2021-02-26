@@ -228,3 +228,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2047, 12.9844, -8.71816 )
 
 [node name="7" type="Position3D" parent="EnemySpots"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0759, 5.18756, 5.85708 )
+
+[node name="ItemsPath" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.0564, 0 )
