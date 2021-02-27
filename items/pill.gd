@@ -81,6 +81,7 @@ func _check_collisions():
 
 func _on_collected():
 	state = PillStates.COLLECTED
+	hide()
 	collect_sound.pitch_scale = rand_range(1.5, 5)
 	collect_sound.play()
 	yield(get_tree().create_timer(0.3), "timeout")
@@ -93,14 +94,14 @@ func _on_hit():
 func _on_PickupArea_body_entered(body):
 	if state == PillStates.IDLE:
 		if (body as Spatial).is_in_group("Player") and body.has_method("on_Collected_Pill"):
-			pickup_area.monitoring = false
+			pickup_area.set_deferred("monitoring", false)
 			body.on_Collected_Pill()
 			_on_collected()
 
 	elif state == PillStates.THROWN:
 		if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
-			pickup_area.monitoring = false
+			pickup_area.set_deferred("monitoring", true)
 			body.on_Pill_Hit()
 			if player and is_instance_valid(player):
 				player.on_Enemy_Killed()

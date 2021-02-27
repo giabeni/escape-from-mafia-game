@@ -26,6 +26,7 @@ export(float, -100, 100) var LEFT_LANE_LIMIT = -15
 export(float, -100, 100) var RIGHT_LANE_LIMIT = 15
 export(float, -100, 100) var LANE_INTERVAL = 5
 export(float, -100, 100) var LANE_HEIGHT = 3
+export(float, -100, 100) var LANE_CHANGE_PROB = 0.4
 
 var camera: Camera
 var walls: Array
@@ -33,6 +34,7 @@ var roofs: Array
 var initial_rotation: Vector3
 var pills_count = 0
 var item: Spatial = null
+var global_origin: Vector3
 
 enum Materials {
 	WALLS,
@@ -46,6 +48,9 @@ onready var enemy_spots = $EnemySpots
 func _ready():
 	
 	initial_rotation = rotation
+	
+	if global_origin:
+		global_transform.origin = global_origin
 	
 	if is_instance_valid(ENEMY_SCENE) and is_instance_valid(enemy_spots):
 		call_deferred("spawn_enemy")
@@ -62,8 +67,10 @@ func _ready():
 			roofs.append(get_node(roof))
 			
 	if IS_START_POINT:
-		$Obstacles.queue_free()
-		$ItemsPath.queue_free()
+		if has_node("Obstacles"):
+			$Obstacles.queue_free()
+		if has_node("ItemsPath"):
+			$ItemsPath.queue_free()
 		
 	if pills_count or is_instance_valid(item):
 		add_pills(pills_count, item)
@@ -85,6 +92,8 @@ func _process(delta):
 		if distance_to_camera.z > DELETE_DISTANCE:
 			call_deferred("queue_free")
 
+func set_global_origin(origin):
+	global_origin = origin
 	
 func set_camera_node(path: NodePath):
 	CAMERA_PATH = path
@@ -127,13 +136,13 @@ func set_surface_material(surface: int, material: SpatialMaterial):
 						wall.set_surface_material(GLASS_SURFACE, material)
 						
 func get_obstacles_count():
-	if $Obstacles:
+	if has_node("Obstacles"):
 		return $Obstacles.get_child_count()
 	else:
 		return 0
 		
 func set_obstacle_group(show, index = 1):
-	if not $Obstacles:
+	if not has_node("Obstacles"):
 		return
 	for group in $Obstacles.get_children():
 		if group.name != str(index):
@@ -157,9 +166,11 @@ func add_pills(count: int, item_instance: Spatial):
 	if is_instance_valid(item_instance):
 		item_index = round(rand_range(0, count))
 	
+	var change_lane_prob = LANE_CHANGE_PROB
 	for i in range(0, count):
-		if i != 0 and randf() < 0.5:
+		if i != 0 and randf() < change_lane_prob:
 			x = clamp(x + (LANE_INTERVAL if randf() < 0.5 else -LANE_INTERVAL), LEFT_LANE_LIMIT, RIGHT_LANE_LIMIT)
+			change_lane_prob *= 0.5
 			
 		var collectable: Spatial
 		if i == item_index:

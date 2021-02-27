@@ -160,24 +160,24 @@ IS_START_POINT = true
 
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.96114, 0 )
-THROW_FORCE = 150.0
+JUMP_FORCE = 30.0
 
 [node name="Skeleton" parent="doctor-hero/Armature" index="0"]
-bones/4/bound_children = [  ]
-bones/10/bound_children = [  ]
-bones/26/bound_children = [  ]
+bones/4/bound_children = [ NodePath("NeckBone") ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.870021, 0.0140954, 0.492812, -0.492805, 0.0539772, 0.868464, -0.0143593, -0.998442, 0.0539076, -3.31686, 3.58044, -375.787 )
+transform = Transform( 0.57739, -0.00711595, -0.816437, 0.815571, 0.0519056, 0.576324, 0.0382766, -0.998626, 0.0357733, 6.51581, -0.904487, -375.292 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.477415, 0.487692, -0.730911, -0.86426, 0.410703, -0.290477, 0.158525, 0.770375, 0.617568, 117.33, -2.64921, -259.886 )
+transform = Transform( 0.962876, -0.238935, 0.125616, 0.236354, 0.52142, -0.819912, 0.130409, 0.819164, 0.558537, 33.3941, 98, -254.693 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.970103, 0.0297965, 0.240855, 0.18524, 0.550278, -0.814175, -0.156795, 0.83445, 0.528307, -59.9252, 87.9258, -252.558 )
+transform = Transform( 0.101777, -0.584033, 0.805325, 0.97735, 0.209694, 0.0285544, -0.185548, 0.784178, 0.592146, -106.275, -37.3422, -263.825 )
 
 [node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 1 )
@@ -245,7 +245,7 @@ margin_bottom = 60.0
 rect_min_size = Vector2( 950, 0 )
 custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0.968627, 0.964706, 0.643137, 1 )
-text = "You just found the last missed dose of the vaccine that could save the world from the worst pandemic in history. Escape from the evil creatures that want the end of humanity!"
+text = "You are the only one capable of saving the world from the giant viruses that cruelly dominated the world.... now they are  after you! Run to escape from the evil creatures that want the end of humanity!"
 scroll_active = false
 
 [node name="Middle2" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
@@ -260,7 +260,7 @@ margin_bottom = 360.0
 rect_min_size = Vector2( 700, 360 )
 custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
-text = "Keys:
+text = "Controls:
 
 W = start game
 A = soft move left
@@ -269,11 +269,9 @@ D = soft move right
 SPACE = jump
 S = FORCE LANDING
 
-SHIFT + A or LEFT KEY = turn left 
-SHIFT + D or RIGHT KEY = turn right
-
-MOUSE MOVEMENT = AIM
-MOUSE CLICK = shoot pills"
+PRESS MOUSE = AIM
+MOUSE LEFT CLICK RELEASE= shoot pills
+MOUSE RIGHT CLICK RELEASE = shoot grenades capsules"
 scroll_active = false
 
 [node name="Credits" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Middle2"]
@@ -316,8 +314,17 @@ custom_styles/normal = SubResource( 7 )
 custom_fonts/font = SubResource( 8 )
 text = "START RUNNING!"
 
+[node name="Credits2" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Bottom"]
+margin_left = 350.0
+margin_right = 350.0
+margin_bottom = 80.0
+custom_fonts/normal_font = SubResource( 6 )
+custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
+text = "(or press space)"
+scroll_active = false
+
 [node name="DifficultyTimer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.5
 autostart = true
 
 [node name="Clouds" type="Spatial" parent="."]

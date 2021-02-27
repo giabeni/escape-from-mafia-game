@@ -85,7 +85,7 @@ func _check_for_collisions():
 func _explode():
 	explosion.emitting = true
 	body.hide()
-	explosion_area.monitoring = true
+	explosion_area.set_deferred("monitoring", true)
 	explosion_timer.start()
 	
 
@@ -103,14 +103,14 @@ func _on_hit():
 func _on_PickupArea_body_entered(body):
 	if state == PillStates.IDLE:
 		if (body as Spatial).is_in_group("Player") and body.has_method("on_PowerUp_Collected"):
-			pickup_area.monitoring = false
+			pickup_area.set_deferred("monitoring", false)
 			body.on_PowerUp_Collected("CAPSULE")
 			_on_collected()
 
 	elif state == PillStates.THROWN:
 		if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
-			pickup_area.monitoring = false
+			pickup_area.set_deferred("monitoring", false)
 			body.on_Pill_Hit()
 			if player and is_instance_valid(player):
 				player.on_Enemy_Killed()
@@ -124,7 +124,7 @@ func _on_Timer_timeout():
 func _on_ExplosionArea_body_entered(body):
 	if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
-			pickup_area.monitoring = false
+			pickup_area.set_deferred("monitoring", false)
 			body.on_Pill_Hit()
 			if player and is_instance_valid(player):
 				player.on_Enemy_Killed()

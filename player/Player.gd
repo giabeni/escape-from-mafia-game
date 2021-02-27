@@ -3,18 +3,20 @@ extends KinematicBody
 class_name Player
 
 export(float) var MAX_SPEED = 15
-export(float) var GRAVITY = 28
+export(float) var GRAVITY = 50
 export(float) var FRONTAL_ACC = 8
 export(float) var LATERAL_ACC = 15
 export(float) var ANGULAR_ACC = 10
-export(float) var JUMP_FORCE = 21
+export(float) var JUMP_FORCE = 30
+export(float) var JUMP_FRONT_ACC = 1.5
 export(Vector2) var MOUSE_SENSITIVITY = Vector2(5, 3)
 export(Vector2) var AIM_LIMIT = Vector2(45, 60)
 export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
-export(float) var THROW_FORCE = 100
+export(float) var THROW_FORCE = 150
 export(NodePath) var AIM_GIMBAL = "Gimbal"
 export(PackedScene) var PILL_SCENE: PackedScene = null
 export(PackedScene) var CAPSULE_SCENE: PackedScene = null
+export(float) var SPEED_FACTOR: float = 1
 
 onready var collision_shape: CollisionShape = $CollisionShape
 onready var ui: UIPlayer = $PlayerUI
@@ -48,13 +50,14 @@ var resultant_velocity = Vector3.ZERO
 var angle = 0
 var gimbal: Spatial
 var mouse_motion: Vector2 = Vector2.ZERO
-var speed_factor: float = 1
+var cur_speed_limit = SPEED_FACTOR * MAX_SPEED
 var last_score_position: Vector3
 var score_acc: float = 0
 var game_running = false
 var anim_playback: AnimationNodeStateMachinePlayback
 var anim_root_motion
 var jumping = false
+var aiming = false
 var pill_count = 0
 var capsule_count = 0
 var state = PlayerStates.IDLE
@@ -66,6 +69,7 @@ func _ready():
 	last_score_position = self.global_transform.origin
 	anim_playback = anim_tree["parameters/Main/playback"]
 	anim_root_motion = anim_tree.root_motion_track
+	cur_speed_limit = SPEED_FACTOR * MAX_SPEED
 	
 func _physics_process(delta):
 	_get_input_direction()
@@ -91,9 +95,15 @@ func _physics_process(delta):
 		velocity.x = locomotion.x
 		velocity.z = locomotion.z
 	elif state == PlayerStates.RUNNING:
-		velocity.x = lerp(velocity.x, MAX_SPEED * speed_factor * direction.x, delta * LATERAL_ACC)
-		velocity.z = lerp(velocity.z, MAX_SPEED * speed_factor * direction.z, delta * FRONTAL_ACC)
-
+		velocity.x = lerp(velocity.x, cur_speed_limit * direction.x, delta * LATERAL_ACC)
+		if jumping:
+			velocity.z = lerp(velocity.z, cur_speed_limit * direction.z * JUMP_FRONT_ACC, delta * FRONTAL_ACC)
+			if not aiming:
+				camera.set_target_position("JUMP")
+		else:
+			velocity.z = lerp(velocity.z, cur_speed_limit * direction.z, delta * FRONTAL_ACC)
+			if not aiming:
+				camera.set_target_position("DEFAULT")
 	
 	if not is_on_floor():
 		velocity.y -= GRAVITY * delta
@@ -181,6 +191,8 @@ func get_horizontal_speed():
 	return Vector2(velocity.x, velocity.z).length()
 
 func _aim(delta, bullet_type: int):
+	camera.set_target_position("AIM")
+	aiming = true
 	aim_cast.visible = true
 	aim_cast.set_bullet_type(bullet_type)
 	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)
@@ -190,6 +202,8 @@ func _aim(delta, bullet_type: int):
 	mouse_motion = Vector2()
 	
 func _reset_aim():
+	camera.set_target_position("DEFAULT")
+	aiming = false
 	aim_cast.visible = false
 	gimbal.rotation_degrees.y = 0
 	gimbal.rotation_degrees.x = 0
@@ -227,7 +241,7 @@ func _throw_capsule(delta):
 		$ThrowSound.play()
 		capsule.throw(forward * THROW_FORCE, aim_cast.global_transform.origin)
 		capsule_count = capsule_count - 1
-#		ui.set_pill_count(pill_count)
+		ui.set_capsules_count(capsule_count)
 
 
 func _set_animations(delta):
@@ -254,10 +268,10 @@ func _set_animations(delta):
 			elif not jumping:
 				anim_tree.root_motion_track = anim_root_motion
 				anim_playback.travel("RUNNING")
-				anim_tree[strafe].x = velocity.x / MAX_SPEED
-				anim_tree[strafe].y = -velocity.z / MAX_SPEED
-				anim_tree[speed] = speed_factor
-				if resultant_velocity.y < -9:
+				anim_tree[strafe].x = velocity.x / cur_speed_limit
+				anim_tree[strafe].y = -velocity.z / cur_speed_limit
+				anim_tree[speed] = SPEED_FACTOR
+				if resultant_velocity.y < -15:
 					anim_playback.travel("FALLING_JUMP")
 	
 	
@@ -300,7 +314,7 @@ func on_Touch_Enemy():
 
 func _on_CheckPoint_reached(body: CollisionObject):
 	if body.get_instance_id() == self.get_instance_id():
-		speed_factor += LINEAR_SPEED_FACTOR_RATE
+		SPEED_FACTOR += LINEAR_SPEED_FACTOR_RATE
 
 func on_Collected_Pill():
 	$CollectedEffects/PillCollected.rotate_z(deg2rad(rand_range(-45, 45)))
@@ -313,7 +327,7 @@ func on_PowerUp_Collected(power_up = "CAPSULE"):
 		"CAPSULE":
 			collect_anim_player.play("capsule_collected")
 			capsule_count = capsule_count + 1
-#			ui.set_pill_count(pill_count)
+			ui.set_capsules_count(capsule_count)
 
 func _on_ScoreTimer_timeout():
 	if state == PlayerStates.RUNNING:
@@ -338,4 +352,6 @@ func on_Enemy_Killed():
 	
 func _on_DifficultyTimer_timeout():
 	if state == PlayerStates.RUNNING:
-		MAX_SPEED = MAX_SPEED * LINEAR_SPEED_FACTOR_RATE
+		SPEED_FACTOR *= LINEAR_SPEED_FACTOR_RATE
+		JUMP_FRONT_ACC /= LINEAR_SPEED_FACTOR_RATE
+		cur_speed_limit = MAX_SPEED * SPEED_FACTOR

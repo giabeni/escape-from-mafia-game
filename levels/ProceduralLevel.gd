@@ -14,6 +14,7 @@ export(float, 0, 1) var OBSTACLES_PROB = 0.3
 export(float, 0, 1) var ITEMS_PROB = 0.3
 export(float, 0, 1) var PILLS_PROB = 0.6
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
+export(int, 1, 100) var MAX_DIFFICULTY = 4
 export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = SECTION_SIZE.length()
 export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 1
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 8
@@ -151,7 +152,7 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 #	print(">> Last origin = ", last_section_origin)
 #	print(">> Next origin = ", origin)
-	var section: Section = _get_random_section_by_difficulty(ceil(difficulty))
+	var section: Section = _get_random_section_by_difficulty(clamp(ceil(difficulty), 1, MAX_DIFFICULTY))
 	
 	# Remove previous sections
 #	if sections_queue.size() >= MIN_ACTIVE_SECTIONS:
@@ -165,7 +166,7 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 
 	sections_queue.push_back(section)
-	section.global_transform.origin = origin
+	section.set_global_origin(origin)
 	last_section_origin = origin
 		
 	# Set rotation based on section possibilities

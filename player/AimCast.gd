@@ -35,7 +35,7 @@ func _physics_process(delta):
 		aim_arrow.translation.y = distance_to_point / 2 - 2
 		
 		var colider = get_collider()
-		if is_instance_valid(colider) and (colider as Spatial).is_in_group("Enemies"):
+		if is_instance_valid(colider) and current_color != EMPTY_AIM_COLOR and (colider as Spatial).is_in_group("Enemies"):
 			_set_color(ENEMY_AIM_COLOR)
 		else:
 			_set_color(current_color)
@@ -62,3 +62,7 @@ func _set_color(color):
 	aim_pointer.material.albedo_color = color
 	aim_line.material.albedo_color = color
 	aim_arrow.material.albedo_color = color
+	
+	aim_pointer.material.emission = color
+	aim_line.material.emission = color
+	aim_arrow.material.emission = color
