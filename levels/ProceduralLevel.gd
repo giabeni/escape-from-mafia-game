@@ -15,7 +15,6 @@ export(float, 0, 1) var ITEMS_PROB = 0.3
 export(float, 0, 1) var PILLS_PROB = 0.6
 export(float, 1, 2) var DIFFICULTY_INCREASE_FACTOR = 1.025
 export(int, 1, 100) var MAX_DIFFICULTY = 4
-export(float, 0.1, 100) var GENERATION_TRIGGER_DISTANCE_FACTOR = SECTION_SIZE.length()
 export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 1
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 8
 export(int, 1, 100) var BATCH_SIZE = 1
@@ -166,8 +165,6 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 
 	sections_queue.push_back(section)
-	section.set_global_origin(origin)
-	last_section_origin = origin
 		
 	# Set rotation based on section possibilities
 	var random_angle_index = rng.randi_range(0, section.ALLOWED_ANGLES.size() - 1)
@@ -176,8 +173,8 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 	# Set random offset in y
 	var height_offset = _get_random_height_offset(difficulty)
-	section.translation.y = height_offset
-	
+	section.set_global_origin(origin + Vector3.UP * height_offset)
+	last_section_origin = origin
 	# Sets the camera to trigger curvature
 	section.set_camera_node(player.camera.get_path())
 	

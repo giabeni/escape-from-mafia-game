@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
 [ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
@@ -28,6 +28,7 @@
 [ext_resource path="res://levels/materials/walls/orange-wall.material" type="Material" id=26]
 [ext_resource path="res://levels/materials/walls/grey-wall.material" type="Material" id=27]
 [ext_resource path="res://items/capsula.tscn" type="PackedScene" id=28]
+[ext_resource path="res://enemies/spiky/spiky.tscn" type="PackedScene" id=29]
 [ext_resource path="res://assets/particles/smoke_02.png" type="Texture" id=30]
 [ext_resource path="res://levels/clouds/Clouds.gd" type="Script" id=31]
 [ext_resource path="res://player/models/doctor-hero/doctor-hero2.tscn" type="PackedScene" id=32]
@@ -150,7 +151,6 @@ LATERALS_ARRAY = [ ExtResource( 15 ), ExtResource( 36 ), ExtResource( 34 ), ExtR
 BUILDING_MATERIALS = [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 24 ) ]
 CURVE_PROB = 0.0
 ENEMY_PROB = 0.8
-GENERATION_TRIGGER_DISTANCE_FACTOR = 3.0
 
 [node name="Sections" type="Spatial" parent="."]
 
@@ -158,26 +158,23 @@ GENERATION_TRIGGER_DISTANCE_FACTOR = 3.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 IS_START_POINT = true
 
+[node name="spiky" parent="Sections/full-section" instance=ExtResource( 29 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.4528, -2.53027, -17.1774 )
+
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.96114, 0 )
-JUMP_FORCE = 30.0
-
-[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
-bones/4/bound_children = [ NodePath("NeckBone") ]
-bones/10/bound_children = [ NodePath("LeftHandBone") ]
-bones/26/bound_children = [ NodePath("RightHandBone") ]
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.57739, -0.00711595, -0.816437, 0.815571, 0.0519056, 0.576324, 0.0382766, -0.998626, 0.0357733, 6.51581, -0.904487, -375.292 )
+transform = Transform( 0.541196, -0.0202559, -0.840653, 0.840155, 0.054989, 0.53955, 0.0352976, -0.998281, 0.0467779, 6.40242, -0.501894, -375.103 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.962876, -0.238935, 0.125616, 0.236354, 0.52142, -0.819912, 0.130409, 0.819164, 0.558537, 33.3941, 98, -254.693 )
+transform = Transform( 0.954241, -0.254902, 0.156358, 0.270741, 0.514419, -0.813677, 0.126976, 0.818777, 0.559893, 29.5555, 98.8954, -254.425 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.101777, -0.584033, 0.805325, 0.97735, 0.209694, 0.0285544, -0.185548, 0.784178, 0.592146, -106.275, -37.3422, -263.825 )
+transform = Transform( 0.0632305, -0.592152, 0.803342, 0.981088, 0.184434, 0.0587268, -0.182938, 0.784437, 0.592615, -105.023, -42.0242, -263.76 )
 
 [node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 1 )
