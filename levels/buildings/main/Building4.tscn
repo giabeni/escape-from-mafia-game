@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://levels/obstacles/air-conditioner.tscn" type="PackedScene" id=1]
 [ext_resource path="res://levels/models/Pack/Floor_004.material" type="Material" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://levels/models/Pack/ExternalWalls_004.material" type="Material" id=4]
 [ext_resource path="res://levels/models/Pack/EdgesDoors.material" type="Material" id=5]
 [ext_resource path="res://levels/models/Pack/Windows_005.material" type="Material" id=6]
+[ext_resource path="res://levels/buildings/ObstaclesSpots.gd" type="Script" id=7]
 
 [sub_resource type="ConcavePolygonShape" id=1]
 data = PoolVector3Array( -25, 0, 25, 25, 0, -25, 25, 0, 25, -25, 0, 25, -25, 0, -25, 25, 0, -25 )
@@ -106,6 +107,12 @@ surfaces/0 = {
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 8309
+}
+
+[sub_resource type="Curve3D" id=11]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 11.9337, -0.561796, -13.6719, 0, 0, 0, 0, 0, 0, 6.93371, -5.2618, -13.6719, 0, 0, 0, 0, 0, 0, 12.1337, -0.361796, 16.1281, 0, 0, 0, 0, 0, 0, 22.2337, -1.2618, 16.1281, 0, 0, 0, 0, 0, 0, 27.6337, -7.4618, -7.87193, 0, 0, 0, 0, 0, 0, 21.6337, -0.361796, -9.87192 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0, 0 )
 }
 
 [node name="DoubleCorridor" type="Spatial"]
@@ -254,3 +261,13 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98192, 4.30939, 1.40343 )
 
 [node name="ItemsPath" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.89259, 0 )
+
+[node name="ObstaclesSpots" type="Spatial" parent="."]
+transform = Transform( 1.94707e-07, 0, 1, 0, 1, 0, -1, 0, 1.94707e-07, -1.42808, -0.682971, -0.766292 )
+script = ExtResource( 7 )
+
+[node name="Path" type="Path" parent="ObstaclesSpots"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.04477, 0 )
+curve = SubResource( 11 )
+
+[node name="RandomPoint" type="Position3D" parent="ObstaclesSpots/Path"]

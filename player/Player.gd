@@ -300,7 +300,7 @@ func _die():
 	get_tree().call_deferred("reload_current_scene")
 	
 
-func on_Touch_Enemy():
+func on_Touch_Enemy(damage = 100):
 	velocity.x = 0
 	velocity.z = 0
 	infected_paricles.emitting = true

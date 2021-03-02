@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
 [ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
@@ -37,6 +37,7 @@
 [ext_resource path="res://levels/Bg.gd" type="Script" id=35]
 [ext_resource path="res://levels/buildings/proto/ProtoBuilding2.tscn" type="PackedScene" id=36]
 [ext_resource path="res://levels/buildings/proto/ProtoBuilding4.tscn" type="PackedScene" id=37]
+[ext_resource path="res://levels/InfoScreen.gd" type="Script" id=38]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -141,11 +142,67 @@ albedo_texture = ExtResource( 30 )
 material = SubResource( 10 )
 size = Vector2( 20, 10 )
 
+[sub_resource type="Animation" id=12]
+resource_name = "hide"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "show"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("VBoxContainer/Botton/DifficultyBar:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4, 2.5, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("VBoxContainer/Botton/DifficultyBar:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4, 0.7, 1, 1.3, 1.6, 1.9, 2.2, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ) ]
+}
+
 [node name="Level" type="Spatial"]
 script = ExtResource( 1 )
 PLAYER_NODE = NodePath("doctor-hero")
 SECTIONS_ARRAY = [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ) ]
-ENEMIES_ARRAY = [ ExtResource( 12 ) ]
+ENEMIES_ARRAY = [ ExtResource( 12 ), ExtResource( 29 ) ]
 ITEMS_ARRAY = [ ExtResource( 28 ) ]
 LATERALS_ARRAY = [ ExtResource( 15 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 37 ) ]
 BUILDING_MATERIALS = [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 24 ) ]
@@ -158,23 +215,25 @@ ENEMY_PROB = 0.8
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 IS_START_POINT = true
 
-[node name="spiky" parent="Sections/full-section" instance=ExtResource( 29 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.4528, -2.53027, -17.1774 )
-
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, -1.96114, 0 )
 
+[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
+bones/4/bound_children = [ NodePath("NeckBone") ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
+
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.541196, -0.0202559, -0.840653, 0.840155, 0.054989, 0.53955, 0.0352976, -0.998281, 0.0467779, 6.40242, -0.501894, -375.103 )
+transform = Transform( 0.999043, 0.0349333, -0.0263158, 0.0240726, 0.0631503, 0.997713, 0.0365153, -0.997392, 0.062249, 2.32276, 2.62603, -375.483 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.954241, -0.254902, 0.156358, 0.270741, 0.514419, -0.813677, 0.126976, 0.818777, 0.559893, 29.5555, 98.8954, -254.425 )
+transform = Transform( 0.841215, 0.164698, -0.515006, -0.527216, 0.461234, -0.713656, 0.120002, 0.871857, 0.474829, 96.7114, 46.5979, -249.308 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.0632305, -0.592152, 0.803342, 0.981088, 0.184434, 0.0587268, -0.182938, 0.784437, 0.592615, -105.023, -42.0242, -263.76 )
+transform = Transform( 0.780512, -0.227275, 0.582362, 0.609258, 0.485199, -0.627205, -0.140013, 0.844351, 0.517173, -91.1156, 49.2949, -253.854 )
 
 [node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 1 )
@@ -321,7 +380,7 @@ text = "(or press space)"
 scroll_active = false
 
 [node name="DifficultyTimer" type="Timer" parent="."]
-wait_time = 2.5
+wait_time = 2.0
 autostart = true
 
 [node name="Clouds" type="Spatial" parent="."]
@@ -500,6 +559,73 @@ opacity = 0.62
 texture = ExtResource( 33 )
 
 [node name="Laterals" type="Spatial" parent="."]
+
+[node name="InfoScreen" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 38 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Top" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
+margin_top = 692.0
+margin_right = 1024.0
+margin_bottom = 692.0
+
+[node name="Middle" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
+margin_top = 696.0
+margin_right = 1024.0
+margin_bottom = 696.0
+
+[node name="Botton" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
+margin_top = 700.0
+margin_right = 1024.0
+margin_bottom = 800.0
+rect_min_size = Vector2( 0, 100 )
+
+[node name="DifficultyBar" type="ColorRect" parent="InfoScreen/VBoxContainer/Botton"]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 0.796078, 0.796078, 0.796078, 1 )
+margin_right = 1024.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+color = Color( 0.717647, 0.439216, 0, 0.807843 )
+
+[node name="DiificultyTitle" type="RichTextLabel" parent="InfoScreen/VBoxContainer/Botton/DifficultyBar"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -218.536
+margin_top = -25.0
+margin_right = 281.464
+margin_bottom = 26.0
+rect_min_size = Vector2( 500, 0 )
+size_flags_vertical = 3
+custom_fonts/normal_font = SubResource( 4 )
+text = "Dificuldade 2!"
+fit_content_height = true
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InfoScreen"]
+autoplay = "hide"
+anims/hide = SubResource( 12 )
+anims/show = SubResource( 13 )
 
 [connection signal="pressed" from="Screen/StartScreen/VBoxContainer/Bottom/Button" to="." method="_on_Button_pressed"]
 [connection signal="timeout" from="DifficultyTimer" to="." method="_on_DifficultyTimer_timeout"]

@@ -106,11 +106,17 @@ func spawn_enemy():
 #	print (get_instance_id(), "   => SECTION ENEMY SPOTS = ", spots)
 	var enemy = ENEMY_SCENE.instance() as Spatial
 	
-	enemy.transform.origin = spots[0].transform.origin
 	
-	enemy_spots.add_child(enemy)
-	enemy.set_spots(spots)
-	
+	if enemy.type == "balloon":
+		enemy.transform.origin = spots[0].transform.origin
+		enemy_spots.add_child(enemy)
+		enemy.set_spots(spots)
+	elif enemy.type == "spiky":
+		if has_node("ObstaclesSpots"):
+			var obstacles_spots = $ObstaclesSpots
+#			var random_point = obstacles_spots.get_random_point()
+			obstacles_spots.get_node("Path").call_deferred("add_child", enemy)
+			
 func set_surface_material(surface: int, material: SpatialMaterial):
 	match surface:
 		Materials.WALLS:

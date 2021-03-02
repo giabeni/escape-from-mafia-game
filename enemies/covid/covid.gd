@@ -11,11 +11,12 @@ var current_spot_index: int = -1
 var next_spot_index: int = -1
 var current_spot: Vector3 = Vector3()
 var next_spot: Vector3 = Vector3()
-
 var velocity = Vector3.ZERO
+var type = "balloon"
 
 onready var explosion: Particles = $ExplodeParticles
 onready var score_text: Sprite3D = $ScoreText
+
 
 func _ready():
 	if SPOTS_PATHS.size() >= 2 or spots.size() >= 2:

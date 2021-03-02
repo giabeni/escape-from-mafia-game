@@ -56,7 +56,8 @@ var sections_by_difficulty = {
 var sections_queue = []
 var start_screen_exited = false
 var section_id = 0
-var difficulty = 0.75
+var difficulty = 0.9
+var current_int_difficulty = 0
 var last_height_offset = 0
 var initial_speed = 15
 
@@ -180,7 +181,7 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 	# Add random enemy if is suitable
 	if randf() <= ENEMY_PROB:
-		var enemy_scene = _get_random_enemy()
+		var enemy_scene = _get_random_enemy_by_difficulty(difficulty)
 		section.set_enemy(enemy_scene)
 	
 	# Show obstacles
@@ -233,8 +234,13 @@ func _get_random_lateral(origin, left):
 	return lateral
 
 
-func _get_random_enemy():
-	var enemy_index = rng.randi_range(0, ENEMIES_ARRAY.size() - 1)
+# P.S. The array order must be crescent on difficulty
+func _get_random_enemy_by_difficulty(target_difficulty):
+	var diff = ceil(target_difficulty)
+	var x = rand_range(0, 100 * diff)
+	var rand_index = (2- pow(2,(x * 0.01 / diff))) * diff
+	var enemy_index = clamp(ceil(rand_index) - 1, 0, ENEMIES_ARRAY.size() - 1)
+#	print("diff = ", target_difficulty, "  x = ", x, "  y = ", rand_index, "   index = ", enemy_index)
 	return ENEMIES_ARRAY[enemy_index]
 
 
@@ -289,4 +295,6 @@ func _on_DifficultyTimer_timeout():
 		HEIGHT_OFFSET_PROB = HEIGHT_OFFSET_PROB * DIFFICULTY_INCREASE_FACTOR
 		OBSTACLES_PROB = OBSTACLES_PROB * DIFFICULTY_INCREASE_FACTOR
 		difficulty = difficulty * DIFFICULTY_INCREASE_FACTOR
-#		print("Difficulty increased to = ", difficulty)
+		if abs(ceil(difficulty) - difficulty) < 0.1 and ceil(difficulty) != current_int_difficulty:
+			$InfoScreen.show_difficulty_bar(ceil(difficulty))
+			current_int_difficulty = ceil(difficulty)
