@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/spikes-attack.mp3-e66d5721718566def865ff3687025043.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/spikes-attack.mp3"
+dest_files=[ "res://.import/spikes-attack.mp3-e66d5721718566def865ff3687025043.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

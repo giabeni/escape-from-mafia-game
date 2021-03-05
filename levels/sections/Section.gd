@@ -114,8 +114,9 @@ func spawn_enemy():
 	elif enemy.type == "spiky":
 		if has_node("ObstaclesSpots"):
 			var obstacles_spots = $ObstaclesSpots
-#			var random_point = obstacles_spots.get_random_point()
+			var random_point = $ObstaclesSpots.get_node("Path/RandomPoint")
 			obstacles_spots.get_node("Path").call_deferred("add_child", enemy)
+			enemy.translation = random_point.translation
 			
 func set_surface_material(surface: int, material: SpatialMaterial):
 	match surface:

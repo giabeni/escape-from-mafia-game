@@ -2,19 +2,32 @@ extends RigidBody
 
 export(float, 0, 1000) var MAX_HP = 20
 export(float, 0, 1000) var DAMAGE = 10
+export(float, 0, 10000) var SCORE = 100
 
 onready var anim_player: AnimationPlayer = $AnimationPlayer
+onready var hp_bar: HPBar3D = $HPBar3D
 
 var hp = MAX_HP
 var can_damage = true
 var type = "spiky"
 
+func _ready():
+	randomize()
+	
+	# Randomize animations and timer
+	anim_player.stop()
+	var random_idle_timer = rand_range(0, 3)
+	yield(get_tree().create_timer(random_idle_timer), "timeout")
+	anim_player.play()
+	$AttackTimer.start()
+
 func _start_attack():
 	anim_player.play("attack")
-	anim_player.connect("animation_finished", self, "_on_attack_finished")
 	
-func _on_attack_finished(animation):
+func _on_animation_finished(animation):
 	if animation == "attack":
+		anim_player.play("idle")
+	elif animation == "hurt":
 		anim_player.play("idle")
 
 
@@ -36,7 +49,9 @@ func _on_DamageFreeTimer_timeout():
 func _explode():
 	$ExplodeParticles.emitting = true
 	$ExplodeSound.play()
+	$ScoreText.show()
 	$Spiky.hide()
+	hp_bar.hide()
 	$DamageArea.set_deferred("monitoring", false)
 	$CollisionShape.disabled = true
 	yield(get_tree().create_timer(1), "timeout")
@@ -49,10 +64,13 @@ func _on_Area_body_entered(body: Spatial):
 		_explode()
 
 
-func on_Pill_Hit(hit_damage = 10):
-	$ScoreText.show()
-	anim_player.play("idle")
+func on_Pill_Hit(hit_damage, player: Player):
+	hp_bar.show()
+	anim_player.play("hurt")
 	$AttackTimer.start()
 	hp -= hit_damage
+	hp_bar.set_current_hp(hp)
 	if hp <= 0:
 		_explode()
+		if player and is_instance_valid(player):
+			player.on_Enemy_Killed(SCORE)

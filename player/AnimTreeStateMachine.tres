@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=33 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=35 format=2]
 
 [sub_resource type="AnimationNodeAnimation" id=1]
 animation = "Falling"
@@ -98,8 +98,7 @@ xfade_time = 0.5
 [sub_resource type="AnimationNodeStateMachineTransition" id=23]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=24]
-switch_mode = 2
-auto_advance = true
+switch_mode = 1
 xfade_time = 0.3
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=25]
@@ -129,21 +128,29 @@ xfade_time = 0.2
 [sub_resource type="AnimationNodeStateMachineTransition" id=32]
 xfade_time = 0.2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=33]
+switch_mode = 2
+xfade_time = 0.3
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
+switch_mode = 2
+xfade_time = 0.3
+
 [resource]
 states/FALLING/node = SubResource( 1 )
-states/FALLING/position = Vector2( 1057, 139.778 )
+states/FALLING/position = Vector2( 1194, 145.025 )
 states/FALLING_JUMP/node = SubResource( 2 )
-states/FALLING_JUMP/position = Vector2( 792.369, 146.025 )
+states/FALLING_JUMP/position = Vector2( 967.369, 107.025 )
 states/JUMP/node = SubResource( 3 )
-states/JUMP/position = Vector2( 791.889, -10.3333 )
+states/JUMP/position = Vector2( 791.57, -14.3333 )
 states/LAND/node = SubResource( 8 )
-states/LAND/position = Vector2( 791.57, 282.491 )
+states/LAND/position = Vector2( 960.369, 267.491 )
 states/RUNNING/node = SubResource( 19 )
 states/RUNNING/position = Vector2( 495, 277.376 )
 states/START/node = SubResource( 20 )
 states/START/position = Vector2( 257.333, 277.376 )
 states/STUMBLE/node = SubResource( 21 )
 states/STUMBLE/position = Vector2( 467.333, 40.667 )
-transitions = [ "START", "RUNNING", SubResource( 22 ), "RUNNING", "JUMP", SubResource( 23 ), "JUMP", "FALLING_JUMP", SubResource( 24 ), "FALLING_JUMP", "FALLING", SubResource( 25 ), "FALLING_JUMP", "LAND", SubResource( 26 ), "LAND", "RUNNING", SubResource( 27 ), "RUNNING", "FALLING_JUMP", SubResource( 28 ), "RUNNING", "STUMBLE", SubResource( 29 ), "JUMP", "STUMBLE", SubResource( 30 ), "FALLING_JUMP", "STUMBLE", SubResource( 31 ), "LAND", "STUMBLE", SubResource( 32 ) ]
+transitions = [ "START", "RUNNING", SubResource( 22 ), "RUNNING", "JUMP", SubResource( 23 ), "JUMP", "FALLING_JUMP", SubResource( 24 ), "FALLING_JUMP", "FALLING", SubResource( 25 ), "FALLING_JUMP", "LAND", SubResource( 26 ), "LAND", "RUNNING", SubResource( 27 ), "RUNNING", "FALLING_JUMP", SubResource( 28 ), "RUNNING", "STUMBLE", SubResource( 29 ), "JUMP", "STUMBLE", SubResource( 30 ), "FALLING_JUMP", "STUMBLE", SubResource( 31 ), "LAND", "STUMBLE", SubResource( 32 ), "JUMP", "LAND", SubResource( 33 ), "JUMP", "RUNNING", SubResource( 34 ) ]
 start_node = "START"
 graph_offset = Vector2( 66.319, -33 )

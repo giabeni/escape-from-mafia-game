@@ -1,6 +1,7 @@
 extends RigidBody
 
 export(float, 0, 100) var ANGULAR_ACC = 2
+export(float, 0, 10000) var DAMAGE = 10
 
 onready var pickup_area: Area = $PickupArea
 onready var timer: Timer = $Timer
@@ -102,9 +103,7 @@ func _on_PickupArea_body_entered(body):
 		if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
 			pickup_area.set_deferred("monitoring", true)
-			body.on_Pill_Hit()
-			if player and is_instance_valid(player):
-				player.on_Enemy_Killed()
+			body.on_Pill_Hit(DAMAGE, player)
 			_on_hit()
 
 

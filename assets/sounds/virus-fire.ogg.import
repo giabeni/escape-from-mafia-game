@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/virus-fire.ogg-9a941a86f7b384386e6e7178288b4d1a.oggstr"
+
+[deps]
+
+source_file="res://assets/sounds/virus-fire.ogg"
+dest_files=[ "res://.import/virus-fire.ogg-9a941a86f7b384386e6e7178288b4d1a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

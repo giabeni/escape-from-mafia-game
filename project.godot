@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/cloud/Cloud.gd"
 }, {
+"base": "Spatial",
+"class": "HPBar3D",
+"language": "GDScript",
+"path": "res://ui/HPBar3D.gd"
+}, {
 "base": "StaticBody",
 "class": "Lateral",
 "language": "GDScript",
@@ -36,6 +41,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "CloudDome": "",
+"HPBar3D": "",
 "Lateral": "",
 "Player": "",
 "Section": "",
@@ -48,10 +54,6 @@ config/name="PandemicHero"
 run/main_scene="res://levels/RuinsLevel.tscn"
 boot_splash/image="res://assets/ui/splash-ggj.png"
 config/icon="res://icon.png"
-
-[display]
-
-window/size/height=800
 
 [editor_plugins]
 

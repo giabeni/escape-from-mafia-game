@@ -1,6 +1,7 @@
 extends KinematicBody
 
 export(Array, NodePath) var SPOTS_PATHS: Array = []
+export(float, 0, 10000) var SCORE = 50
 export(float, 0, 100) var SPEED = 10
 export(float, 0, 100) var ACC = 2
 export(float, 0, 100) var ANGULAR_ACC = 4
@@ -26,6 +27,9 @@ func _ready():
 		current_spot_index = 0
 		next_spot_index = 1
 #		print("ENEMY SPOTS = ", spots)
+	
+	randomize()
+	$FlySound.pitch_scale = rand_range(0.5, 1.5)
 		
 func _physics_process(delta):
 	
@@ -78,7 +82,10 @@ func set_spots(spots_nodes: Array):
 	
 func _explode():
 	explosion.emitting = true
+	$ExplodeSound.pitch_scale = rand_range(0.8, 1.2)
+	$DieSound.pitch_scale = rand_range(0.8, 1.2)
 	$ExplodeSound.play()
+	$DieSound.play()
 	$Mesh.hide()
 	$Area.monitoring = false
 	$CollisionShape.disabled = true
@@ -90,6 +97,8 @@ func _on_Area_body_entered(body: Spatial):
 		body.on_Touch_Enemy()
 		_explode()
 
-func on_Pill_Hit():
+func on_Pill_Hit(damage, player):
 	score_text.show()
 	_explode()
+	if player and is_instance_valid(player):
+		player.on_Enemy_Killed(SCORE)

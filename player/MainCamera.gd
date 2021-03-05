@@ -8,6 +8,7 @@ export var max_roll = 0.06  # Maximum rotation in radians (use sparingly).
 export(NodePath) var DEFAULT_POSITION_NODE
 export(NodePath) var JUMP_POSITION_NODE
 export(NodePath) var AIM_POSITION_NODE
+export(NodePath) var FALL_POSITION_NODE
 
 export(float) var ACC = 3
 export(float) var ANGULAR_ACC = 2.5
@@ -18,6 +19,7 @@ var trauma_power = 2  # Trauma exponent. Use [2, 3].
 var default_position: Position3D
 var jump_position: Position3D
 var aim_position: Position3D
+var fall_position: Position3D
 
 var target_position = null
 var current_position_name = "DEFAULT"
@@ -37,6 +39,9 @@ func _ready():
 		
 	if AIM_POSITION_NODE:
 		aim_position = get_node(AIM_POSITION_NODE)
+		
+	if FALL_POSITION_NODE:
+		fall_position = get_node(FALL_POSITION_NODE)
 	
 func _physics_process(delta):
 	if trauma:
@@ -45,6 +50,8 @@ func _physics_process(delta):
 	
 	if target_position != null and global_transform.origin.distance_to(target_position.global_transform.origin) > 0:
 		var acc_factor = 1 if current_position_name != "AIM" else 1.5
+		if current_position_name == "FALL":
+			acc_factor = 0.6
 		rotation = rotation.linear_interpolate(target_position.rotation, delta * ANGULAR_ACC * acc_factor)
 		translation = translation.linear_interpolate(target_position.translation, delta * ACC * acc_factor)
 	else:
@@ -71,4 +78,7 @@ func set_target_position(position_name = "DEFAULT"):
 			target_position = jump_position
 		"AIM":
 			target_position = aim_position
+		"FALL":
+			target_position = fall_position
+
 	current_position_name = position_name

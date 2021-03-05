@@ -3,12 +3,12 @@ extends KinematicBody
 class_name Player
 
 export(float) var MAX_SPEED = 15
-export(float) var GRAVITY = 50
+export(float) var GRAVITY = 60
 export(float) var FRONTAL_ACC = 8
-export(float) var LATERAL_ACC = 15
+export(float) var LATERAL_ACC = 8
 export(float) var ANGULAR_ACC = 10
 export(float) var JUMP_FORCE = 30
-export(float) var JUMP_FRONT_ACC = 1.5
+export(float) var JUMP_FRONT_ACC = 14
 export(Vector2) var MOUSE_SENSITIVITY = Vector2(5, 3)
 export(Vector2) var AIM_LIMIT = Vector2(45, 60)
 export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
@@ -17,6 +17,7 @@ export(NodePath) var AIM_GIMBAL = "Gimbal"
 export(PackedScene) var PILL_SCENE: PackedScene = null
 export(PackedScene) var CAPSULE_SCENE: PackedScene = null
 export(float) var SPEED_FACTOR: float = 1
+export(float) var FALLING_HEIGHT: float = 20
 
 onready var collision_shape: CollisionShape = $CollisionShape
 onready var ui: UIPlayer = $PlayerUI
@@ -29,6 +30,7 @@ onready var hand_bone: BoneAttachment = $Armature/Skeleton/RightHandBone
 onready var aim_cast: RayCast = $Gimbal/h/v/RayCast
 onready var burn_sound: AudioStreamPlayer = $BurnSound
 onready var collect_anim_player: AnimationPlayer = $CollectedEffects/CollectSpriteAnimationPlayer
+onready var jump_timer: Timer = $JumpTimer
 
 enum PlayerStates {
 	IDLE,
@@ -47,6 +49,7 @@ enum BulletType {
 var direction = Vector3.ZERO
 var velocity = Vector3.ZERO
 var resultant_velocity = Vector3.ZERO
+var current_front_acc_z = 1
 var angle = 0
 var gimbal: Spatial
 var mouse_motion: Vector2 = Vector2.ZERO
@@ -56,8 +59,10 @@ var score_acc: float = 0
 var game_running = false
 var anim_playback: AnimationNodeStateMachinePlayback
 var anim_root_motion
+var snap = Vector3.UP * -0.5
 var jumping = false
 var aiming = false
+var falling = false
 var pill_count = 0
 var capsule_count = 0
 var state = PlayerStates.IDLE
@@ -72,21 +77,22 @@ func _ready():
 	cur_speed_limit = SPEED_FACTOR * MAX_SPEED
 	
 func _physics_process(delta):
-	_get_input_direction()
-	_get_jump()
+	if state in [PlayerStates.IDLE, PlayerStates.RUNNING, PlayerStates.FALLING]:
+		_get_input_direction()
+		_get_jump(delta)
 	
 	
-		
-	if Input.is_action_just_released("throw"):
-		_throw_pill(delta)
-	elif Input.is_action_just_released("throw_2"):
-		_throw_capsule(delta)
-	elif Input.is_action_pressed("throw"):
-		_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY)
-	elif Input.is_action_pressed("throw_2"):
-		_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY)
-	else:
-		_reset_aim()
+		if game_running:
+			if Input.is_action_just_released("throw"):
+				_throw_pill(delta)
+			elif Input.is_action_just_released("throw_2"):
+				_throw_capsule(delta)
+			elif Input.is_action_pressed("throw"):
+				_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY)
+			elif Input.is_action_pressed("throw_2"):
+				_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY)
+			else:
+				_reset_aim()
 
 	
 	if state == PlayerStates.IDLE:
@@ -95,24 +101,29 @@ func _physics_process(delta):
 		velocity.x = locomotion.x
 		velocity.z = locomotion.z
 	elif state == PlayerStates.RUNNING:
-		velocity.x = lerp(velocity.x, cur_speed_limit * direction.x, delta * LATERAL_ACC)
-		if jumping:
-			velocity.z = lerp(velocity.z, cur_speed_limit * direction.z * JUMP_FRONT_ACC, delta * FRONTAL_ACC)
-			if not aiming:
-				camera.set_target_position("JUMP")
-		else:
-			velocity.z = lerp(velocity.z, cur_speed_limit * direction.z, delta * FRONTAL_ACC)
-			if not aiming:
-				camera.set_target_position("DEFAULT")
+		velocity.x = lerp(velocity.x, cur_speed_limit * direction.x * 1.25, delta * LATERAL_ACC)
+		
 	
 	if not is_on_floor():
-		velocity.y -= GRAVITY * delta
+		if falling or not jumping:
+			velocity.y = -lerp(velocity.y, MAX_SPEED * 5, GRAVITY * delta)
+		else:
+			velocity.y -= GRAVITY * delta
 		
 	_set_rotation(delta)
 	
 	
-	if state in [PlayerStates.RUNNING, PlayerStates.FALLING]:
-		resultant_velocity = move_and_slide(velocity.rotated(Vector3.UP, self.rotation.y), Vector3.UP, true, 4, deg2rad(70))
+	if state in [PlayerStates.RUNNING, PlayerStates.FALLING, PlayerStates.STUMBLED]:
+		resultant_velocity = move_and_slide_with_snap(velocity.rotated(Vector3.UP, self.rotation.y), snap, Vector3.UP, true, 8, deg2rad(70))
+	
+		# Hack to stop on slope
+		if state != PlayerStates.STUMBLED:
+			var slides = get_slide_count()
+			if slides:
+				for i in slides:
+					var touched = get_slide_collision(i)
+					if is_on_floor() and touched.normal.y < cos(70) and resultant_velocity.y < 0 and (resultant_velocity.x != 0 or resultant_velocity.y != 0):
+						velocity.y = 0
 	
 	_set_animations(delta)
 	
@@ -171,16 +182,38 @@ func _set_rotation(delta):
 	self.rotation.y = lerp_angle(rotation.y, angle, delta * ANGULAR_ACC)
 
 
-func _get_jump():
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_FORCE
+func _get_jump(delta):
+	
+	
+	if Input.is_action_pressed("jump") and not is_on_floor() and jumping and not jump_timer.is_stopped():
+#		print('constant jump')
+		velocity.y += JUMP_FORCE * delta * 2
+		current_front_acc_z = 1 + JUMP_FRONT_ACC * delta * 2
+		snap = Vector3.ZERO
+	elif Input.is_action_just_pressed("jump") and is_on_floor():
+#		print('initial jump')
+		velocity.y = JUMP_FORCE / 1.5
+		current_front_acc_z = 1 + JUMP_FRONT_ACC / 2
 		jumping = true
 		$JumpSound.play()
+		jump_timer.start()
 		anim_playback.travel("JUMP")
+		snap = Vector3.ZERO
+	else:
+		snap = Vector3.UP * -0.5
+		current_front_acc_z = lerp(current_front_acc_z, 1, delta * 3)
 		
 	if Input.is_action_just_pressed("roll") and not is_on_floor():
-		velocity.y = -JUMP_FORCE
-
+		velocity.y = -JUMP_FORCE * 2.5
+	
+	velocity.z = lerp(velocity.z, cur_speed_limit * direction.z * current_front_acc_z, delta * FRONTAL_ACC)
+	
+	if jumping:
+		if not aiming and not falling:
+			camera.set_target_position("JUMP")
+	else:
+		if not aiming and not falling:
+			camera.set_target_position("DEFAULT")
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -191,7 +224,8 @@ func get_horizontal_speed():
 	return Vector2(velocity.x, velocity.z).length()
 
 func _aim(delta, bullet_type: int):
-	camera.set_target_position("AIM")
+	if not falling:
+			camera.set_target_position("AIM")
 	aiming = true
 	aim_cast.visible = true
 	aim_cast.set_bullet_type(bullet_type)
@@ -202,7 +236,8 @@ func _aim(delta, bullet_type: int):
 	mouse_motion = Vector2()
 	
 func _reset_aim():
-	camera.set_target_position("DEFAULT")
+	if not falling:
+		camera.set_target_position("DEFAULT")
 	aiming = false
 	aim_cast.visible = false
 	gimbal.rotation_degrees.y = 0
@@ -258,14 +293,20 @@ func _set_animations(delta):
 			if anim_playback.get_current_node() in ["FALLING_JUMP", "JUMP"]: 
 				if is_on_floor():
 					jumping = false
+					falling = false
 					anim_tree.root_motion_track = anim_root_motion
 #					camera.add_trauma(0.05)
 					anim_playback.travel("RUNNING")
-				elif global_transform.origin.y < -45:
+				elif global_transform.origin.y < FALLING_HEIGHT:
 					anim_tree.root_motion_track = ""
+					camera.set_target_position("FALL")
+					falling = true
 					anim_playback.travel("FALLING")
-#					doctor.get_node("Armature").rotation_degrees.x += delta * 30
+				elif resultant_velocity.y < -0.75 * GRAVITY:
+					falling = false
+					anim_playback.travel("FALLING_JUMP")
 			elif not jumping:
+				falling = false
 				anim_tree.root_motion_track = anim_root_motion
 				anim_playback.travel("RUNNING")
 				anim_tree[strafe].x = velocity.x / cur_speed_limit
@@ -278,9 +319,9 @@ func _set_animations(delta):
 func _check_for_death():
 	
 	# Death if falling
-	if self.global_transform.origin.y < -140:
-		state = PlayerStates.FALLING
-		_die()
+#	if self.global_transform.origin.y < FALLING_HEIGHT * 3:
+#		state = PlayerStates.FALLING
+#		_die()
 		
 	# Death if collided and stopped
 	if resultant_velocity.length() < 3:
@@ -345,8 +386,8 @@ func _on_ScoreTimer_timeout():
 		
 		ui.set_score(score_acc)
 		
-func on_Enemy_Killed():
-	score_acc += 50
+func on_Enemy_Killed(score):
+	score_acc += score
 	ui.set_score(score_acc)
 	
 	

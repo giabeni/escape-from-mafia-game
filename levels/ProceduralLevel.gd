@@ -23,6 +23,8 @@ export(float, 0, 100) var DISTANCE_FACTOR = 0
 export(float, 0, 1000) var LATERAL_OFFSET = 65
 export(int, 1, 100) var MIN_PILLS_COUNT = 3
 export(int, 1, 100) var MAX_PILLS_COUNT = 8
+export(Vector3) var START_ORIGIN = Vector3(0, 55, 0)
+export(float) var MIN_SECTION_Y = -30
 
 
 enum States {
@@ -38,7 +40,7 @@ var state = States.START
 var rng = RandomNumberGenerator.new()
 var player: Player
 var next_trigger_point = Vector3.ZERO
-var last_section_origin: Vector3 = Vector3.ZERO
+var last_section_origin: Vector3 = START_ORIGIN
 var last_axis: Vector3 = Vector3.FORWARD
 var last_angle = 0
 var sections_by_difficulty = {
@@ -261,13 +263,13 @@ func _get_random_section_by_difficulty(difficulty):
 func _get_random_height_offset(difficulty):
 	
 	if randf() < HEIGHT_OFFSET_PROB:
-		var up = randf() > 0.5 or last_height_offset <= -35
+		var up = randf() > 0.5 or last_height_offset <= MIN_SECTION_Y + 5
 		var max_height = MAX_HEIGHT_OFFSET if up else 0
 		var min_height = 0 if up else -MAX_HEIGHT_OFFSET * 2
 		
 		var height_offset = rng.randf_range(min_height, max_height) + last_height_offset
-		last_height_offset = max(height_offset, -40) 
-		return max(height_offset, -40) 
+		last_height_offset = max(height_offset, MIN_SECTION_Y) 
+		return max(height_offset, MIN_SECTION_Y) 
 	else:
 		return last_height_offset
 
