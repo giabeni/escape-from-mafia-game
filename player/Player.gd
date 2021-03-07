@@ -73,6 +73,7 @@ func _ready():
 	gimbal = get_node(AIM_GIMBAL)
 	last_score_position = self.global_transform.origin
 	anim_playback = anim_tree["parameters/Main/playback"]
+	anim_playback = anim_tree["parameters/Main/playback"]
 	anim_root_motion = anim_tree.root_motion_track
 	cur_speed_limit = SPEED_FACTOR * MAX_SPEED
 	
@@ -124,7 +125,12 @@ func _physics_process(delta):
 					var touched = get_slide_collision(i)
 					if is_on_floor() and touched.normal.y < cos(70) and resultant_velocity.y < 0 and (resultant_velocity.x != 0 or resultant_velocity.y != 0):
 						velocity.y = 0
+						
+	elif state == PlayerStates.STUMBLED:
+		resultant_velocity = move_and_slide(resultant_velocity)
+		
 	
+	_set_sounds()
 	_set_animations(delta)
 	
 	if not game_running and not state == PlayerStates.IDLE:
@@ -211,6 +217,7 @@ func _get_jump(delta):
 	if jumping:
 		if not aiming and not falling:
 			camera.set_target_position("JUMP")
+		
 	else:
 		if not aiming and not falling:
 			camera.set_target_position("DEFAULT")
@@ -278,6 +285,10 @@ func _throw_capsule(delta):
 		capsule_count = capsule_count - 1
 		ui.set_capsules_count(capsule_count)
 
+func _set_sounds():
+	if not is_on_floor() or state == PlayerStates.STUMBLED:
+		$RightStep.stop()
+		$LeftStep.stop()
 
 func _set_animations(delta):
 	var strafe = "parameters/Main/RUNNING/Strafe/blend_position"
@@ -292,6 +303,10 @@ func _set_animations(delta):
 		PlayerStates.RUNNING:
 			if anim_playback.get_current_node() in ["FALLING_JUMP", "JUMP"]: 
 				if is_on_floor():
+					if not $RightStep.playing:
+						$RightStep.play()
+					if not $LeftStep.playing:
+						 $LeftStep.play()
 					jumping = false
 					falling = false
 					anim_tree.root_motion_track = anim_root_motion
@@ -318,22 +333,25 @@ func _set_animations(delta):
 	
 func _check_for_death():
 	
-	# Death if falling
-#	if self.global_transform.origin.y < FALLING_HEIGHT * 3:
-#		state = PlayerStates.FALLING
-#		_die()
+	if is_on_wall():
+#		print("WAll")
+		pass
 		
 	# Death if collided and stopped
 	if resultant_velocity.length() < 3:
 		for i in range (0, get_slide_count() - 1):
 			var collision = get_slide_collision(i)
 #			print("Collision ", i, "  -  normal dot = ", collision.normal.dot(-self.global_transform.basis.z))
-			if collision != null and collision.normal.dot(-self.global_transform.basis.z) < 0:
-				state = PlayerStates.STUMBLED
-				anim_playback.travel("STUMBLE")
-				camera.add_trauma(0.2)
-				yield(get_tree().create_timer(1), "timeout")
-				_die()
+			if collision != null:
+				var normal_dot = collision.normal.normalized().dot(-self.global_transform.basis.z.normalized())
+				if normal_dot < -0.3:
+					state = PlayerStates.STUMBLED
+#					camera.set_target_position("FALL")
+					anim_playback.travel("STUMBLE")
+					$FallenCollisionShape.disabled = false
+					camera.add_trauma(0.2)
+					yield(get_tree().create_timer(1), "timeout")
+					_die()
 
 
 func _die():
@@ -346,6 +364,7 @@ func on_Touch_Enemy(damage = 100):
 	velocity.z = 0
 	infected_paricles.emitting = true
 	state = PlayerStates.STUMBLED
+#	camera.set_target_position("FALL")
 	anim_playback.travel("STUMBLE")
 	camera.add_trauma(0.2)
 	burn_sound.play()

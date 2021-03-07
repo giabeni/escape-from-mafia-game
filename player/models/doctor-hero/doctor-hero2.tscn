@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://player/models/doctor-hero/LowPoly.material" type="Material" id=1]
 [ext_resource path="res://player/models/doctor-hero/doctor-hero-anim-tree.tres" type="AnimationNodeBlendTree" id=2]
@@ -10,7 +10,7 @@
 [ext_resource path="res://assets/sounds/jump.wav" type="AudioStream" id=8]
 [ext_resource path="res://assets/sounds/throw.wav" type="AudioStream" id=9]
 [ext_resource path="res://items/pill.tscn" type="PackedScene" id=10]
-[ext_resource path="res://items/seringa.tscn" type="PackedScene" id=11]
+[ext_resource path="res://player/animations/StumbleBackwards.anim" type="Animation" id=11]
 [ext_resource path="res://player/Player.gd" type="Script" id=12]
 [ext_resource path="res://assets/particles/flame_02.png" type="Texture" id=13]
 [ext_resource path="res://assets/sounds/burn-defeat.wav" type="AudioStream" id=14]
@@ -18,6 +18,7 @@
 [ext_resource path="res://assets/particles/magic_05.png" type="Texture" id=16]
 [ext_resource path="res://player/models/falling-idle.anim" type="Animation" id=17]
 [ext_resource path="res://player/models/jump.anim" type="Animation" id=18]
+[ext_resource path="res://assets/sounds/footstep1.mp3" type="AudioStream" id=19]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "BodyWithJacket"
@@ -744,10 +745,10 @@ tracks/49/loop_wrap = true
 tracks/49/imported = false
 tracks/49/enabled = true
 tracks/49/keys = {
-"times": PoolRealArray( 0, 0.5, 0.7, 0.8, 1, 1.4, 1.8 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.5, 0.7, 0.8, 1, 1.4, 1.8, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 2.47644, -1.83091e-07 ), Vector3( 0, 2.47644, -4.13288 ), Vector3( 0, 2.34193, -5.74209 ), Vector3( 0, 1.92878, -6.50563 ), Vector3( 0, 1.10248, -8.03271 ), Vector3( -2.02394e-07, 1.11961, -9.37311 ), Vector3( 0, 0.467, -8.943 ) ]
+"values": [ Vector3( 0, 2.47644, -1.83091e-07 ), Vector3( 0, 2.47644, -0.35988 ), Vector3( 0, 2.34193, -0.567413 ), Vector3( 0, 1.67722, -0.216719 ), Vector3( -0.158524, 1.10248, -2.09598 ), Vector3( -0.221932, 1.11961, -3.33576 ), Vector3( -0.380455, 0.863504, -2.85534 ), Vector3( -0.380455, 0.852799, -2.90565 ) ]
 }
 tracks/50/type = "value"
 tracks/50/path = NodePath("CollisionShape:rotation_degrees")
@@ -759,7 +760,31 @@ tracks/50/keys = {
 "times": PoolRealArray( 0, 0.7, 0.8, 1, 1.4, 1.8 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -90, -180, 180 ), Vector3( -69.724, -180, 180 ), Vector3( -54.728, -180, 180 ), Vector3( -0.731979, -180, 180 ), Vector3( 9.61402, -180, 180 ), Vector3( -0.423977, -180, 180 ) ]
+"values": [ Vector3( -90, -180, 180 ), Vector3( -69.724, -180, 180 ), Vector3( -43.249, 180, -180 ), Vector3( -0.731979, -180, 180 ), Vector3( 9.61402, -180, 180 ), Vector3( -0.423977, -180, 180 ) ]
+}
+tracks/51/type = "value"
+tracks/51/path = NodePath("CollisionShape:scale")
+tracks/51/interp = 1
+tracks/51/loop_wrap = true
+tracks/51/imported = false
+tracks/51/enabled = true
+tracks/51/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 0.58784, 0.999953, 0.651322 ) ]
+}
+tracks/52/type = "value"
+tracks/52/path = NodePath("Armature:translation")
+tracks/52/interp = 1
+tracks/52/loop_wrap = true
+tracks/52/imported = false
+tracks/52/enabled = true
+tracks/52/keys = {
+"times": PoolRealArray( 0, 0.8, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 6.2386 ), Vector3( 0, 0.135908, 6.2386 ) ]
 }
 
 [sub_resource type="Animation" id=14]
@@ -2529,6 +2554,30 @@ tracks/51/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( -90, -180, 180 ) ]
+}
+tracks/52/type = "value"
+tracks/52/path = NodePath("LeftStep:playing")
+tracks/52/interp = 1
+tracks/52/loop_wrap = true
+tracks/52/imported = false
+tracks/52/enabled = true
+tracks/52/keys = {
+"times": PoolRealArray( 0.210931, 0.33686 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/53/type = "value"
+tracks/53/path = NodePath("RightStep:playing")
+tracks/53/interp = 1
+tracks/53/loop_wrap = true
+tracks/53/imported = false
+tracks/53/enabled = true
+tracks/53/keys = {
+"times": PoolRealArray( 0.517883, 0.618626 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
 }
 
 [sub_resource type="Animation" id=19]
@@ -4317,11 +4366,14 @@ tracks/48/keys = PoolRealArray( 0, 1, 0, 0, 0, -0.0199627, 0.505985, 0.00595614,
 radius = 0.856118
 height = 3.25849
 
-[sub_resource type="SpatialMaterial" id=26]
+[sub_resource type="BoxShape" id=26]
+extents = Vector3( 1, 2.839, 0.001 )
+
+[sub_resource type="SpatialMaterial" id=27]
 flags_transparent = true
 albedo_color = Color( 0.317647, 0.756863, 0.521569, 0.823529 )
 
-[sub_resource type="SpatialMaterial" id=27]
+[sub_resource type="SpatialMaterial" id=28]
 flags_transparent = true
 albedo_color = Color( 0.133333, 0.952941, 0.490196, 0.52549 )
 emission_enabled = true
@@ -4339,7 +4391,7 @@ PILL_SCENE = ExtResource( 10 )
 CAPSULE_SCENE = ExtResource( 4 )
 
 [node name="Armature" type="Spatial" parent="."]
-transform = Transform( -0.01, 3.25841e-09, -5.30863e-16, 0, -1.62921e-09, -0.01, -3.25841e-09, -0.01, 1.62921e-09, 0, 0, 0 )
+transform = Transform( -0.01, -3.25841e-09, 5.30863e-16, 0, -1.62921e-09, -0.01, 3.25841e-09, -0.01, 1.62921e-09, 0, 0, 0 )
 
 [node name="Skeleton" type="Skeleton" parent="Armature"]
 bones/0/name = "mixamorig_hips"
@@ -4366,7 +4418,7 @@ bones/4/name = "mixamorig_neck"
 bones/4/parent = 3
 bones/4/rest = Transform( 1, 4.54747e-13, -8.52651e-14, -4.46612e-13, 0.996889, 0.0788163, 1.20841e-13, -0.0788163, 0.996889, 0, 36.3234, -1.1958e-06 )
 bones/4/enabled = true
-bones/4/bound_children = [  ]
+bones/4/bound_children = [ NodePath("NeckBone") ]
 bones/5/name = "mixamorig_head"
 bones/5/parent = 4
 bones/5/rest = Transform( 1, -5.04742e-28, 9.80909e-45, 5.04742e-28, 1, -4.16334e-17, 9.80909e-45, 4.16334e-17, 1, 0, 26.7453, -3.83089 )
@@ -4396,7 +4448,7 @@ bones/10/name = "mixamorig_left_hand"
 bones/10/parent = 9
 bones/10/rest = Transform( 0.825233, -0.204053, 0.526643, 0.240039, 0.970763, -7.37607e-07, -0.511246, 0.126415, 0.850086, 1.15455e-05, 82.9816, 8.7254e-06 )
 bones/10/enabled = true
-bones/10/bound_children = [  ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
 bones/11/name = "mixamorig_left_hand_thumb_1"
 bones/11/parent = 10
 bones/11/rest = Transform( 0.941701, -0.242897, 0.232811, 0.319818, 0.861117, -0.395215, -0.104481, 0.446631, 0.888597, -6.38271, 8.07716, 1.26817 )
@@ -4476,7 +4528,7 @@ bones/26/name = "mixamorig_right_hand"
 bones/26/parent = 25
 bones/26/rest = Transform( 0.946974, 0.232193, -0.222094, -0.23814, 0.971231, 5.58793e-08, 0.215704, 0.0528894, 0.975025, -1.19209e-06, 82.97, -2.46167e-05 )
 bones/26/enabled = true
-bones/26/bound_children = [  ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
 bones/27/name = "mixamorig_right_hand_thumb_1"
 bones/27/parent = 26
 bones/27/rest = Transform( 0.93686, 0.254989, -0.23932, -0.333585, 0.857007, -0.392758, 0.10495, 0.447793, 0.887956, 6.06476, 7.72522, 1.55508 )
@@ -4617,7 +4669,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( -0.290613, -0.0355704, -0.956179, 0.951834, -0.112838, -0.285095, -0.0977526, -0.992976, 0.0666494, 5.13673, 0.474847, -371.652 )
+transform = Transform( 0.995144, 0.0388836, 0.0904268, -0.0937694, 0.0950816, 0.991043, 0.0299374, -0.994709, 0.0982659, 2.00246, 2.81861, -375.33 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -4632,14 +4684,11 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.437751, -0.545132, 0.714985, 0.898823, 0.245744, -0.362941, 0.0221495, 0.801524, 0.597552, -58.8326, 80.9525, -258.205 )
+transform = Transform( 0.709867, 0.282604, -0.645154, -0.695123, 0.428766, -0.57703, 0.113551, 0.858075, 0.500811, 109.659, 27.7685, -251.429 )
 bone_name = "mixamorig_left_hand"
 
-[node name="seringa_01" parent="Armature/Skeleton/LeftHandBone" instance=ExtResource( 11 )]
-transform = Transform( 5.4766, -18.7722, 4.19654, 17.8615, 6.5824, 6.13506, -7.1396, 2.06786, 18.5674, 0.897629, 24.4265, 5.24414 )
-
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( -0.778619, -0.507654, 0.368836, 0.573767, -0.338001, 0.74602, -0.254052, 0.792493, 0.554449, -36.4519, -105.775, -253.865 )
+transform = Transform( 0.82523, -0.189201, 0.532164, 0.541935, 0.530612, -0.651734, -0.159063, 0.826229, 0.540412, -90.2263, 56.328, -255.337 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -4678,6 +4727,7 @@ anims/LookingAround = SubResource( 17 )
 anims/Running = SubResource( 18 )
 anims/RunningLeft = SubResource( 19 )
 anims/RunningRight = SubResource( 20 )
+anims/StumbleBackwards = ExtResource( 11 )
 anims/T-Pose = SubResource( 21 )
 anims/Throw = SubResource( 22 )
 "anims/Throw (copy)" = SubResource( 23 )
@@ -4697,8 +4747,13 @@ parameters/Throw/active = false
 parameters/TimeScale/scale = 2.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, -5.30863e-14, 5.30863e-14, 1.62921e-07, 1, 0, -1, 1.62921e-07, 0, 2.456, 0 )
+transform = Transform( 1, 0, -3.82137e-15, 3.82137e-15, 4.37114e-08, 1, 0, -1, 4.37114e-08, 0, 2.456, 0 )
 shape = SubResource( 25 )
+
+[node name="FallenCollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, -3.82137e-15, 3.82137e-15, 4.37114e-08, 1, 0, -1, 4.37114e-08, 0, 0.00710231, -3.23504 )
+shape = SubResource( 26 )
+disabled = true
 
 [node name="Gimbal" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.464608, 2.16458, -3.02265 )
@@ -4721,20 +4776,20 @@ transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841
 inner_radius = 1.13
 outer_radius = 1.695
 sides = 10
-material = SubResource( 26 )
+material = SubResource( 27 )
 
 [node name="AimLine" type="CSGCylinder" parent="Gimbal/h/v/RayCast"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.38419e-07, -7.7631 )
 radius = 0.149483
 height = 14.799
-material = SubResource( 27 )
+material = SubResource( 28 )
 
 [node name="AimArrow" type="CSGCylinder" parent="Gimbal/h/v/RayCast/AimLine"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.62278, 7.15256e-07 )
 radius = 0.578
 height = 5.7996
 cone = true
-material = SubResource( 27 )
+material = SubResource( 28 )
 
 [node name="PlayerUI" parent="." instance=ExtResource( 3 )]
 
@@ -4756,17 +4811,19 @@ stream = ExtResource( 9 )
 unit_db = 24.756
 
 [node name="RightStep" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 19 )
 unit_db = 17.538
-
-[node name="BurnSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 14 )
-volume_db = -21.72
+unit_size = 3.0
 
 [node name="LeftStep" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 7 )
 unit_db = 17.538
+unit_size = 2.0
 pitch_scale = 1.28
+
+[node name="BurnSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+volume_db = -21.72
 
 [node name="CameraRunPoint" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.921165, 0.389172, 0, -0.389172, 0.921165, 3.25979e-06, 14.0233, 13.4041 )

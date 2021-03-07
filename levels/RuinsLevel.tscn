@@ -402,12 +402,12 @@ sun_color = Color( 1, 0.356863, 0, 1 )
 [sub_resource type="Environment" id=4]
 background_mode = 2
 background_sky = SubResource( 3 )
-ambient_light_color = Color( 0.909804, 0.752941, 0.752941, 1 )
-ambient_light_sky_contribution = 0.12
+ambient_light_color = Color( 0.956863, 0.568627, 0.568627, 1 )
+ambient_light_sky_contribution = 0.56
 fog_enabled = true
-fog_color = Color( 0.517647, 0.705882, 0.733333, 0.505882 )
+fog_color = Color( 0.733333, 0.635294, 0.517647, 0.301961 )
 fog_sun_color = Color( 0.956863, 0.619608, 0.415686, 1 )
-fog_sun_amount = 0.62
+fog_sun_amount = 0.35
 fog_depth_begin = 0.0
 fog_depth_end = 239.9
 fog_depth_curve = 4.28709
@@ -417,18 +417,23 @@ fog_height_max = -107.9
 tonemap_mode = 2
 tonemap_exposure = 0.89
 tonemap_white = 1.57
-dof_blur_far_distance = 200.0
-dof_blur_far_amount = 0.13
-dof_blur_far_quality = 0
+ss_reflections_depth_tolerance = 29.4
+ssao_radius2 = 0.68
+ssao_intensity2 = 0.0
+ssao_light_affect = 0.22
+ssao_quality = 0
+ssao_edge_sharpness = 2.98
+dof_blur_far_distance = 250.0
+dof_blur_far_transition = 40.85
 glow_enabled = true
-glow_strength = 1.03
-glow_bloom = 0.11
+glow_levels/1 = true
+glow_levels/6 = true
+glow_bloom = 0.12
+glow_hdr_threshold = 0.9
 adjustment_enabled = true
-adjustment_brightness = 1.05
-adjustment_contrast = 1.16
 adjustment_saturation = 1.3
 
-[sub_resource type="ParticlesMaterial" id=10]
+[sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 2
 emission_box_extents = Vector3( 100, 100, 100 )
 spread = 180.0
@@ -441,24 +446,24 @@ scale = 37.27
 scale_random = 1.0
 color = Color( 0.756863, 0.427451, 0.764706, 1 )
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
 flags_unshaded = true
 vertex_color_use_as_albedo = true
 params_blend_mode = 1
 albedo_texture = ExtResource( 30 )
 
-[sub_resource type="QuadMesh" id=12]
-material = SubResource( 11 )
+[sub_resource type="QuadMesh" id=7]
+material = SubResource( 6 )
 size = Vector2( 20, 10 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=8]
 size = 51
 use_filter = true
 extra_spacing_char = 2
 font_data = ExtResource( 16 )
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=9]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
@@ -473,7 +478,7 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=10]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
@@ -512,19 +517,19 @@ tracks/2/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=11]
 size = 18
 use_filter = true
 extra_spacing_char = 1
 font_data = ExtResource( 17 )
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=12]
 size = 20
 use_filter = true
 extra_spacing_char = 1
 font_data = ExtResource( 17 )
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=13]
 bg_color = Color( 0.611765, 0.376471, 0.0313726, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -540,7 +545,7 @@ expand_margin_right = 10.0
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=14]
 size = 43
 font_data = ExtResource( 16 )
 
@@ -566,16 +571,16 @@ IS_START_POINT = true
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 52.9901, 0 )
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.604271, -0.00681218, -0.796749, 0.796244, 0.0417866, 0.60353, 0.0291821, -0.999103, 0.0306746, -1.06978, 3.41853, -374.181 )
+transform = Transform( 0.998883, 0.0306005, -0.0360107, 0.0341304, 0.0598919, 0.997621, 0.0326845, -0.997735, 0.0587806, 1.92487, 1.99364, -375.56 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.942004, -0.274437, 0.193162, 0.30206, 0.442516, -0.844357, 0.146247, 0.853734, 0.499748, 13.8572, 97.2696, -249.006 )
+transform = Transform( 0.848827, 0.167566, -0.501412, -0.516067, 0.468485, -0.717074, 0.114748, 0.867434, 0.484139, 95.7649, 47.9114, -249.999 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( -0.0181163, -0.528097, 0.848991, 0.981726, 0.151483, 0.115175, -0.18943, 0.835564, 0.515702, -104.802, -36.5532, -254.168 )
+transform = Transform( 0.775265, -0.222185, 0.591268, 0.613202, 0.489247, -0.620178, -0.15148, 0.84337, 0.51554, -91.2973, 49.004, -253.988 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )
@@ -588,11 +593,14 @@ environment = SubResource( 4 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.995816, 0.0713581, -0.0570833, -0.0143371, 0.494934, 0.868812, 0.0902493, 0.865995, -0.49184, 6.17446, 27.7094, -44.1829 )
+light_color = Color( 1, 0.835294, 0.596078, 1 )
+light_energy = 3.19
+light_indirect_energy = 5.29
 shadow_enabled = true
 
 [node name="Soundtrack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
-volume_db = -34.907
+volume_db = -20.347
 autoplay = true
 
 [node name="DifficultyTimer" type="Timer" parent="."]
@@ -610,8 +618,8 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 10 )
-draw_pass_1 = SubResource( 12 )
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
 
 [node name="CloudsBack" type="Particles" parent="Clouds"]
 transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, -0.233, -250, 117.145 )
@@ -619,9 +627,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 10 )
+process_material = SubResource( 5 )
 draw_passes = 3
-draw_pass_1 = SubResource( 12 )
+draw_pass_1 = SubResource( 7 )
 draw_pass_2 = null
 draw_pass_3 = null
 
@@ -631,9 +639,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 10 )
+process_material = SubResource( 5 )
 draw_passes = 3
-draw_pass_1 = SubResource( 12 )
+draw_pass_1 = SubResource( 7 )
 draw_pass_2 = null
 draw_pass_3 = null
 
@@ -643,9 +651,9 @@ amount = 6
 lifetime = 200.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 10 )
+process_material = SubResource( 5 )
 draw_passes = 3
-draw_pass_1 = SubResource( 12 )
+draw_pass_1 = SubResource( 7 )
 draw_pass_2 = null
 draw_pass_3 = null
 
@@ -831,7 +839,7 @@ margin_right = 281.464
 margin_bottom = 26.0
 rect_min_size = Vector2( 500, 0 )
 size_flags_vertical = 3
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 8 )
 text = "Dificuldade 2!"
 fit_content_height = true
 scroll_active = false
@@ -841,8 +849,8 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="InfoScreen"]
 autoplay = "hide"
-anims/hide = SubResource( 13 )
-anims/show = SubResource( 14 )
+anims/hide = SubResource( 9 )
+anims/show = SubResource( 10 )
 
 [node name="Screen" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -878,7 +886,7 @@ rect_min_size = Vector2( 0, 70 )
 margin_right = 500.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 8 )
 custom_colors/default_color = Color( 1, 0.654902, 0.00392157, 1 )
 text = "PANDEMIC HERO"
 scroll_active = false
@@ -893,7 +901,7 @@ rect_min_size = Vector2( 0, 60 )
 margin_right = 950.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 950, 0 )
-custom_fonts/normal_font = SubResource( 6 )
+custom_fonts/normal_font = SubResource( 11 )
 custom_colors/default_color = Color( 0.968627, 0.964706, 0.643137, 1 )
 text = "You are the only one capable of saving the world from the giant viruses that cruelly dominated the world.... now they are  after you! Run to escape from the evil creatures that want the end of humanity!"
 scroll_active = false
@@ -907,7 +915,7 @@ margin_bottom = 388.0
 margin_right = 200.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 200, 250 )
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 12 )
 custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "Controls:
 
@@ -924,7 +932,7 @@ margin_left = 204.0
 margin_right = 704.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 500, 250 )
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 12 )
 custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "
 
@@ -938,7 +946,7 @@ margin_left = 708.0
 margin_right = 908.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 200, 250 )
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 12 )
 custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
 text = "CREDITS:
 
@@ -968,16 +976,16 @@ margin_bottom = 80.0
 margin_left = 4.0
 margin_right = 346.0
 margin_bottom = 80.0
-custom_styles/hover = SubResource( 8 )
-custom_styles/normal = SubResource( 8 )
-custom_fonts/font = SubResource( 9 )
+custom_styles/hover = SubResource( 13 )
+custom_styles/normal = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 text = "START RUNNING!"
 
 [node name="Credits2" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Bottom"]
 margin_left = 350.0
 margin_right = 350.0
 margin_bottom = 80.0
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 12 )
 custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
 text = "(or press space)"
 scroll_active = false

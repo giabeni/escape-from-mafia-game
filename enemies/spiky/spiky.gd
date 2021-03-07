@@ -20,6 +20,10 @@ func _ready():
 	yield(get_tree().create_timer(random_idle_timer), "timeout")
 	anim_player.play()
 	$AttackTimer.start()
+	
+	$BreathSound.pitch_scale = rand_range(0.8, 1.2)
+	$AttackSound.pitch_scale = rand_range(0.8, 1.2)
+	$HurtSound.pitch_scale = rand_range(0.8, 1.2)
 
 func _start_attack():
 	anim_player.play("attack")

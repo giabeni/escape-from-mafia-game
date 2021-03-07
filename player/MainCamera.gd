@@ -51,7 +51,7 @@ func _physics_process(delta):
 	if target_position != null and global_transform.origin.distance_to(target_position.global_transform.origin) > 0:
 		var acc_factor = 1 if current_position_name != "AIM" else 1.5
 		if current_position_name == "FALL":
-			acc_factor = 0.6
+			acc_factor = 0.3
 		rotation = rotation.linear_interpolate(target_position.rotation, delta * ANGULAR_ACC * acc_factor)
 		translation = translation.linear_interpolate(target_position.translation, delta * ACC * acc_factor)
 	else:
