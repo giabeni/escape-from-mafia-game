@@ -115,7 +115,7 @@ func _physics_process(delta):
 	
 	
 	if state in [PlayerStates.RUNNING, PlayerStates.FALLING, PlayerStates.STUMBLED]:
-		resultant_velocity = move_and_slide_with_snap(velocity.rotated(Vector3.UP, self.rotation.y), snap, Vector3.UP, true, 8, deg2rad(70))
+		resultant_velocity = move_and_slide_with_snap(velocity.rotated(Vector3.UP, self.rotation.y), snap, Vector3.UP, true, 8, deg2rad(70), false)
 	
 		# Hack to stop on slope
 		if state != PlayerStates.STUMBLED:

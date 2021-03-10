@@ -19,6 +19,8 @@ export(int, 0, 500) var NUMBER_OF_SECTIONS_TO_TRIGGER_GENERATION = 1
 export(int, 1, 100) var MIN_ACTIVE_SECTIONS = 8
 export(int, 1, 100) var BATCH_SIZE = 1
 export(float, 0, 100) var MAX_HEIGHT_OFFSET = 6
+export(float, -500, 500) var MIN_LATERAL_HEIGHT = 25
+export(float, -500, 500) var MAX_LATERAL_HEIGHT = 120
 export(float, 0, 100) var DISTANCE_FACTOR = 0
 export(float, 0, 1000) var LATERAL_OFFSET = 65
 export(int, 1, 100) var MIN_PILLS_COUNT = 3
@@ -207,12 +209,12 @@ func _generate_section(forward_axis: Vector3, angle):
 	var left_lateral: Lateral = _get_random_lateral(origin, true)
 	var right_lateral: Lateral = _get_random_lateral(origin, false)
 	
-	var left_lateral_height = rng.randf_range(25, 120)
+	var left_lateral_height = rng.randf_range(MIN_LATERAL_HEIGHT, MAX_LATERAL_HEIGHT)
 	left_lateral.section_origin = origin
 	left_lateral.x_offset = -LATERAL_OFFSET
 	left_lateral.y_offset = left_lateral_height
 	
-	var right_lateral_height = rng.randf_range(25, 120)
+	var right_lateral_height = rng.randf_range(MIN_LATERAL_HEIGHT, MAX_LATERAL_HEIGHT)
 	right_lateral.section_origin = origin
 	right_lateral.x_offset = LATERAL_OFFSET
 	right_lateral.y_offset = right_lateral_height

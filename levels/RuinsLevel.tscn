@@ -571,16 +571,16 @@ IS_START_POINT = true
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 52.9901, 0 )
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.998883, 0.0306005, -0.0360107, 0.0341304, 0.0598919, 0.997621, 0.0326845, -0.997735, 0.0587806, 1.92487, 1.99364, -375.56 )
+transform = Transform( 0.652957, 0.0423118, -0.756212, 0.757308, -0.0213566, 0.652709, 0.0114672, -0.998876, -0.045988, 0.498122, 3.60108, -374.604 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.848827, 0.167566, -0.501412, -0.516067, 0.468485, -0.717074, 0.114748, 0.867434, 0.484139, 95.7649, 47.9114, -249.999 )
+transform = Transform( 0.96021, -0.261179, 0.0989035, 0.226298, 0.520095, -0.823583, 0.163665, 0.813194, 0.558505, 21.7773, 101.198, -253.087 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.775265, -0.222185, 0.591268, 0.613202, 0.489247, -0.620178, -0.15148, 0.84337, 0.51554, -91.2973, 49.004, -253.988 )
+transform = Transform( 0.0345097, -0.537743, 0.842402, 0.979207, 0.186792, 0.0791243, -0.199901, 0.822157, 0.533008, -106.488, -29.9401, -255.111 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )

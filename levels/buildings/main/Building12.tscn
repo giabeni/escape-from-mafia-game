@@ -252,3 +252,11 @@ curve = SubResource( 7 )
 
 [node name="FallenArea" parent="." instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.182449, -99.2469, -0.161024 )
+
+[node name="InsideArea" type="Area" parent="."]
+
+[node name="CollisionShape3" type="CollisionShape" parent="InsideArea"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -94.9009, 0 )
+shape = SubResource( 6 )
+
+[connection signal="body_entered" from="InsideArea" to="FallenArea" method="_on_FallenArea_body_entered"]

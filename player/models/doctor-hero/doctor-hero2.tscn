@@ -4418,7 +4418,7 @@ bones/4/name = "mixamorig_neck"
 bones/4/parent = 3
 bones/4/rest = Transform( 1, 4.54747e-13, -8.52651e-14, -4.46612e-13, 0.996889, 0.0788163, 1.20841e-13, -0.0788163, 0.996889, 0, 36.3234, -1.1958e-06 )
 bones/4/enabled = true
-bones/4/bound_children = [ NodePath("NeckBone") ]
+bones/4/bound_children = [  ]
 bones/5/name = "mixamorig_head"
 bones/5/parent = 4
 bones/5/rest = Transform( 1, -5.04742e-28, 9.80909e-45, 5.04742e-28, 1, -4.16334e-17, 9.80909e-45, 4.16334e-17, 1, 0, 26.7453, -3.83089 )
@@ -4448,7 +4448,7 @@ bones/10/name = "mixamorig_left_hand"
 bones/10/parent = 9
 bones/10/rest = Transform( 0.825233, -0.204053, 0.526643, 0.240039, 0.970763, -7.37607e-07, -0.511246, 0.126415, 0.850086, 1.15455e-05, 82.9816, 8.7254e-06 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("LeftHandBone") ]
+bones/10/bound_children = [  ]
 bones/11/name = "mixamorig_left_hand_thumb_1"
 bones/11/parent = 10
 bones/11/rest = Transform( 0.941701, -0.242897, 0.232811, 0.319818, 0.861117, -0.395215, -0.104481, 0.446631, 0.888597, -6.38271, 8.07716, 1.26817 )
@@ -4528,7 +4528,7 @@ bones/26/name = "mixamorig_right_hand"
 bones/26/parent = 25
 bones/26/rest = Transform( 0.946974, 0.232193, -0.222094, -0.23814, 0.971231, 5.58793e-08, 0.215704, 0.0528894, 0.975025, -1.19209e-06, 82.97, -2.46167e-05 )
 bones/26/enabled = true
-bones/26/bound_children = [ NodePath("RightHandBone") ]
+bones/26/bound_children = [  ]
 bones/27/name = "mixamorig_right_hand_thumb_1"
 bones/27/parent = 26
 bones/27/rest = Transform( 0.93686, 0.254989, -0.23932, -0.333585, 0.857007, -0.392758, 0.10495, 0.447793, 0.887956, 6.06476, 7.72522, 1.55508 )
@@ -4669,7 +4669,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.995144, 0.0388836, 0.0904268, -0.0937694, 0.0950816, 0.991043, 0.0299374, -0.994709, 0.0982659, 2.00246, 2.81861, -375.33 )
+transform = Transform( 0.339254, -0.0671263, -0.938296, 0.934921, -0.0862819, 0.344206, -0.104063, -0.994007, 0.0334863, 8.17625, -3.1058, -373.207 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -4684,11 +4684,11 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.709867, 0.282604, -0.645154, -0.695123, 0.428766, -0.57703, 0.113551, 0.858075, 0.500811, 109.659, 27.7685, -251.429 )
+transform = Transform( 0.741373, -0.524699, 0.418397, 0.660751, 0.461683, -0.591825, 0.117365, 0.715219, 0.688974, -11.7466, 108.555, -270.654 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.82523, -0.189201, 0.532164, 0.541935, 0.530612, -0.651734, -0.159063, 0.826229, 0.540412, -90.2263, 56.328, -255.337 )
+transform = Transform( -0.555466, -0.554678, 0.619509, 0.802715, -0.163224, 0.573591, -0.217038, 0.8159, 0.535913, -65.9669, -90.1596, -252.73 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]

@@ -1,4 +1,4 @@
-extends KinematicBody
+extends RigidBody
 
 export(Array, NodePath) var SPOTS_PATHS: Array = []
 export(float, 0, 10000) var SCORE = 50
@@ -53,6 +53,7 @@ func _physics_process(delta):
 #	$Mesh.rotation.z = deg2rad(180)
 	
 	translate_object_local(velocity * delta)
+#	move_and_slide(velocity, Vector3.UP, false, 20, deg2rad(90), true)
 	
 	
 #	# Fixed Rotation

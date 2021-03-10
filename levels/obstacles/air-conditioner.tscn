@@ -50,7 +50,12 @@ surfaces/0 = {
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 3.16546, 2.14631, 2.18979 )
 
-[node name="air-conditioner" type="StaticBody"]
+[node name="air-conditioner" type="RigidBody" groups=[
+"Obstacles",
+]]
+collision_layer = 17
+mass = 100.0
+can_sleep = false
 
 [node name="AirConditioner" type="MeshInstance" parent="."]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )

@@ -16,6 +16,7 @@ enum PillStates {
 var state = PillStates.IDLE
 var next_impulse = Vector3.ZERO
 var player: Player
+var is_thrown = false
 
 func _ready():
 	_set_params()
@@ -29,6 +30,7 @@ func _physics_process(delta):
 	if state == PillStates.THROWN and next_impulse != Vector3.ZERO:
 		set_as_toplevel(true)
 		self.apply_impulse(Vector3.ZERO, next_impulse)
+		is_thrown = true
 		timer.start()
 		next_impulse = Vector3.ZERO
 
@@ -36,14 +38,14 @@ func _set_params():
 	match state:
 		PillStates.IDLE:
 			self.collision_layer = 4 # Pill
-			self.set_collision_mask_bit(0, true) # General
+			self.set_collision_mask_bit(0, false) # General
 			self.set_collision_mask_bit(1, false) # Player
 			self.set_collision_mask_bit(2, false) # Enemies
 			pickup_area.set_collision_mask_bit(1, true) # Player
 			pickup_area.set_collision_mask_bit(2, false) # Enemies
 		PillStates.THROWN:
 			self.collision_layer = 4 # Pill
-			self.set_collision_mask_bit(0, true) # General
+			self.set_collision_mask_bit(0, is_thrown) # General
 			self.set_collision_mask_bit(1, false) # Player
 			self.set_collision_mask_bit(2, true) # Enemies
 			pickup_area.set_collision_mask_bit(1, false) # Player

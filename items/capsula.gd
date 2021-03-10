@@ -1,7 +1,7 @@
 extends RigidBody
 
 export(float, 0, 100) var ANGULAR_ACC = 2
-export(float, 0, 10000) var DAMAGE = 10
+export(float, 0, 10000) var DAMAGE = 50
 
 onready var pickup_area: Area = $PickableArea
 onready var explosion_timer: Timer = $ExplosionTimer
@@ -20,6 +20,7 @@ enum PillStates {
 var state = PillStates.IDLE
 var next_impulse = Vector3.ZERO
 var player: Player
+var is_thrown = false
 
 func _ready():
 	_set_params()
@@ -32,25 +33,26 @@ func _physics_process(delta):
 	if state == PillStates.THROWN and next_impulse != Vector3.ZERO:
 		set_as_toplevel(true)
 		self.apply_impulse(Vector3.ZERO, next_impulse)
+		is_thrown = true
 		next_impulse = Vector3.ZERO
 		default_timer.start()
 		
 	
-	if state == PillStates.THROWN:
+	if is_thrown:
 		_check_for_collisions()
 	
 func _set_params():
 	match state:
 		PillStates.IDLE:
 			self.collision_layer = 4 # Pill
-			self.set_collision_mask_bit(0, true) # General
+			self.set_collision_mask_bit(0, false) # General
 			self.set_collision_mask_bit(1, false) # Player
 			self.set_collision_mask_bit(2, false) # Enemies
 			pickup_area.set_collision_mask_bit(1, true) # Player
 			pickup_area.set_collision_mask_bit(2, false) # Enemies
 		PillStates.THROWN:
 			self.collision_layer = 4 # Pill
-			self.set_collision_mask_bit(0, true) # General
+			self.set_collision_mask_bit(0, is_thrown) # General
 			self.set_collision_mask_bit(1, false) # Player
 			self.set_collision_mask_bit(2, true) # Enemies
 			pickup_area.set_collision_mask_bit(1, false) # Player
@@ -85,6 +87,7 @@ func _check_for_collisions():
 
 func _explode():
 	explosion.emitting = true
+	$ExplosionSound.play()
 	body.hide()
 	explosion_area.set_deferred("monitoring", true)
 	explosion_timer.start()

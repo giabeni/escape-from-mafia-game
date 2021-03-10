@@ -197,5 +197,3 @@ func add_pills(count: int, item_instance: Spatial):
 
 func set_item(item_scene: PackedScene):
 	item = item_scene.instance()
-		
-		
