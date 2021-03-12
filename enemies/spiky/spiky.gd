@@ -51,12 +51,13 @@ func _on_DamageFreeTimer_timeout():
 	
 		
 func _explode():
+	$DamageArea.set_deferred("monitoring", false)
+	can_damage = false
 	$ExplodeParticles.emitting = true
 	$ExplodeSound.play()
 	$ScoreText.show()
 	$Spiky.hide()
 	hp_bar.hide()
-	$DamageArea.set_deferred("monitoring", false)
 	$CollisionShape.disabled = true
 	yield(get_tree().create_timer(1), "timeout")
 	call_deferred("queue_free")
@@ -69,6 +70,8 @@ func _on_Area_body_entered(body: Spatial):
 
 
 func on_Pill_Hit(hit_damage, player: Player):
+	$DamageArea.set_deferred("monitoring", false)
+	can_damage = false
 	hp_bar.show()
 	anim_player.play("hurt")
 	$AttackTimer.start()

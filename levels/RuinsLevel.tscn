@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
 [ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
@@ -38,6 +38,8 @@
 [ext_resource path="res://levels/buildings/proto/ProtoBuilding2.tscn" type="PackedScene" id=36]
 [ext_resource path="res://levels/buildings/proto/ProtoBuilding4.tscn" type="PackedScene" id=37]
 [ext_resource path="res://levels/InfoScreen.gd" type="Script" id=38]
+[ext_resource path="res://environments/main_env.tres" type="Environment" id=39]
+[ext_resource path="res://assets/particles/blackSmoke22.png" type="Texture" id=40]
 
 [sub_resource type="Animation" id=1]
 resource_local_to_scene = true
@@ -389,53 +391,9 @@ tracks/48/keys = PoolRealArray( 0, 1, 3.72599, -16.9138, -3.32423, -0.043, -0.21
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
-[sub_resource type="ProceduralSky" id=3]
-sky_top_color = Color( 0.45098, 0.960784, 0.854902, 1 )
-sky_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
-sky_curve = 0.0811125
-ground_bottom_color = Color( 0.588235, 0.776471, 0.643137, 1 )
-ground_horizon_color = Color( 0.945098, 0.537255, 0.266667, 1 )
-ground_curve = 0.0721003
-ground_energy = 0.5
-sun_color = Color( 1, 0.356863, 0, 1 )
-
-[sub_resource type="Environment" id=4]
-background_mode = 2
-background_sky = SubResource( 3 )
-ambient_light_color = Color( 0.956863, 0.568627, 0.568627, 1 )
-ambient_light_sky_contribution = 0.56
-fog_enabled = true
-fog_color = Color( 0.733333, 0.635294, 0.517647, 0.301961 )
-fog_sun_color = Color( 0.956863, 0.619608, 0.415686, 1 )
-fog_sun_amount = 0.35
-fog_depth_begin = 0.0
-fog_depth_end = 239.9
-fog_depth_curve = 4.28709
-fog_height_enabled = true
-fog_height_min = -39.3
-fog_height_max = -107.9
-tonemap_mode = 3
-tonemap_exposure = 0.89
-tonemap_white = 1.57
-ss_reflections_depth_tolerance = 29.4
-ssao_radius2 = 0.68
-ssao_intensity2 = 0.0
-ssao_light_affect = 0.22
-ssao_quality = 0
-ssao_edge_sharpness = 2.98
-dof_blur_far_distance = 250.0
-dof_blur_far_transition = 40.85
-glow_enabled = true
-glow_levels/1 = true
-glow_levels/2 = true
-glow_levels/5 = false
-glow_bloom = 0.18
-adjustment_enabled = true
-adjustment_saturation = 1.3
-
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 2
-emission_box_extents = Vector3( 100, 100, 100 )
+emission_box_extents = Vector3( 100, 100, 50 )
 spread = 180.0
 flatness = 0.7
 gravity = Vector3( 0, 0, 0 )
@@ -444,26 +402,112 @@ initial_velocity_random = 0.15
 angle = -0.1
 scale = 37.27
 scale_random = 1.0
-color = Color( 0.756863, 0.427451, 0.764706, 1 )
+hue_variation = 0.15
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=4]
 flags_transparent = true
 flags_unshaded = true
 vertex_color_use_as_albedo = true
 params_blend_mode = 1
+albedo_color = Color( 0.964706, 0.772549, 0.647059, 0.992157 )
 albedo_texture = ExtResource( 30 )
 
-[sub_resource type="QuadMesh" id=7]
-material = SubResource( 6 )
+[sub_resource type="QuadMesh" id=5]
+material = SubResource( 4 )
 size = Vector2( 20, 10 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="ParticlesMaterial" id=6]
+emission_shape = 2
+emission_box_extents = Vector3( 50, 50, 10 )
+direction = Vector3( 0, 0, 1 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0.1 )
+tangential_accel = 0.38
+damping = 0.17
+angle = 8.3
+angle_random = 1.0
+scale_random = 0.83
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_use_shadow_to_opacity = true
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.258824, 0.141176, 0.584314, 0.992157 )
+albedo_texture = ExtResource( 30 )
+
+[sub_resource type="QuadMesh" id=8]
+material = SubResource( 7 )
+size = Vector2( 30, 30 )
+
+[sub_resource type="Curve" id=9]
+min_value = -1.0
+_data = [ Vector2( 0, 0.115385 ), 0.0, 0.0, 0, 0, Vector2( 0.25, -0.192308 ), 0.0, 0.0, 0, 0, Vector2( 0.508333, 0.076923 ), 0.0, 0.0, 0, 0, Vector2( 0.754167, -0.134615 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.134615 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+width = 32
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 2
+emission_box_extents = Vector3( 100, 100, 5 )
+flag_rotate_y = true
+direction = Vector3( 0, 0, 1 )
+spread = 180.0
+flatness = 0.08
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 2.04
+angular_velocity = 0.5
+angular_velocity_random = 0.68
+linear_accel_curve = SubResource( 10 )
+radial_accel = 0.21
+radial_accel_random = 0.55
+tangential_accel = 0.26
+tangential_accel_curve = SubResource( 10 )
+damping = 0.52
+angle = -0.8
+angle_random = 1.0
+scale_random = 0.24
+color = Color( 0.294118, 0.027451, 0.564706, 1 )
+hue_variation = 0.45
+hue_variation_random = 0.26
+
+[sub_resource type="SpatialMaterial" id=12]
+flags_transparent = true
+vertex_color_use_as_albedo = true
+params_diffuse_mode = 4
+params_specular_mode = 3
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.396078, 0, 0.607843, 1 )
+albedo_texture = ExtResource( 40 )
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color( 0.34902, 0, 0.623529, 1 )
+emission_energy = 0.72
+emission_operator = 0
+emission_on_uv2 = false
+emission_texture = ExtResource( 40 )
+
+[sub_resource type="QuadMesh" id=13]
+material = SubResource( 12 )
+custom_aabb = AABB( 200, 200, 200, 0, 0, 0 )
+size = Vector2( 40, 20 )
+
+[sub_resource type="DynamicFont" id=14]
 size = 51
 use_filter = true
 extra_spacing_char = 2
 font_data = ExtResource( 16 )
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=15]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
@@ -478,7 +522,7 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=16]
 length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("VBoxContainer/Botton/DifficultyBar:visible")
@@ -517,19 +561,19 @@ tracks/2/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ), Color( 1, 1, 1, 1 ), Color( 0.796078, 0.796078, 0.796078, 1 ) ]
 }
 
-[sub_resource type="DynamicFont" id=11]
+[sub_resource type="DynamicFont" id=17]
 size = 18
 use_filter = true
 extra_spacing_char = 1
 font_data = ExtResource( 17 )
 
-[sub_resource type="DynamicFont" id=12]
+[sub_resource type="DynamicFont" id=18]
 size = 20
 use_filter = true
 extra_spacing_char = 1
 font_data = ExtResource( 17 )
 
-[sub_resource type="StyleBoxFlat" id=13]
+[sub_resource type="StyleBoxFlat" id=19]
 bg_color = Color( 0.611765, 0.376471, 0.0313726, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -545,7 +589,7 @@ expand_margin_right = 10.0
 expand_margin_top = 10.0
 expand_margin_bottom = 10.0
 
-[sub_resource type="DynamicFont" id=14]
+[sub_resource type="DynamicFont" id=20]
 size = 43
 font_data = ExtResource( 16 )
 
@@ -568,19 +612,27 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 IS_START_POINT = true
 
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
-transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 52.9901, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.9901, 20.5458 )
+JUMP_FRONT_ACC = 15.0
+LINEAR_SPEED_FACTOR_RATE = 1.01
+SPEED_FACTOR = 1.1
+
+[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
+bones/4/bound_children = [  ]
+bones/10/bound_children = [  ]
+bones/26/bound_children = [  ]
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.999165, 0.00568668, -0.0404659, 0.0399644, 0.0705992, 0.996703, 0.00852481, -0.997488, 0.0703129, 1.97021, 0.384052, -376.042 )
+transform = Transform( 0.553822, -0.015692, -0.832487, 0.831843, 0.0540289, 0.552374, 0.0363105, -0.998416, 0.0429756, 6.44171, -0.638466, -375.169 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.797427, 0.246543, -0.550751, -0.589731, 0.511701, -0.624802, 0.127781, 0.823029, 0.553438, 110.289, 39.5901, -257.092 )
+transform = Transform( 0.957364, -0.249406, 0.145774, 0.258901, 0.516892, -0.81596, 0.128157, 0.818912, 0.559426, 30.8818, 98.6049, -254.517 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.695471, -0.322902, 0.641914, 0.700711, 0.502614, -0.506344, -0.159134, 0.801944, 0.575814, -105.207, 36.5239, -260.041 )
+transform = Transform( 0.0765618, -0.589467, 0.804157, 0.979969, 0.193198, 0.0483175, -0.183842, 0.78435, 0.592451, -105.481, -40.4099, -263.782 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )
@@ -589,7 +641,7 @@ anims/FallingIdle = SubResource( 1 )
 parameters/Main/playback = SubResource( 2 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 4 )
+environment = ExtResource( 39 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( -0.995816, 0.0713581, -0.0570833, -0.0143371, 0.494934, 0.868812, 0.0902493, 0.865995, -0.49184, 6.17446, 27.7094, -44.1829 )
@@ -609,53 +661,36 @@ autostart = true
 
 [node name="Clouds" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -112.912, 0 )
-visible = false
 script = ExtResource( 31 )
+player_node = NodePath("../doctor-hero")
 
 [node name="CloudsForward" type="Particles" parent="Clouds"]
-transform = Transform( 5.66249, 0, 0, 0, -2.00329e-07, -1, 0, 4.58299, -4.37114e-08, -11.3275, 476.293, 99.9859 )
-amount = 6
-lifetime = 200.0
+transform = Transform( 5.66249, 0, 0, 0, -2.00329e-07, -1, 0, 4.58299, -4.37114e-08, -11.3275, 244.072, 99.9859 )
+amount = 17
+lifetime = 600.0
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 5 )
-draw_pass_1 = SubResource( 7 )
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 5 )
 
-[node name="CloudsBack" type="Particles" parent="Clouds"]
-transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, -0.233, -250, 117.145 )
-amount = 6
-lifetime = 200.0
+[node name="CloudsBottom" type="Particles" parent="Clouds"]
+transform = Transform( 5.66249, 0, 0, 0, 4.58299, 2.98023e-06, 0, -1.36584e-05, 1, 2.75623, 3.45587, 133.028 )
+amount = 64
+lifetime = 21.83
 explosiveness = 1.0
 visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 5 )
-draw_passes = 3
-draw_pass_1 = SubResource( 7 )
-draw_pass_2 = null
-draw_pass_3 = null
+process_material = SubResource( 6 )
+draw_pass_1 = SubResource( 8 )
 
-[node name="CloudsRight" type="Particles" parent="Clouds"]
-transform = Transform( -2.47515e-07, 0, -5.66249, -1, -2.00329e-07, 4.37114e-08, -4.37114e-08, 4.58299, 1.9107e-15, 1405.61, 226.293, 99.9859 )
-amount = 6
-lifetime = 200.0
+[node name="PoisonousSmoke" type="Particles" parent="Clouds"]
+transform = Transform( 1, 0, 0, 0, 1, 2.98024e-06, 0, -2.98024e-06, 1, -11.3275, 3.40836, 105.142 )
+amount = 1024
+lifetime = 65.44
+speed_scale = 1.96
 explosiveness = 1.0
-visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 5 )
-draw_passes = 3
-draw_pass_1 = SubResource( 7 )
-draw_pass_2 = null
-draw_pass_3 = null
-
-[node name="CloudsLeft" type="Particles" parent="Clouds"]
-transform = Transform( 4.37114e-08, -1.19209e-07, 1, 1, -3.69553e-07, -4.37114e-08, 3.69553e-07, 1, 1.19209e-07, -420, 0, 117.145 )
-amount = 6
-lifetime = 200.0
-explosiveness = 1.0
-visibility_aabb = AABB( -126.046, -112.839, -539.766, 252.092, 225.679, 1079.53 )
-process_material = SubResource( 5 )
-draw_passes = 3
-draw_pass_1 = SubResource( 7 )
-draw_pass_2 = null
-draw_pass_3 = null
+visibility_aabb = AABB( -126.046, -135.846, -46.5234, 252.092, 271.692, 93.0448 )
+process_material = SubResource( 11 )
+draw_pass_1 = SubResource( 13 )
 
 [node name="BgFront" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 77.5228, -152.676 )
@@ -674,111 +709,6 @@ texture = ExtResource( 33 )
 
 [node name="Bg3" type="Sprite3D" parent="BgFront"]
 transform = Transform( 5.66249, 0, 0, 0, 4.46725, -1.02346, 0, 0.223318, 0.974745, 441.936, 48.5477, -226.293 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="BgFrontLeft" type="Spatial" parent="."]
-transform = Transform( 0.714936, 0, 0.699189, 0, 1, 0, -0.699189, 0, 0.714936, -196.324, 22.5715, -80.0789 )
-visible = false
-script = ExtResource( 35 )
-follow_node = NodePath("../doctor-hero")
-
-[node name="Bg1" type="Sprite3D" parent="BgFrontLeft"]
-transform = Transform( 3.38316, 0.520481, 2.27181, 0, 4.46725, -1.02346, 2.33067, 0.732335, 3.19652, -501.19, 67.1469, -805.744 )
-opacity = 0.62
-texture = ExtResource( 7 )
-
-[node name="Bg2" type="Sprite3D" parent="BgFrontLeft"]
-transform = Transform( 3.38316, 0.520481, 2.27181, 0, 4.46725, -1.02346, 2.33067, 0.732335, 3.19652, -773.38, 48.5477, -994.812 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="Bg3" type="Sprite3D" parent="BgFrontLeft"]
-transform = Transform( 3.38316, 0.520481, 2.27181, 0, 4.46725, -1.02346, 2.33067, 0.732335, 3.19652, -233.335, 48.5477, -622.774 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="BgFrontRight" type="Spatial" parent="."]
-transform = Transform( 0.714936, 0, -0.699189, 0, 1, 0, 0.699189, 0, 0.714936, 200.617, 22.571, -69.5408 )
-visible = false
-script = ExtResource( 35 )
-follow_node = NodePath("../doctor-hero")
-
-[node name="Bg1" type="Sprite3D" parent="BgFrontRight"]
-transform = Transform( 3.38316, -0.520481, -2.27181, 0, 4.46725, -1.02346, -2.33067, 0.732335, 3.19652, 501.19, 67.1451, -805.744 )
-opacity = 0.62
-texture = ExtResource( 7 )
-
-[node name="Bg2" type="Sprite3D" parent="BgFrontRight"]
-transform = Transform( 3.38316, -0.520481, -2.27181, 0, 4.46725, -1.02346, -2.33067, 0.732335, 3.19652, 233.335, 48.5459, -622.774 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="Bg3" type="Sprite3D" parent="BgFrontRight"]
-transform = Transform( 3.38316, -0.520481, -2.27181, 0, 4.46725, -1.02346, -2.33067, 0.732335, 3.19652, 773.38, 48.5459, -994.812 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="BgFront2" type="Spatial" parent="."]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.29386, 22.5715, 151.573 )
-visible = false
-script = ExtResource( 35 )
-follow_node = NodePath("../doctor-hero")
-
-[node name="Bg1" type="Sprite3D" parent="BgFront2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 0, 4.05831, 0.929779 )
-opacity = 0.62
-texture = ExtResource( 7 )
-
-[node name="Bg2" type="Sprite3D" parent="BgFront2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, -79.8136, 0, 0 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="Bg3" type="Sprite3D" parent="BgFront2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 79.8136, 0, 0 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="BgFrontLeft2" type="Spatial" parent="."]
-transform = Transform( -0.714936, 0, -0.699189, 0, 1, 0, 0.699189, 0, -0.714936, 200.617, 22.5715, 78.9759 )
-visible = false
-script = ExtResource( 35 )
-follow_node = NodePath("../doctor-hero")
-
-[node name="Bg1" type="Sprite3D" parent="BgFrontLeft2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 0, 4.05831, 0.929779 )
-opacity = 0.62
-texture = ExtResource( 7 )
-
-[node name="Bg2" type="Sprite3D" parent="BgFrontLeft2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, -79.8136, 0, 0 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="Bg3" type="Sprite3D" parent="BgFrontLeft2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 79.8136, 0, 0 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="BgFrontRight2" type="Spatial" parent="."]
-transform = Transform( -0.714937, 0, 0.699189, 0, 1, 0, -0.699189, 0, -0.714937, -196.324, 22.571, 68.4378 )
-visible = false
-script = ExtResource( 35 )
-follow_node = NodePath("../doctor-hero")
-
-[node name="Bg1" type="Sprite3D" parent="BgFrontRight2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 0, 4.05831, 0.929779 )
-opacity = 0.62
-texture = ExtResource( 7 )
-
-[node name="Bg2" type="Sprite3D" parent="BgFrontRight2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, -79.8136, 0, 0 )
-opacity = 0.62
-texture = ExtResource( 33 )
-
-[node name="Bg3" type="Sprite3D" parent="BgFrontRight2"]
-transform = Transform( 1, 0, 0, 0, 0.974745, -0.223318, 0, 0.223318, 0.974745, 79.8136, 0, 0 )
 opacity = 0.62
 texture = ExtResource( 33 )
 
@@ -804,19 +734,19 @@ __meta__ = {
 }
 
 [node name="Top" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
-margin_top = 492.0
-margin_right = 1024.0
-margin_bottom = 492.0
+margin_top = 612.0
+margin_right = 1280.0
+margin_bottom = 612.0
 
 [node name="Middle" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
-margin_top = 496.0
-margin_right = 1024.0
-margin_bottom = 496.0
+margin_top = 616.0
+margin_right = 1280.0
+margin_bottom = 616.0
 
 [node name="Botton" type="HBoxContainer" parent="InfoScreen/VBoxContainer"]
-margin_top = 500.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_top = 620.0
+margin_right = 1280.0
+margin_bottom = 720.0
 rect_min_size = Vector2( 0, 100 )
 
 [node name="DifficultyBar" type="ColorRect" parent="InfoScreen/VBoxContainer/Botton"]
@@ -839,7 +769,7 @@ margin_right = 281.464
 margin_bottom = 26.0
 rect_min_size = Vector2( 500, 0 )
 size_flags_vertical = 3
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 14 )
 text = "Dificuldade 2!"
 fit_content_height = true
 scroll_active = false
@@ -849,8 +779,8 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="InfoScreen"]
 autoplay = "hide"
-anims/hide = SubResource( 9 )
-anims/show = SubResource( 10 )
+anims/hide = SubResource( 15 )
+anims/show = SubResource( 16 )
 
 [node name="Screen" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -874,11 +804,11 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Screen/StartScreen"]
-margin_right = 964.0
-margin_bottom = 540.0
+margin_right = 1220.0
+margin_bottom = 660.0
 
 [node name="Top" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
-margin_right = 964.0
+margin_right = 1220.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 0, 70 )
 
@@ -886,14 +816,14 @@ rect_min_size = Vector2( 0, 70 )
 margin_right = 500.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 500, 0 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 14 )
 custom_colors/default_color = Color( 1, 0.654902, 0.00392157, 1 )
 text = "PANDEMIC HERO"
 scroll_active = false
 
 [node name="Middle" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
 margin_top = 74.0
-margin_right = 964.0
+margin_right = 1220.0
 margin_bottom = 134.0
 rect_min_size = Vector2( 0, 60 )
 
@@ -901,21 +831,21 @@ rect_min_size = Vector2( 0, 60 )
 margin_right = 950.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 950, 0 )
-custom_fonts/normal_font = SubResource( 11 )
+custom_fonts/normal_font = SubResource( 17 )
 custom_colors/default_color = Color( 0.968627, 0.964706, 0.643137, 1 )
 text = "You are the only one capable of saving the world from the giant viruses that cruelly dominated the world.... now they are  after you! Run to escape from the evil creatures that want the end of humanity!"
 scroll_active = false
 
 [node name="Middle2" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
 margin_top = 138.0
-margin_right = 964.0
+margin_right = 1220.0
 margin_bottom = 388.0
 
 [node name="HowTo" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Middle2"]
 margin_right = 200.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 200, 250 )
-custom_fonts/normal_font = SubResource( 12 )
+custom_fonts/normal_font = SubResource( 18 )
 custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "Controls:
 
@@ -932,7 +862,7 @@ margin_left = 204.0
 margin_right = 704.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 500, 250 )
-custom_fonts/normal_font = SubResource( 12 )
+custom_fonts/normal_font = SubResource( 18 )
 custom_colors/default_color = Color( 0.92549, 0.92549, 0.92549, 1 )
 text = "
 
@@ -946,7 +876,7 @@ margin_left = 708.0
 margin_right = 908.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 200, 250 )
-custom_fonts/normal_font = SubResource( 12 )
+custom_fonts/normal_font = SubResource( 18 )
 custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
 text = "CREDITS:
 
@@ -965,7 +895,7 @@ scroll_active = false
 
 [node name="Bottom" type="HBoxContainer" parent="Screen/StartScreen/VBoxContainer"]
 margin_top = 392.0
-margin_right = 964.0
+margin_right = 1220.0
 margin_bottom = 472.0
 rect_min_size = Vector2( 0, 80 )
 
@@ -976,16 +906,16 @@ margin_bottom = 80.0
 margin_left = 4.0
 margin_right = 346.0
 margin_bottom = 80.0
-custom_styles/hover = SubResource( 13 )
-custom_styles/normal = SubResource( 13 )
-custom_fonts/font = SubResource( 14 )
+custom_styles/hover = SubResource( 19 )
+custom_styles/normal = SubResource( 19 )
+custom_fonts/font = SubResource( 20 )
 text = "START RUNNING!"
 
 [node name="Credits2" type="RichTextLabel" parent="Screen/StartScreen/VBoxContainer/Bottom"]
 margin_left = 350.0
 margin_right = 350.0
 margin_bottom = 80.0
-custom_fonts/normal_font = SubResource( 12 )
+custom_fonts/normal_font = SubResource( 18 )
 custom_colors/default_color = Color( 0.611765, 0.611765, 0.611765, 1 )
 text = "(or press space)"
 scroll_active = false

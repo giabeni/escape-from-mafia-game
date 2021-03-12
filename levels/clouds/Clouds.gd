@@ -10,5 +10,5 @@ func _ready():
 
 func _process(delta):
 	if is_instance_valid(player):
-		self.global_transform.origin.x = player.global_transform.origin.x
+#		self.global_transform.origin.x = player.global_transform.origin.x
 		self.global_transform.origin.z = player.global_transform.origin.z

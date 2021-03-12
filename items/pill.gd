@@ -89,10 +89,11 @@ func _check_collisions():
 			return
 				
 		PillStates.THROWN: 
-			var colliders = get_colliding_bodies()
-	
-			if colliders.size() > 0 and not (colliders[0] as Spatial).is_in_group("Player"):
-				$TrailParticles.emitting = false
+			if contact_monitor:
+				var colliders = get_colliding_bodies()
+		
+				if colliders.size() > 0 and not (colliders[0] as Spatial).is_in_group("Player"):
+					$TrailParticles.emitting = false
 
 
 func _on_collected():

@@ -1,7 +1,92 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://assets/fonts/Kaharsa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://player/PlayerUI.gd" type="Script" id=2]
+[ext_resource path="res://assets/ui/pills.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/heart.png" type="Texture" id=4]
+[ext_resource path="res://assets/ui/capsule.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 0.0784314, 0.227451, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.827451, 0, 0.270588, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 1, 1, 1, 0.6 )
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.243137, 0, 0, 0.760784 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.827451, 0, 0.270588, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0.788235, 0.298039, 0.254902, 0.6 )
+shadow_size = 19
+shadow_offset = Vector2( 0.337, 1.456 )
+
+[sub_resource type="CanvasItemMaterial" id=4]
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 1, 0.0784314, 0.227451, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.827451, 0, 0.270588, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 1, 1, 1, 0.6 )
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0, 0.243137, 0.235294, 0.74902 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.737255, 0.968627, 0.905882, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0.254902, 0.788235, 0.568627, 0.239216 )
+shadow_size = 19
+shadow_offset = Vector2( 0.337, 1.456 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 33
+outline_size = 1
+use_filter = true
+extra_spacing_char = 6
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.498039, 0.478431, 0.211765, 0.74902 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.737255, 0.968627, 0.905882, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0.254902, 0.658824, 0.788235, 0.239216 )
+shadow_size = 19
+shadow_offset = Vector2( 0.337, 1.456 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 33
@@ -22,21 +107,139 @@ __meta__ = {
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = -20.0
-margin_bottom = -20.0
+margin_left = 30.0
+margin_top = 30.0
+margin_right = -30.0
+margin_bottom = -60.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 984.0
-margin_bottom = 760.0
+margin_right = 1220.0
+margin_bottom = 630.0
+
+[node name="Bottom" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 1220.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/VBoxContainer/Bottom"]
+margin_right = 1220.0
+margin_bottom = 50.0
+size_flags_horizontal = 3
+split_offset = 1
+
+[node name="Left" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer"]
+margin_right = 251.0
+margin_bottom = 50.0
+
+[node name="HPBar" type="MarginContainer" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left"]
+margin_right = 250.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 250, 20 )
+
+[node name="TextureProgress" type="ProgressBar" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left/HPBar"]
+margin_right = 250.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 250, 20 )
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
+value = 50.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left/HPBar"]
+material = SubResource( 4 )
+position = Vector2( 6.89697, 6.51758 )
+scale = Vector2( 0.123006, 0.122923 )
+texture = ExtResource( 4 )
+
+[node name="Right" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer"]
+margin_left = 263.0
+margin_right = 1220.0
+margin_bottom = 50.0
+grow_horizontal = 0
+alignment = 2
+
+[node name="PillCounter" type="MarginContainer" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right"]
+margin_left = 713.0
+margin_right = 833.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 120, 20 )
+custom_constants/margin_right = 20
+custom_constants/margin_left = -30
+
+[node name="TextureProgress" type="ProgressBar" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter"]
+margin_left = -30.0
+margin_right = 100.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 100, 45 )
+custom_styles/fg = SubResource( 5 )
+custom_styles/bg = SubResource( 6 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PillsLabel" type="Label" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter"]
+margin_left = -30.0
+margin_top = 9.0
+margin_right = 88.0
+margin_bottom = 41.0
+custom_fonts/font = SubResource( 7 )
+text = "10"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter"]
+material = SubResource( 4 )
+position = Vector2( -10.5835, 19.8895 )
+scale = Vector2( 0.21565, 0.215503 )
+texture = ExtResource( 3 )
+
+[node name="PillCounter2" type="MarginContainer" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right"]
+margin_left = 837.0
+margin_right = 957.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 120, 20 )
+
+[node name="TextureProgress" type="ProgressBar" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter2"]
+margin_right = 120.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 100, 45 )
+custom_styles/bg = SubResource( 8 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter2"]
+material = SubResource( 4 )
+position = Vector2( 12.4984, 19.9839 )
+rotation = 2.63425
+scale = Vector2( 0.21565, 0.215503 )
+texture = ExtResource( 5 )
+
+[node name="CapsulesLabel" type="Label" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter2"]
+margin_top = 9.0
+margin_right = 120.0
+margin_bottom = 41.0
+custom_fonts/font = SubResource( 7 )
+text = "10"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Top" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_right = 984.0
-margin_bottom = 50.0
+margin_top = 54.0
+margin_right = 1220.0
+margin_bottom = 104.0
 rect_min_size = Vector2( 0, 50 )
 
 [node name="Score" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Top"]
@@ -50,13 +253,14 @@ scroll_active = false
 
 [node name="CenterSpacer" type="Control" parent="MarginContainer/VBoxContainer/Top"]
 margin_left = 354.0
-margin_right = 376.0
+margin_right = 1220.0
 margin_bottom = 50.0
 size_flags_horizontal = 3
 
 [node name="Pills" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Top"]
-margin_left = 380.0
-margin_right = 680.0
+visible = false
+margin_left = 616.0
+margin_right = 916.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 300, 0 )
 custom_fonts/normal_font = SubResource( 1 )
@@ -65,8 +269,9 @@ text = "Pills: 0"
 scroll_active = false
 
 [node name="Capsules" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Top"]
-margin_left = 684.0
-margin_right = 984.0
+visible = false
+margin_left = 920.0
+margin_right = 1220.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 300, 0 )
 custom_fonts/normal_font = SubResource( 1 )
@@ -75,13 +280,7 @@ text = "Capsules: 0"
 scroll_active = false
 
 [node name="Middle" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 54.0
-margin_right = 984.0
-margin_bottom = 706.0
+margin_top = 108.0
+margin_right = 1220.0
+margin_bottom = 630.0
 size_flags_vertical = 3
-
-[node name="Bottom" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 710.0
-margin_right = 984.0
-margin_bottom = 760.0
-rect_min_size = Vector2( 0, 50 )

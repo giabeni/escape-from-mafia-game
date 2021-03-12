@@ -16,7 +16,7 @@ var velocity = Vector3.ZERO
 var type = "balloon"
 
 onready var explosion: Particles = $ExplodeParticles
-onready var score_text: Sprite3D = $ScoreText
+onready var score_text: Spatial = $ScoreText
 
 
 func _ready():

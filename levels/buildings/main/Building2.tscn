@@ -205,7 +205,6 @@ DETAIL_SURFACE = 2
 WALLS_BODIES = [ NodePath("full-section/Building2") ]
 ROOFS_BODIES = [ NodePath("full-section/Roof2") ]
 CURVATURE_START_DISTANCE = 50.0
-CURVATURE_ANGLE = 0.0
 
 [node name="full-section" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -124, 0 )
@@ -277,6 +276,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.7693, 1.30994, -15.2086 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.2307, 1.30994, -21.2086 )
 
 [node name="Obstacles" type="Spatial" parent="."]
+visible = false
 
 [node name="1" type="Spatial" parent="Obstacles"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.668674, -0.682971, -1.61549 )
