@@ -8,6 +8,7 @@ export(Color) var ENEMY_AIM_COLOR = Color("#e2ff0000")
 
 var aim_pointer: CSGTorus
 var current_color: Color
+var enemy_color = false
 
 onready var aim_line: CSGCylinder = $AimLine
 onready var aim_arrow: CSGCylinder = $AimLine/AimArrow
@@ -36,8 +37,10 @@ func _physics_process(delta):
 		
 		var colider = get_collider()
 		if is_instance_valid(colider) and current_color != EMPTY_AIM_COLOR and (colider as Spatial).is_in_group("Enemies"):
+			enemy_color = true
 			_set_color(ENEMY_AIM_COLOR)
 		else:
+			enemy_color = false
 			_set_color(current_color)
 	else:
 		aim_pointer.translation = Vector3(0, 0, -200)
@@ -66,3 +69,12 @@ func _set_color(color):
 	aim_pointer.material.emission = color
 	aim_line.material.emission = color
 	aim_arrow.material.emission = color
+	
+func get_aim_color():
+	return ENEMY_AIM_COLOR if enemy_color else current_color
+	
+func get_shooting_direction(muzzle_origin: Vector3):
+	if is_colliding():
+		return (get_collision_point() - muzzle_origin).normalized()
+	else:
+		return -global_transform.basis.z.normalized()

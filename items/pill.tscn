@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://items/models/Comprimido.material" type="Material" id=1]
 [ext_resource path="res://items/pill.gd" type="Script" id=2]
@@ -23,7 +23,7 @@ surfaces/0 = {
 [sub_resource type="SpatialMaterial" id=2]
 emission_enabled = true
 emission = Color( 1, 1, 1, 1 )
-emission_energy = 10.0
+emission_energy = 12.36
 emission_operator = 0
 emission_on_uv2 = false
 
@@ -45,10 +45,43 @@ surfaces/0 = {
 radius = 1.16333
 height = 0.708332
 
+[sub_resource type="ParticlesMaterial" id=5]
+trail_divisor = 3
+emission_shape = 2
+emission_box_extents = Vector3( 1, 1, 0.3 )
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+flatness = 0.97
+initial_velocity = 114.13
+initial_velocity_random = 0.36
+angular_velocity = -31.3
+angular_velocity_random = 0.09
+linear_accel = 100.0
+tangential_accel = 2.17
+damping = 34.24
+hue_variation = 0.71
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.180392, 0.972549, 0.152941, 1 )
+emission_enabled = true
+emission = Color( 0.313726, 0.917647, 0.364706, 1 )
+emission_energy = 4.36
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="SphereMesh" id=7]
+material = SubResource( 6 )
+radius = 0.241
+height = 6.851
+radial_segments = 8
+rings = 8
+is_hemisphere = true
+
 [node name="Pill" type="RigidBody"]
 collision_layer = 8
 collision_mask = 0
-gravity_scale = 3.0
+gravity_scale = 0.0
+contacts_reported = 4
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 script = ExtResource( 2 )
@@ -72,7 +105,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2" type="CollisionShape" parent="PickupArea"]
-transform = Transform( 1.15236, 0, 0, 0, -5.26687e-08, -1.15236, 0, 1.20492, -5.03713e-08, 0, 0.0296486, 0 )
+transform = Transform( 1.7, 0, 0, 0, -7.43094e-08, -1.7, 0, 1.7, -7.43094e-08, 0, 0.0296486, 0 )
 shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
@@ -83,6 +116,18 @@ one_shot = true
 [node name="CollectedSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 volume_db = -12.0
+
+[node name="TrailParticles" type="Particles" parent="."]
+emitting = false
+amount = 128
+lifetime = 0.09
+randomness = 0.38
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="TrailTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
 
 [connection signal="body_entered" from="PickupArea" to="." method="_on_PickupArea_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

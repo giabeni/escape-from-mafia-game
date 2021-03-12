@@ -564,30 +564,27 @@ IS_START_POINT = true
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 55.2496, 18.5448 )
 
 [node name="Skeleton" parent="doctor-hero/Armature" index="0"]
-bones/4/bound_children = [ NodePath("NeckBone") ]
-bones/10/bound_children = [ NodePath("LeftHandBone") ]
-bones/26/bound_children = [ NodePath("RightHandBone") ]
+bones/4/bound_children = [  ]
+bones/10/bound_children = [  ]
+bones/26/bound_children = [  ]
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( -0.522829, 0.0543473, -0.850703, 0.831467, -0.187485, -0.522984, -0.187916, -0.980763, 0.0528343, 8.41234, -0.70833, -370.369 )
+transform = Transform( 0.0930003, -0.0422581, -0.994769, 0.985422, -0.13904, 0.0980328, -0.142455, -0.989384, 0.0287113, 9.45949, -3.17082, -372.321 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( -0.0158595, -0.662575, 0.748826, 0.998393, -0.0512366, -0.0241906, 0.0543967, 0.74724, 0.662324, -88.0443, 44.4306, -266.545 )
+transform = Transform( 0.522945, -0.633329, 0.570457, 0.847073, 0.31168, -0.43049, 0.0948434, 0.708341, 0.699468, -43.2403, 95.9154, -272.108 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( -0.958643, -0.282519, 0.0344368, 0.160065, -0.435138, 0.886021, -0.235332, 0.854892, 0.462363, 10.2015, -103.038, -242.246 )
+transform = Transform( -0.752571, -0.477621, 0.453337, 0.617588, -0.273023, 0.737592, -0.228517, 0.835067, 0.500443, -40.0357, -101.123, -247.907 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )
 
 [node name="AnimationTree" parent="doctor-hero" index="3"]
 parameters/Main/playback = SubResource( 2 )
-
-[node name="ClippedCamera" parent="doctor-hero" index="19"]
-transform = Transform( 0.666667, 0, 0, 0, 0.61411, 0.259448, 0, -0.259448, 0.61411, 3.25979e-06, 14.0233, 13.4706 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 4 )

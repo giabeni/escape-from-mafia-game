@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://player/models/doctor-hero/LowPoly.material" type="Material" id=1]
 [ext_resource path="res://player/models/doctor-hero/doctor-hero-anim-tree.tres" type="AnimationNodeBlendTree" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://player/models/falling-idle.anim" type="Animation" id=17]
 [ext_resource path="res://player/models/jump.anim" type="Animation" id=18]
 [ext_resource path="res://assets/sounds/footstep1.mp3" type="AudioStream" id=19]
+[ext_resource path="res://assets/sounds/body-impact.mp3" type="AudioStream" id=20]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "BodyWithJacket"
@@ -4369,6 +4370,21 @@ height = 3.25849
 [sub_resource type="BoxShape" id=26]
 extents = Vector3( 1, 2.839, 0.001 )
 
+[sub_resource type="Gradient" id=30]
+offsets = PoolRealArray( 0, 0.228571, 0.508571, 0.625714, 1 )
+colors = PoolColorArray( 0.0352941, 0.00392157, 0.0784314, 0.784314, 0.0352941, 0.00392157, 0.0784314, 0, 1, 1, 1, 0.0745098, 0.0352941, 0.00392157, 0.0784314, 0, 0.0352941, 0.00392157, 0.0784314, 0.784314 )
+
+[sub_resource type="GradientTexture" id=31]
+gradient = SubResource( 30 )
+width = 1024
+
+[sub_resource type="SphereMesh" id=29]
+radius = 4.0
+height = 8.0
+
+[sub_resource type="Gradient" id=32]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
 [sub_resource type="SpatialMaterial" id=27]
 flags_transparent = true
 albedo_color = Color( 0.317647, 0.756863, 0.521569, 0.823529 )
@@ -4418,7 +4434,7 @@ bones/4/name = "mixamorig_neck"
 bones/4/parent = 3
 bones/4/rest = Transform( 1, 4.54747e-13, -8.52651e-14, -4.46612e-13, 0.996889, 0.0788163, 1.20841e-13, -0.0788163, 0.996889, 0, 36.3234, -1.1958e-06 )
 bones/4/enabled = true
-bones/4/bound_children = [  ]
+bones/4/bound_children = [ NodePath("NeckBone") ]
 bones/5/name = "mixamorig_head"
 bones/5/parent = 4
 bones/5/rest = Transform( 1, -5.04742e-28, 9.80909e-45, 5.04742e-28, 1, -4.16334e-17, 9.80909e-45, 4.16334e-17, 1, 0, 26.7453, -3.83089 )
@@ -4448,7 +4464,7 @@ bones/10/name = "mixamorig_left_hand"
 bones/10/parent = 9
 bones/10/rest = Transform( 0.825233, -0.204053, 0.526643, 0.240039, 0.970763, -7.37607e-07, -0.511246, 0.126415, 0.850086, 1.15455e-05, 82.9816, 8.7254e-06 )
 bones/10/enabled = true
-bones/10/bound_children = [  ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
 bones/11/name = "mixamorig_left_hand_thumb_1"
 bones/11/parent = 10
 bones/11/rest = Transform( 0.941701, -0.242897, 0.232811, 0.319818, 0.861117, -0.395215, -0.104481, 0.446631, 0.888597, -6.38271, 8.07716, 1.26817 )
@@ -4528,7 +4544,7 @@ bones/26/name = "mixamorig_right_hand"
 bones/26/parent = 25
 bones/26/rest = Transform( 0.946974, 0.232193, -0.222094, -0.23814, 0.971231, 5.58793e-08, 0.215704, 0.0528894, 0.975025, -1.19209e-06, 82.97, -2.46167e-05 )
 bones/26/enabled = true
-bones/26/bound_children = [  ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
 bones/27/name = "mixamorig_right_hand_thumb_1"
 bones/27/parent = 26
 bones/27/rest = Transform( 0.93686, 0.254989, -0.23932, -0.333585, 0.857007, -0.392758, 0.10495, 0.447793, 0.887956, 6.06476, 7.72522, 1.55508 )
@@ -4669,7 +4685,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.339254, -0.0671263, -0.938296, 0.934921, -0.0862819, 0.344206, -0.104063, -0.994007, 0.0334863, 8.17625, -3.1058, -373.207 )
+transform = Transform( 0.998185, 0.0275788, -0.0535329, 0.051806, 0.0599276, 0.996857, 0.0307002, -0.997821, 0.0583901, 1.76513, 1.68386, -375.416 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -4684,11 +4700,11 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.741373, -0.524699, 0.418397, 0.660751, 0.461683, -0.591825, 0.117365, 0.715219, 0.688974, -11.7466, 108.555, -270.654 )
+transform = Transform( 0.860022, 0.156271, -0.485738, -0.496479, 0.475999, -0.725901, 0.117775, 0.865449, 0.486955, 93.9871, 49.9101, -250.007 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( -0.555466, -0.554678, 0.619509, 0.802715, -0.163224, 0.573591, -0.217038, 0.8159, 0.535913, -65.9669, -90.1596, -252.73 )
+transform = Transform( 0.767342, -0.220992, 0.601954, 0.621299, 0.488502, -0.612662, -0.158661, 0.844115, 0.512149, -91.518, 48.0378, -253.746 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -4744,7 +4760,7 @@ parameters/Main/RUNNING/Jump/active = false
 parameters/Main/RUNNING/Speed/scale = 1.0
 parameters/Main/RUNNING/Strafe/blend_position = Vector2( 0, 1.00285 )
 parameters/Throw/active = false
-parameters/TimeScale/scale = 2.0
+parameters/TimeScale/scale = 4.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, -3.82137e-15, 3.82137e-15, 4.37114e-08, 1, 0, -1, 4.37114e-08, 0, 2.456, 0 )
@@ -4755,36 +4771,151 @@ transform = Transform( 1, 0, -3.82137e-15, 3.82137e-15, 4.37114e-08, 1, 0, -1, 4
 shape = SubResource( 26 )
 disabled = true
 
+[node name="Muzzle" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.369022, 3.77433, -2.05042 )
+
 [node name="Gimbal" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.464608, 2.16458, -3.02265 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.557625, 2.16458, -3.02265 )
 
 [node name="h" type="Spatial" parent="Gimbal"]
 
 [node name="v" type="Spatial" parent="Gimbal/h"]
 
-[node name="RayCast" type="RayCast" parent="Gimbal/h/v"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.767957, 0.575968, 0 )
-visible = false
+[node name="CameraRunPoint" type="Position3D" parent="Gimbal/h/v"]
+transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 8.49, 14 )
+
+[node name="CameraJumpPoint" type="Position3D" parent="Gimbal/h/v"]
+transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 8.49, 14 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="CameraFallPoint" type="Position3D" parent="Gimbal/h/v"]
+transform = Transform( 1, 0, 0, 0, 0.139208, 0.990263, 0, -0.990263, 0.139208, 0.464611, 50.54, 7.50273 )
+
+[node name="CameraAimPoint" type="Position3D" parent="Gimbal/h/v"]
+transform = Transform( 1, 0, 0, 0, 0.985996, 0.166769, 0, -0.166769, 0.985996, 0.4, 2.21588, 6.77868 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Camera" type="Camera" parent="Gimbal/h/v/CameraAimPoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="ClippedCamera" type="ClippedCamera" parent="Gimbal/h/v"]
+transform = Transform( 1, 0, 0, 0, 0.985996, 0.166769, 0, -0.166769, 0.985996, 0.4, 2.226, 6.779 )
+current = true
+far = 750.0
+collision_mask = 524300
+script = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": ""
+}
+DEFAULT_POSITION_NODE = NodePath("../CameraRunPoint")
+JUMP_POSITION_NODE = NodePath("../CameraJumpPoint")
+AIM_POSITION_NODE = NodePath("../CameraAimPoint")
+FALL_POSITION_NODE = NodePath("../CameraFallPoint")
+
+[node name="ShootingUI" type="Control" parent="Gimbal/h/v/ClippedCamera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="TextureRect" parent="Gimbal/h/v/ClippedCamera/ShootingUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_scale = Vector2( 1, 0.993062 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource( 31 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crosshair" type="Control" parent="Gimbal/h/v/ClippedCamera/ShootingUI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+rect_scale = Vector2( 0.5, 0.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Polygon2D" type="MeshInstance2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair"]
+mesh = SubResource( 29 )
+
+[node name="Node2D" type="Control" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair"]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineTop" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
+position = Vector2( 0, -8 )
+points = PoolVector2Array( 0, 0, 0, -40 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 32 )
+
+[node name="LineBottom" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
+position = Vector2( 0, 8 )
+rotation = -3.14159
+points = PoolVector2Array( 0, 0, 0, -40 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 32 )
+
+[node name="LineLeft" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
+position = Vector2( -8, 0 )
+rotation = -1.5708
+points = PoolVector2Array( 0, 0, 0, -40 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 32 )
+
+[node name="LineRight" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
+position = Vector2( 8, 0 )
+rotation = 1.5708
+points = PoolVector2Array( 0, 0, 0, -40 )
+width = 3.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 32 )
+
+[node name="Light2D" type="Light2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
+scale = Vector2( 0.309, 0.356 )
+texture = ExtResource( 16 )
+texture_scale = 1.52
+color = Color( 0.52549, 0.956863, 0.776471, 1 )
+energy = 2.0
+
+[node name="RayCast" type="RayCast" parent="Gimbal/h/v/ClippedCamera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.361, -5.828 )
 enabled = true
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 524292
 script = ExtResource( 5 )
 aim_pointer_node = NodePath("TargetCircle")
 
-[node name="TargetCircle" type="CSGTorus" parent="Gimbal/h/v/RayCast"]
+[node name="TargetCircle" type="CSGTorus" parent="Gimbal/h/v/ClippedCamera/RayCast"]
 transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841e-07, 1, 1.62921e-07, 0, 0, -200 )
 inner_radius = 1.13
 outer_radius = 1.695
 sides = 10
 material = SubResource( 27 )
 
-[node name="AimLine" type="CSGCylinder" parent="Gimbal/h/v/RayCast"]
+[node name="AimLine" type="CSGCylinder" parent="Gimbal/h/v/ClippedCamera/RayCast"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.38419e-07, -7.7631 )
+visible = false
 radius = 0.149483
 height = 14.799
 material = SubResource( 28 )
 
-[node name="AimArrow" type="CSGCylinder" parent="Gimbal/h/v/RayCast/AimLine"]
+[node name="AimArrow" type="CSGCylinder" parent="Gimbal/h/v/ClippedCamera/RayCast/AimLine"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.62278, 7.15256e-07 )
 radius = 0.578
 height = 5.7996
@@ -4806,6 +4937,10 @@ one_shot = true
 stream = ExtResource( 8 )
 unit_db = 51.423
 
+[node name="LandSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 20 )
+unit_db = 20.0
+
 [node name="ThrowSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 9 )
 unit_db = 24.756
@@ -4824,35 +4959,5 @@ pitch_scale = 1.28
 [node name="BurnSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 volume_db = -21.72
-
-[node name="CameraRunPoint" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.921165, 0.389172, 0, -0.389172, 0.921165, 3.25979e-06, 14.0233, 13.4041 )
-
-[node name="CameraFallPoint" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.139208, 0.990263, 0, -0.990263, 0.139208, 3.25979e-06, 52.7045, 4.48008 )
-
-[node name="CameraJumpPoint" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.988266, 0.152744, 0, -0.152744, 0.988266, 3.25979e-06, 11.2308, 15.7018 )
-
-[node name="CameraAimPoint" type="Position3D" parent="."]
-transform = Transform( 0.995742, 1.86265e-09, 0.0921794, -0.0160781, 0.984671, 0.173679, -0.0907664, -0.174422, 0.980479, 2.7297, 5.98281, 8.23814 )
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="ClippedCamera" type="ClippedCamera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.921165, 0.389172, 0, -0.389172, 0.921165, 3.25979e-06, 14.0233, 13.4706 )
-h_offset = -0.5
-current = true
-far = 750.0
-collision_mask = 524300
-script = ExtResource( 6 )
-__meta__ = {
-"_editor_description_": ""
-}
-DEFAULT_POSITION_NODE = NodePath("../CameraRunPoint")
-JUMP_POSITION_NODE = NodePath("../CameraJumpPoint")
-AIM_POSITION_NODE = NodePath("../CameraAimPoint")
-FALL_POSITION_NODE = NodePath("../CameraFallPoint")
 
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]

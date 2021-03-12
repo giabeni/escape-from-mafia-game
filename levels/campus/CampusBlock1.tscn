@@ -1,22 +1,21 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://levels/materials/Grid.material" type="Material" id=1]
 [ext_resource path="res://levels/materials/WhiteGrid.material" type="Material" id=2]
 [ext_resource path="res://levels/sections/Section.gd" type="Script" id=3]
 [ext_resource path="res://player/FallenArea.tscn" type="PackedScene" id=4]
-[ext_resource path="res://player/FallenArea.gd" type="Script" id=5]
 [ext_resource path="res://levels/obstacles/air-conditioner.tscn" type="PackedScene" id=6]
 [ext_resource path="res://levels/buildings/ObstaclesSpots.gd" type="Script" id=7]
 [ext_resource path="res://assets/textures/Light/texture_07.png" type="Texture" id=8]
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=1]
 flags_world_triplanar = true
 albedo_color = Color( 0.952941, 0.458824, 0.101961, 1 )
 albedo_texture = ExtResource( 8 )
 uv1_scale = Vector3( 0.1, 0.3, 0.1 )
 uv1_triplanar = true
 
-[sub_resource type="Curve3D" id=1]
+[sub_resource type="Curve3D" id=2]
 _data = {
 "points": PoolVector3Array( 0, 0, 0, 0, 0, 0, 15.059, 2.77987, -8.25835, 0, 0, 0, 0, 0, 0, -23.1474, 2.34034, 14.371, 0, 0, 0, 0, 0, 0, 22.4213, 2.63335, 14.991, 0, 0, 0, 0, 0, 0, 21.8788, 2.73103, -11.3583, 0, 0, 0, 0, 0, 0, -23.3024, 2.34034, -9.96329, 0, 0, 0, 0, 0, 0, 15.1365, 2.63335, 11.6586 ),
 "tilts": PoolRealArray( 0, 0, 0, 0, 0, 0 )
@@ -50,14 +49,26 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32.6437, 7.70522, 0 )
 width = 1.0644
 height = 15.0
 depth = 50.1
-material = SubResource( 2 )
+material = SubResource( 1 )
 
 [node name="CSGBox4" type="CSGBox" parent="SideWalk"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.7752, 7.705, 0 )
 width = 1.0644
 height = 15.0
 depth = 50.1
-material = SubResource( 2 )
+material = SubResource( 1 )
+
+[node name="CSGBox5" type="CSGBox" parent="SideWalk"]
+transform = Transform( -3.02394e-06, 0, -1, 0, 1, 0, 1, 0, -3.02394e-06, 0.208961, 7.705, 25.1747 )
+width = 1.0644
+height = 15.0
+depth = 100.431
+material = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="SideWalk/CSGBox5"]
+operation = 2
+height = 15.673
+depth = 7.96042
 
 [node name="Street" type="CSGBox" parent="."]
 use_collision = true
@@ -67,12 +78,8 @@ height = 0.5
 depth = 50.0
 material = ExtResource( 1 )
 
-[node name="FallenArea" type="Area" parent="." instance=ExtResource( 4 )]
+[node name="FallenArea" parent="." instance=ExtResource( 4 )]
 transform = Transform( -3.02394e-06, 0, 1, 0, 1, 0, -1, 0, -3.02394e-06, -0.567863, -23.4833, 0.857416 )
-monitorable = false
-collision_layer = 0
-collision_mask = 2
-script = ExtResource( 5 )
 
 [node name="ItemsPath" type="Spatial" parent="."]
 
@@ -101,78 +108,38 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.52353, 5.89434, 21.5877 )
 [node name="1" type="Spatial" parent="Obstacles"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.668674, 0.733294, -1.61549 )
 
-[node name="air-conditioner" type="RigidBody" parent="Obstacles/1" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner" parent="Obstacles/1" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.34996, 0, -19.1821 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
-[node name="air-conditioner2" type="RigidBody" parent="Obstacles/1" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner2" parent="Obstacles/1" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.36413, 0, -19.1821 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
 [node name="2" type="Spatial" parent="Obstacles"]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.733294, 0 )
 
-[node name="air-conditioner" type="RigidBody" parent="Obstacles/2" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner" parent="Obstacles/2" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27697, 0, -2.20634 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
-[node name="air-conditioner2" type="RigidBody" parent="Obstacles/2" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner2" parent="Obstacles/2" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.43712, 0, -2.20634 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
 [node name="3" type="Spatial" parent="Obstacles"]
 transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -2.14932e-07, 0.733294, 1.42343 )
 
-[node name="air-conditioner" type="RigidBody" parent="Obstacles/3" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner" parent="Obstacles/3" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.0817, 0, 1.40343 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
-[node name="air-conditioner2" type="RigidBody" parent="Obstacles/3" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner2" parent="Obstacles/3" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.63239, 0, 1.40343 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
 [node name="4" type="Spatial" parent="Obstacles"]
 transform = Transform( 1.94707e-07, 0, 1, 0, 1, 0, -1, 0, 1.94707e-07, -1.42808, 0.733294, -0.766292 )
 
-[node name="air-conditioner" type="RigidBody" parent="Obstacles/4" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner" parent="Obstacles/4" instance=ExtResource( 6 )]
 transform = Transform( -3.02394e-06, 0, -1, 0, 1, 0, 1, 0, -3.02394e-06, -18.5965, 0, -1.96151 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
-[node name="air-conditioner2" type="RigidBody" parent="Obstacles/4" groups=[
-"Obstacles",
-] instance=ExtResource( 6 )]
+[node name="air-conditioner2" parent="Obstacles/4" instance=ExtResource( 6 )]
 transform = Transform( -3.02394e-06, 0, -1, 0, 1, 0, 1, 0, -3.02394e-06, -18.6222, 0, 5.80268 )
-collision_layer = 17
-mass = 100.0
-can_sleep = false
 
 [node name="ObstaclesSpots" type="Spatial" parent="."]
 transform = Transform( 1.94707e-07, 0, 1, 0, 1, 0, -1, 0, 1.94707e-07, -1.42808, -0.682971, -0.766292 )
@@ -180,6 +147,6 @@ script = ExtResource( 7 )
 
 [node name="Path" type="Path" parent="ObstaclesSpots"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.411, 0 )
-curve = SubResource( 1 )
+curve = SubResource( 2 )
 
 [node name="RandomPoint" type="Position3D" parent="ObstaclesSpots/Path"]

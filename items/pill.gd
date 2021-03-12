@@ -6,6 +6,8 @@ export(float, 0, 10000) var DAMAGE = 10
 onready var pickup_area: Area = $PickupArea
 onready var timer: Timer = $Timer
 onready var collect_sound: AudioStreamPlayer = $CollectedSound
+onready var trail_particles: Particles = $TrailParticles
+onready var trail_timer: Timer = $TrailTimer
 
 enum PillStates {
 	IDLE,
@@ -30,9 +32,15 @@ func _physics_process(delta):
 	if state == PillStates.THROWN and next_impulse != Vector3.ZERO:
 		set_as_toplevel(true)
 		self.apply_impulse(Vector3.ZERO, next_impulse)
+		contact_monitor = true
+#		axis_lock_angular_z = true
 		is_thrown = true
+		trail_timer.start()
 		timer.start()
 		next_impulse = Vector3.ZERO
+		
+	if trail_timer.is_stopped() and linear_velocity.length() <= 25:
+		trail_particles.emitting = false
 
 func _set_params():
 	match state:
@@ -66,7 +74,9 @@ func set_player(node):
 	player = node
 
 func throw(impulse, origin):
-	yield(get_tree().create_timer(0.3), "timeout")
+	continuous_cd = true
+	yield(get_tree().create_timer(0.15), "timeout")
+	trail_particles.emitting = true
 	state = PillStates.THROWN
 #	global_transform.origin = origin
 	next_impulse = impulse
@@ -78,8 +88,11 @@ func _check_collisions():
 		PillStates.IDLE:
 			return
 				
-		PillStates.THROWN:
-			pass
+		PillStates.THROWN: 
+			var colliders = get_colliding_bodies()
+	
+			if colliders.size() > 0 and not (colliders[0] as Spatial).is_in_group("Player"):
+				$TrailParticles.emitting = false
 
 
 func _on_collected():

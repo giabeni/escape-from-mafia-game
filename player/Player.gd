@@ -9,10 +9,11 @@ export(float) var LATERAL_ACC = 8
 export(float) var ANGULAR_ACC = 10
 export(float) var JUMP_FORCE = 30
 export(float) var JUMP_FRONT_ACC = 14
-export(Vector2) var MOUSE_SENSITIVITY = Vector2(5, 3)
-export(Vector2) var AIM_LIMIT = Vector2(45, 60)
+export(Vector2) var MOUSE_SENSITIVITY = Vector2(0.1, 0.1)
+export(Vector2) var AIM_LIMIT = Vector2(60, 80)
+export(Vector2) var AIM_ACC = Vector2(20, 20)
 export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
-export(float) var THROW_FORCE = 150
+export(float) var THROW_FORCE = 300
 export(NodePath) var AIM_GIMBAL = "Gimbal"
 export(PackedScene) var PILL_SCENE: PackedScene = null
 export(PackedScene) var CAPSULE_SCENE: PackedScene = null
@@ -24,10 +25,10 @@ onready var ui: UIPlayer = $PlayerUI
 #onready var doctor = $Doctor
 onready var anim_player: AnimationPlayer = $AnimationPlayer
 onready var anim_tree: AnimationTree = $AnimationTree
-onready var camera: ClippedCamera = $ClippedCamera
+onready var camera: ClippedCamera = $Gimbal/h/v/ClippedCamera
 onready var infected_paricles: Particles = $Armature/Skeleton/NeckBone/InfectedParticles
 onready var hand_bone: BoneAttachment = $Armature/Skeleton/RightHandBone
-onready var aim_cast: RayCast = $Gimbal/h/v/RayCast
+onready var aim_cast: RayCast = $Gimbal/h/v/ClippedCamera/RayCast
 onready var burn_sound: AudioStreamPlayer = $BurnSound
 onready var collect_anim_player: AnimationPlayer = $CollectedEffects/CollectSpriteAnimationPlayer
 onready var jump_timer: Timer = $JumpTimer
@@ -41,6 +42,7 @@ enum PlayerStates {
 }
 
 enum BulletType {
+	NONE,
 	PILL,
 	CAPSULE,
 	EMPTY,
@@ -52,6 +54,8 @@ var resultant_velocity = Vector3.ZERO
 var current_front_acc_z = 1
 var angle = 0
 var gimbal: Spatial
+var camrot_h = 0
+var camrot_v = 0
 var mouse_motion: Vector2 = Vector2.ZERO
 var cur_speed_limit = SPEED_FACTOR * MAX_SPEED
 var last_score_position: Vector3
@@ -89,11 +93,14 @@ func _physics_process(delta):
 			elif Input.is_action_just_released("throw_2"):
 				_throw_capsule(delta)
 			elif Input.is_action_pressed("throw"):
+				aiming = true
 				_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY)
 			elif Input.is_action_pressed("throw_2"):
+				aiming = true
 				_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY)
 			else:
-				_reset_aim()
+				aiming = false
+				_aim(delta, BulletType.NONE)
 
 	
 	if state == PlayerStates.IDLE:
@@ -103,6 +110,7 @@ func _physics_process(delta):
 		velocity.z = locomotion.z
 	elif state == PlayerStates.RUNNING:
 		velocity.x = lerp(velocity.x, cur_speed_limit * direction.x * 1.25, delta * LATERAL_ACC)
+		velocity.z = lerp(velocity.z, cur_speed_limit * direction.z * current_front_acc_z, delta * FRONTAL_ACC)
 		
 	
 	if not is_on_floor():
@@ -110,12 +118,14 @@ func _physics_process(delta):
 			velocity.y = -lerp(velocity.y, MAX_SPEED * 5, GRAVITY * delta)
 		else:
 			velocity.y -= GRAVITY * delta
+	else:
+		velocity.y = velocity.y - get_floor_normal().normalized().y * 4
 		
 	_set_rotation(delta)
 	
 	
 	if state in [PlayerStates.RUNNING, PlayerStates.FALLING, PlayerStates.STUMBLED]:
-		resultant_velocity = move_and_slide_with_snap(velocity.rotated(Vector3.UP, self.rotation.y), snap, Vector3.UP, true, 8, deg2rad(70), false)
+		resultant_velocity = move_and_slide_with_snap(velocity.rotated(Vector3.UP, self.rotation.y), snap, Vector3.UP, true, 16, deg2rad(70), false)
 	
 		# Hack to stop on slope
 		if state != PlayerStates.STUMBLED:
@@ -123,7 +133,9 @@ func _physics_process(delta):
 			if slides:
 				for i in slides:
 					var touched = get_slide_collision(i)
-					if is_on_floor() and touched.normal.y < cos(70) and resultant_velocity.y < 0 and (resultant_velocity.x != 0 or resultant_velocity.y != 0):
+#					print(is_on_floor(), " ",touched.normal.y, " ", cos(0), " ",  resultant_velocity.y)
+					if is_on_floor() and touched.normal.y < cos(0) and resultant_velocity.y < 0 and (resultant_velocity.x != 0 or resultant_velocity.y != 0):
+#						print(touched.normal.y)
 						velocity.y = 0
 						
 	elif state == PlayerStates.STUMBLED:
@@ -158,7 +170,9 @@ func _get_input_direction():
 	if Input.is_action_just_pressed("move_forward"):
 		direction.z = -1
 		state = PlayerStates.RUNNING
-	
+#	else:
+#		direction.z = 0
+		
 	if not Input.is_action_pressed("rotate"):
 		# Lateral direction
 		if Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
@@ -212,7 +226,6 @@ func _get_jump(delta):
 	if Input.is_action_just_pressed("roll") and not is_on_floor():
 		velocity.y = -JUMP_FORCE * 2.5
 	
-	velocity.z = lerp(velocity.z, cur_speed_limit * direction.z * current_front_acc_z, delta * FRONTAL_ACC)
 	
 	if jumping:
 		if not aiming and not falling:
@@ -223,8 +236,11 @@ func _get_jump(delta):
 			camera.set_target_position("DEFAULT")
 
 func _input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and game_running:
 		mouse_motion = event.relative
+		
+		camrot_h += -event.relative.x * MOUSE_SENSITIVITY.x
+		camrot_v += -event.relative.y * MOUSE_SENSITIVITY.y
 
 
 func get_horizontal_speed():
@@ -232,15 +248,22 @@ func get_horizontal_speed():
 
 func _aim(delta, bullet_type: int):
 	if not falling:
-			camera.set_target_position("AIM")
-	aiming = true
+			camera.set_target_position("AIM" if bullet_type != BulletType.NONE else "LAST")
+			
 	aim_cast.visible = true
 	aim_cast.set_bullet_type(bullet_type)
-	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)
-	gimbal.rotate_x(deg2rad(-mouse_motion.y) * delta * MOUSE_SENSITIVITY.y)
-	gimbal.rotation_degrees.y = clamp(gimbal.rotation_degrees.y, -AIM_LIMIT.y, AIM_LIMIT.y)
-	gimbal.rotation_degrees.x = clamp(gimbal.rotation_degrees.x, -AIM_LIMIT.x, AIM_LIMIT.x)
-	mouse_motion = Vector2()
+
+	camrot_v = clamp(camrot_v, -AIM_LIMIT.y, AIM_LIMIT.y)
+	camrot_h = clamp(camrot_h, -AIM_LIMIT.x, AIM_LIMIT.x)
+	
+	$Gimbal/h.rotation_degrees.y = lerp($Gimbal/h.rotation_degrees.y, camrot_h, delta * AIM_ACC.x)
+	$Gimbal/h/v.rotation_degrees.x = lerp($Gimbal/h/v.rotation_degrees.x, camrot_v, delta * AIM_ACC.y)
+	
+#	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)
+#	gimbal.rotate_x(deg2rad(-mouse_motion.y) * delta * MOUSE_SENSITIVITY.y)
+#	gimbal.rotation.z = 0
+#	mouse_motion = Vector2()
+#	mouse_motion = mouse_motion.linear_interpolate(Vector2.ZERO, delta * MOUSE_SENSITIVITY.length() * 100) 
 	
 func _reset_aim():
 	if not falling:
@@ -254,10 +277,11 @@ func _reset_aim():
 func _throw_pill(delta):
 	if state == PlayerStates.RUNNING and is_instance_valid(PILL_SCENE) and pill_count > 0:
 #		var forward = -global_transform.basis.z.normalized()
-		var forward = -aim_cast.global_transform.basis.z.normalized()
+#		var forward = -aim_cast.global_transform.basis.z.normalized()
+		var forward: Vector3 = aim_cast.get_shooting_direction($Muzzle.global_transform.origin)
 		var pill: RigidBody = PILL_SCENE.instance()
 		pill.state = 1 # THROWN State
-		pill.translation = Vector3(0, 0.4, 0)
+		pill.translation = Vector3(0, 0, 0)
 		pill.rotation_degrees.x = 90
 		pill.scale = Vector3(50, 50, 50)
 		pill.set_player(self)
@@ -303,10 +327,12 @@ func _set_animations(delta):
 		PlayerStates.RUNNING:
 			if anim_playback.get_current_node() in ["FALLING_JUMP", "JUMP"]: 
 				if is_on_floor():
-					if not $RightStep.playing:
-						$RightStep.play()
-					if not $LeftStep.playing:
-						 $LeftStep.play()
+#					if not $RightStep.playing:
+#						$RightStep.play()
+#					if not $LeftStep.playing:
+#						 $LeftStep.play()
+					if not $LandSound.playing:
+						$LandSound.play()
 					jumping = false
 					falling = false
 					anim_tree.root_motion_track = anim_root_motion

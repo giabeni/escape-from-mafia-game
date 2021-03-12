@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/body-impact.wav-1b33e14f5c1499e49390ebfb1feecf10.sample"
+
+[deps]
+
+source_file="res://assets/sounds/body-impact.wav"
+dest_files=[ "res://.import/body-impact.wav-1b33e14f5c1499e49390ebfb1feecf10.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
