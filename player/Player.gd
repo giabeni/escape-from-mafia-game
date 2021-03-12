@@ -9,9 +9,9 @@ export(float) var LATERAL_ACC = 8
 export(float) var ANGULAR_ACC = 10
 export(float) var JUMP_FORCE = 30
 export(float) var JUMP_FRONT_ACC = 14
-export(Vector2) var MOUSE_SENSITIVITY = Vector2(0.1, 0.1)
+export(Vector2) var MOUSE_SENSITIVITY = Vector2(0.08, 0.08)
 export(Vector2) var AIM_LIMIT = Vector2(60, 80)
-export(Vector2) var AIM_ACC = Vector2(20, 20)
+export(Vector2) var AIM_ACC = Vector2(10, 10)
 export(float) var LINEAR_SPEED_FACTOR_RATE = 1.025
 export(float) var THROW_FORCE = 300
 export(NodePath) var AIM_GIMBAL = "Gimbal"
@@ -88,19 +88,19 @@ func _physics_process(delta):
 	
 	
 		if game_running:
-			if Input.is_action_just_released("throw"):
+			if Input.is_action_just_released("throw_mouse") or Input.is_action_just_pressed("throw"):
 				_throw_pill(delta)
-			elif Input.is_action_just_released("throw_2"):
+			elif Input.is_action_just_released("throw_mouse2") or Input.is_action_just_pressed("throw_2"):
 				_throw_capsule(delta)
-			elif Input.is_action_pressed("throw"):
+			elif Input.is_action_pressed("throw_mouse") or Input.is_action_pressed("aim"):
 				aiming = true
-				_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY)
-			elif Input.is_action_pressed("throw_2"):
+				_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
+			elif Input.is_action_pressed("throw_mouse2") or Input.is_action_pressed("aim"):
 				aiming = true
-				_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY)
+				_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
 			else:
 				aiming = false
-				_aim(delta, BulletType.NONE)
+				_aim(delta, BulletType.NONE, AIM_LIMIT / 2, AIM_ACC)
 
 	
 	if state == PlayerStates.IDLE:
@@ -167,7 +167,7 @@ func _physics_process(delta):
 
 func _get_input_direction():
 	# Frontal direction
-	if Input.is_action_just_pressed("move_forward"):
+	if Input.is_action_just_pressed("move_forward") or Input.is_action_just_pressed("jump"):
 		direction.z = -1
 		state = PlayerStates.RUNNING
 #	else:
@@ -236,28 +236,46 @@ func _get_jump(delta):
 			camera.set_target_position("DEFAULT")
 
 func _input(event):
+	
+	var sensitivity = MOUSE_SENSITIVITY * 0.6 if aiming else MOUSE_SENSITIVITY
+		
 	if event is InputEventMouseMotion and game_running:
 		mouse_motion = event.relative
 		
-		camrot_h += -event.relative.x * MOUSE_SENSITIVITY.x
-		camrot_v += -event.relative.y * MOUSE_SENSITIVITY.y
+		camrot_h += -event.relative.x * sensitivity.x
+		camrot_v += -event.relative.y * sensitivity.y
+	
+	elif event is InputEventJoypadMotion and game_running:
+		var input_vector = Vector2.ZERO
+		input_vector.x = Input.get_action_strength("look_right") - Input.get_action_strength("look_left")
+		input_vector.y = Input.get_action_strength("look_up") - Input.get_action_strength("look_down")
+		input_vector = input_vector.normalized()
+		
+		camrot_h += -input_vector.x * sensitivity.x * 25
+		camrot_v += input_vector.y * sensitivity.y * 25
+		
+	
+	if Input.is_action_just_pressed("reset_aim"):
+#		_reset_aim()
+		camrot_h = 0
+		camrot_v = 0
 
 
 func get_horizontal_speed():
 	return Vector2(velocity.x, velocity.z).length()
 
-func _aim(delta, bullet_type: int):
+func _aim(delta, bullet_type: int, aim_limit: Vector2, acc):
 	if not falling:
 			camera.set_target_position("AIM" if bullet_type != BulletType.NONE else "LAST")
 			
 	aim_cast.visible = true
 	aim_cast.set_bullet_type(bullet_type)
 
-	camrot_v = clamp(camrot_v, -AIM_LIMIT.y, AIM_LIMIT.y)
-	camrot_h = clamp(camrot_h, -AIM_LIMIT.x, AIM_LIMIT.x)
+	camrot_v = clamp(camrot_v, -aim_limit.y, aim_limit.y)
+	camrot_h = clamp(camrot_h, -aim_limit.x, aim_limit.x)
 	
-	$Gimbal/h.rotation_degrees.y = lerp($Gimbal/h.rotation_degrees.y, camrot_h, delta * AIM_ACC.x)
-	$Gimbal/h/v.rotation_degrees.x = lerp($Gimbal/h/v.rotation_degrees.x, camrot_v, delta * AIM_ACC.y)
+	$Gimbal/h.rotation_degrees.y = lerp($Gimbal/h.rotation_degrees.y, camrot_h, delta * acc.x)
+	$Gimbal/h/v.rotation_degrees.x = lerp($Gimbal/h/v.rotation_degrees.x, camrot_v, delta * acc.y)
 	
 #	gimbal.rotate_y(deg2rad(-mouse_motion.x) * delta * MOUSE_SENSITIVITY.x)
 #	gimbal.rotate_x(deg2rad(-mouse_motion.y) * delta * MOUSE_SENSITIVITY.y)
@@ -269,9 +287,9 @@ func _reset_aim():
 	if not falling:
 		camera.set_target_position("DEFAULT")
 	aiming = false
-	aim_cast.visible = false
-	gimbal.rotation_degrees.y = 0
-	gimbal.rotation_degrees.x = 0
+#	aim_cast.visible = false
+	$Gimbal/h.rotation_degrees.y = 0
+	$Gimbal/h/v.rotation_degrees.x = 0
 
 
 func _throw_pill(delta):

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/textures/Light/texture_07.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_world_triplanar = true
+albedo_color = Color( 0.952941, 0.458824, 0.101961, 1 )
+albedo_texture = ExtResource( 1 )
+uv1_scale = Vector3( 0.1, 0.3, 0.1 )
+uv1_triplanar = true
+
+[node name="CSGBox5" type="CSGBox" groups=[
+"Obstacles",
+]]
+transform = Transform( -1, 0, 6.11146e-06, 0, 1, 0, -6.11146e-06, 0, -1, 0.208961, 7.705, 25.1747 )
+use_collision = true
+width = 1.0644
+height = 15.0
+depth = 100.431
+material = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="."]
+operation = 2
+height = 15.673
+depth = 7.96042

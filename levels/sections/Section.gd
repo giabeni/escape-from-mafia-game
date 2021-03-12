@@ -6,6 +6,7 @@ export(int) var DIFFICULTY = 1
 export(Array, float) var ALLOWED_ANGLES = [0, 90, -90, 180]
 
 export(PackedScene) var ENEMY_SCENE: PackedScene = null
+export(PackedScene) var OBSTACLE_SCENE: PackedScene = null
 export(PackedScene) var PILL_SCENE: PackedScene = preload("res://items/pill.tscn")
 
 export(int, -1, 10) var WALLS_SURFACE = -1
@@ -74,6 +75,14 @@ func _ready():
 		
 	if pills_count or is_instance_valid(item):
 		add_pills(pills_count, item)
+		
+	if OBSTACLE_SCENE:
+		var obstacle = OBSTACLE_SCENE.instance() as Spatial
+		if has_node("ObstaclesSpots"):
+			var obstacles_spots = $ObstaclesSpots
+			var random_point = $ObstaclesSpots.get_node("Path/RandomPoint")
+			obstacles_spots.get_node("Path").call_deferred("add_child", obstacle)
+			obstacle.translation = random_point.translation
 
 func _process(delta):
 	if is_instance_valid(camera):
@@ -100,6 +109,9 @@ func set_camera_node(path: NodePath):
 	
 func set_enemy(scene: PackedScene):
 	ENEMY_SCENE = scene
+
+func set_obstacle(scene: PackedScene):
+	OBSTACLE_SCENE = scene
 	
 func spawn_enemy():
 	var spots = enemy_spots.get_children()

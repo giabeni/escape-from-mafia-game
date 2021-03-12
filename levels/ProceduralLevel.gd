@@ -5,6 +5,7 @@ export(Vector2) var SECTION_SIZE = Vector2(50, 50)
 export(Array, PackedScene) var SECTIONS_ARRAY = []
 export(Array, PackedScene) var ENEMIES_ARRAY = []
 export(Array, PackedScene) var ITEMS_ARRAY = []
+export(Array, PackedScene) var OBSTACLES_ARRAY = []
 export(Array, PackedScene) var LATERALS_ARRAY = []
 export(Array, SpatialMaterial) var BUILDING_MATERIALS = []
 export(float, 0, 1) var CURVE_PROB = 0.3
@@ -190,8 +191,10 @@ func _generate_section(forward_axis: Vector3, angle):
 	
 	# Show obstacles
 	if randf() <= OBSTACLES_PROB:
-		var obstacles_count = section.get_obstacles_count()
-		section.set_obstacle_group(true, round(rand_range(1, obstacles_count)))
+#		var obstacles_count = section.get_obstacles_count()
+		section.set_obstacle_group(false, 0)
+		section.set_obstacle(OBSTACLES_ARRAY[round(rand_range(0, OBSTACLES_ARRAY.size() - 1))])
+#		section.set_obstacle_group(true, round(rand_range(1, obstacles_count)))
 	else:
 		section.set_obstacle_group(false, 0)
 	

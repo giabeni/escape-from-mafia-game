@@ -4370,26 +4370,26 @@ height = 3.25849
 [sub_resource type="BoxShape" id=26]
 extents = Vector3( 1, 2.839, 0.001 )
 
-[sub_resource type="Gradient" id=30]
+[sub_resource type="Gradient" id=27]
 offsets = PoolRealArray( 0, 0.228571, 0.508571, 0.625714, 1 )
 colors = PoolColorArray( 0.0352941, 0.00392157, 0.0784314, 0.784314, 0.0352941, 0.00392157, 0.0784314, 0, 1, 1, 1, 0.0745098, 0.0352941, 0.00392157, 0.0784314, 0, 0.0352941, 0.00392157, 0.0784314, 0.784314 )
 
-[sub_resource type="GradientTexture" id=31]
-gradient = SubResource( 30 )
+[sub_resource type="GradientTexture" id=28]
+gradient = SubResource( 27 )
 width = 1024
 
 [sub_resource type="SphereMesh" id=29]
 radius = 4.0
 height = 8.0
 
-[sub_resource type="Gradient" id=32]
+[sub_resource type="Gradient" id=30]
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="SpatialMaterial" id=27]
+[sub_resource type="SpatialMaterial" id=31]
 flags_transparent = true
 albedo_color = Color( 0.317647, 0.756863, 0.521569, 0.823529 )
 
-[sub_resource type="SpatialMaterial" id=28]
+[sub_resource type="SpatialMaterial" id=32]
 flags_transparent = true
 albedo_color = Color( 0.133333, 0.952941, 0.490196, 0.52549 )
 emission_enabled = true
@@ -4685,7 +4685,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.998185, 0.0275788, -0.0535329, 0.051806, 0.0599276, 0.996857, 0.0307002, -0.997821, 0.0583901, 1.76513, 1.68386, -375.416 )
+transform = Transform( 0.192048, -0.0549095, -0.979848, 0.97305, -0.119197, 0.197395, -0.127634, -0.991351, 0.0305382, 9.00669, -3.16967, -372.69 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -4700,11 +4700,11 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.860022, 0.156271, -0.485738, -0.496479, 0.475999, -0.725901, 0.117775, 0.865449, 0.486955, 93.9871, 49.9101, -250.007 )
+transform = Transform( 0.609264, -0.60018, 0.518248, 0.785695, 0.368597, -0.496809, 0.107152, 0.709873, 0.696131, -31.6834, 101.753, -271.67 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.767342, -0.220992, 0.601954, 0.621299, 0.488502, -0.612662, -0.158661, 0.844115, 0.512149, -91.518, 48.0378, -253.746 )
+transform = Transform( -0.681929, -0.507665, 0.526545, 0.696768, -0.231943, 0.67876, -0.222453, 0.829747, 0.511893, -50.1909, -97.6476, -249.684 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -4775,35 +4775,31 @@ disabled = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.369022, 3.77433, -2.05042 )
 
 [node name="Gimbal" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.557625, 2.16458, -3.02265 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.557625, 3.31327, -0.0432417 )
 
 [node name="h" type="Spatial" parent="Gimbal"]
 
 [node name="v" type="Spatial" parent="Gimbal/h"]
 
 [node name="CameraRunPoint" type="Position3D" parent="Gimbal/h/v"]
-transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 8.49, 14 )
+transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 6.76923, 10.2475 )
 
 [node name="CameraJumpPoint" type="Position3D" parent="Gimbal/h/v"]
 transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 8.49, 14 )
-__meta__ = {
-"_editor_description_": ""
-}
 
 [node name="CameraFallPoint" type="Position3D" parent="Gimbal/h/v"]
 transform = Transform( 1, 0, 0, 0, 0.139208, 0.990263, 0, -0.990263, 0.139208, 0.464611, 50.54, 7.50273 )
 
 [node name="CameraAimPoint" type="Position3D" parent="Gimbal/h/v"]
-transform = Transform( 1, 0, 0, 0, 0.985996, 0.166769, 0, -0.166769, 0.985996, 0.4, 2.21588, 6.77868 )
+transform = Transform( 1, 0, 0, 0, 0.985996, 0.166769, 0, -0.166769, 0.985996, 0.4, 2.60078, 2.64976 )
 __meta__ = {
 "_editor_description_": ""
 }
 
 [node name="Camera" type="Camera" parent="Gimbal/h/v/CameraAimPoint"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="ClippedCamera" type="ClippedCamera" parent="Gimbal/h/v"]
-transform = Transform( 1, 0, 0, 0, 0.985996, 0.166769, 0, -0.166769, 0.985996, 0.4, 2.226, 6.779 )
+transform = Transform( 1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 1.111, 6.76923, 10.2475 )
 current = true
 far = 750.0
 collision_mask = 524300
@@ -4831,7 +4827,7 @@ anchor_bottom = 1.0
 rect_scale = Vector2( 1, 0.993062 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = SubResource( 31 )
+texture = SubResource( 28 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -4860,7 +4856,7 @@ position = Vector2( 0, -8 )
 points = PoolVector2Array( 0, 0, 0, -40 )
 width = 3.0
 default_color = Color( 1, 1, 1, 1 )
-gradient = SubResource( 32 )
+gradient = SubResource( 30 )
 
 [node name="LineBottom" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
 position = Vector2( 0, 8 )
@@ -4868,7 +4864,7 @@ rotation = -3.14159
 points = PoolVector2Array( 0, 0, 0, -40 )
 width = 3.0
 default_color = Color( 1, 1, 1, 1 )
-gradient = SubResource( 32 )
+gradient = SubResource( 30 )
 
 [node name="LineLeft" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
 position = Vector2( -8, 0 )
@@ -4876,7 +4872,7 @@ rotation = -1.5708
 points = PoolVector2Array( 0, 0, 0, -40 )
 width = 3.0
 default_color = Color( 1, 1, 1, 1 )
-gradient = SubResource( 32 )
+gradient = SubResource( 30 )
 
 [node name="LineRight" type="Line2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
 position = Vector2( 8, 0 )
@@ -4884,7 +4880,7 @@ rotation = 1.5708
 points = PoolVector2Array( 0, 0, 0, -40 )
 width = 3.0
 default_color = Color( 1, 1, 1, 1 )
-gradient = SubResource( 32 )
+gradient = SubResource( 30 )
 
 [node name="Light2D" type="Light2D" parent="Gimbal/h/v/ClippedCamera/ShootingUI/Crosshair/Node2D"]
 scale = Vector2( 0.309, 0.356 )
@@ -4906,21 +4902,21 @@ transform = Transform( -1, 3.25841e-07, 5.30863e-14, 0, -1.62921e-07, 1, 3.25841
 inner_radius = 1.13
 outer_radius = 1.695
 sides = 10
-material = SubResource( 27 )
+material = SubResource( 31 )
 
 [node name="AimLine" type="CSGCylinder" parent="Gimbal/h/v/ClippedCamera/RayCast"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.38419e-07, -7.7631 )
 visible = false
 radius = 0.149483
 height = 14.799
-material = SubResource( 28 )
+material = SubResource( 32 )
 
 [node name="AimArrow" type="CSGCylinder" parent="Gimbal/h/v/ClippedCamera/RayCast/AimLine"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.62278, 7.15256e-07 )
 radius = 0.578
 height = 5.7996
 cone = true
-material = SubResource( 28 )
+material = SubResource( 32 )
 
 [node name="PlayerUI" parent="." instance=ExtResource( 3 )]
 
