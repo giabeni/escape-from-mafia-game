@@ -22,4 +22,4 @@ nodes/Throw/position = Vector2( 853.333, 213.333 )
 nodes/TimeScale/node = SubResource( 3 )
 nodes/TimeScale/position = Vector2( 640, 340 )
 nodes/output/position = Vector2( 1413.33, 266.667 )
-node_connections = [ "output", 0, "Throw", "TimeScale", 0, "Animation", "Throw", 0, "Main", "Throw", 1, "TimeScale" ]
+node_connections = [ "output", 0, "Throw", "Throw", 0, "Main", "Throw", 1, "TimeScale", "TimeScale", 0, "Animation" ]
