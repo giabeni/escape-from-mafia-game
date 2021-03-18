@@ -42,8 +42,8 @@ surfaces/0 = {
 }
 
 [sub_resource type="CylinderShape" id=4]
-radius = 1.16333
-height = 0.708332
+radius = 0.906466
+height = 0.772744
 
 [sub_resource type="ParticlesMaterial" id=5]
 trail_divisor = 3
@@ -87,7 +87,7 @@ axis_lock_angular_y = true
 script = ExtResource( 2 )
 
 [node name="Comp" type="MeshInstance" parent="."]
-transform = Transform( 100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0 )
+transform = Transform( 75, 0, 0, 0, 75, 0, 0, 0, 75, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 

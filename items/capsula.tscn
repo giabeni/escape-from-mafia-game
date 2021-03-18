@@ -1,11 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://items/models/Azul.material" type="Material" id=1]
 [ext_resource path="res://items/models/Amarelo.material" type="Material" id=2]
 [ext_resource path="res://items/capsula.gd" type="Script" id=3]
-[ext_resource path="res://assets/particles/smoke_02.png" type="Texture" id=4]
+[ext_resource path="res://assets/particles/explosion04.png" type="Texture" id=4]
 [ext_resource path="res://assets/sounds/power-up.ogg" type="AudioStream" id=5]
-[ext_resource path="res://assets/particles/flame_02.png" type="Texture" id=6]
 [ext_resource path="res://assets/sounds/grenade.mp3" type="AudioStream" id=7]
 
 [sub_resource type="ArrayMesh" id=1]
@@ -66,9 +65,8 @@ height = 1.6345
 emission_shape = 1
 emission_sphere_radius = 5.0
 flag_align_y = true
-flag_rotate_y = true
-direction = Vector3( 0, 1, 0 )
-spread = 65.54
+direction = Vector3( 0, -1, 0 )
+spread = 134.24
 initial_velocity = 502.02
 initial_velocity_random = 0.34
 angular_velocity = 119.1
@@ -79,40 +77,62 @@ radial_accel = 24.06
 radial_accel_random = 0.49
 angle = 368.1
 angle_random = 0.25
-scale = 2.0
+scale = 1.73
+scale_random = 0.18
+hue_variation = 0.46
+hue_variation_random = 0.26
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
-flags_unshaded = true
-params_blend_mode = 1
-params_billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-albedo_color = Color( 0.184314, 0.941176, 1, 1 )
+params_billboard_mode = 1
 albedo_texture = ExtResource( 4 )
+emission_enabled = true
+emission = Color( 0.196078, 0.756863, 1, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
 
 [sub_resource type="QuadMesh" id=7]
 material = SubResource( 6 )
 size = Vector2( 100, 100 )
 
 [sub_resource type="SpatialMaterial" id=8]
-flags_transparent = true
-flags_unshaded = true
-params_blend_mode = 1
-params_billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-albedo_color = Color( 0.960784, 0.796078, 0.239216, 1 )
-albedo_texture = ExtResource( 6 )
+albedo_color = Color( 0.0627451, 0.623529, 0.815686, 0.521569 )
+emission_enabled = true
+emission = Color( 0.729412, 0.843137, 0.32549, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
 
-[sub_resource type="QuadMesh" id=9]
+[sub_resource type="SphereMesh" id=9]
 material = SubResource( 8 )
-size = Vector2( 50, 50 )
+radius = 2.482
+height = 21.482
 
 [sub_resource type="SphereShape" id=10]
 radius = 61.4827
+
+[sub_resource type="OpenSimplexNoise" id=11]
+period = 73.7
+persistence = 1.0
+lacunarity = 3.26
+
+[sub_resource type="NoiseTexture" id=12]
+seamless = true
+noise = SubResource( 11 )
+
+[sub_resource type="SpatialMaterial" id=13]
+flags_transparent = true
+params_blend_mode = 1
+albedo_color = Color( 0.121569, 0.878431, 0.776471, 0.254902 )
+albedo_texture = SubResource( 12 )
+emission_enabled = true
+emission = Color( 1, 0.760784, 0.0313726, 1 )
+emission_energy = 6.49
+emission_operator = 1
+emission_on_uv2 = false
+emission_texture = SubResource( 12 )
+uv1_scale = Vector3( 5, 5, 5 )
 
 [node name="capsula" type="RigidBody"]
 collision_layer = 8
@@ -146,18 +166,17 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0
 shape = SubResource( 4 )
 
 [node name="ExplosionTimer" type="Timer" parent="."]
-wait_time = 2.0
 
 [node name="DefaultTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 20.0
 
 [node name="Explosion" type="Particles" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.394126, 0 )
+transform = Transform( 1, 0, 0, 0, -1, 1.50996e-07, 0, -1.50996e-07, -1, 0, 0, 0 )
 emitting = false
-amount = 128
-lifetime = 5.0
+amount = 64
+lifetime = 0.35
 one_shot = true
-speed_scale = 3.0
+speed_scale = 2.07
 explosiveness = 1.0
 visibility_aabb = AABB( -126.237, -71.9955, -73.1442, 252.475, 143.991, 146.288 )
 process_material = SubResource( 5 )
@@ -166,13 +185,19 @@ draw_pass_1 = SubResource( 7 )
 draw_pass_2 = SubResource( 9 )
 
 [node name="ExplosionArea" type="Area" parent="."]
-monitoring = false
 monitorable = false
 collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape" type="CollisionShape" parent="ExplosionArea"]
 shape = SubResource( 10 )
+
+[node name="CSGSphere" type="CSGSphere" parent="ExplosionArea"]
+visible = false
+radius = 62.508
+radial_segments = 32
+rings = 32
+material = SubResource( 13 )
 
 [node name="CollectSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

@@ -4,6 +4,7 @@ class_name Player
 
 export(float) var MAX_SPEED = 15
 export(float) var GRAVITY = 60
+export(float) var MAX_HP = 100
 export(float) var FRONTAL_ACC = 8
 export(float) var LATERAL_ACC = 8
 export(float) var ANGULAR_ACC = 10
@@ -69,6 +70,7 @@ var aiming = false
 var falling = false
 var pill_count = 0
 var capsule_count = 0
+var current_hp = MAX_HP
 var state = PlayerStates.IDLE
 
 
@@ -80,6 +82,8 @@ func _ready():
 	anim_playback = anim_tree["parameters/Main/playback"]
 	anim_root_motion = anim_tree.root_motion_track
 	cur_speed_limit = SPEED_FACTOR * MAX_SPEED
+	ui.set_max_hp(MAX_HP)
+	ui.set_hp(MAX_HP)
 	
 func _physics_process(delta):
 	if state in [PlayerStates.IDLE, PlayerStates.RUNNING, PlayerStates.FALLING]:
@@ -93,14 +97,22 @@ func _physics_process(delta):
 			elif Input.is_action_just_released("throw_mouse2") or Input.is_action_just_pressed("throw_2"):
 				_throw_capsule(delta)
 			elif Input.is_action_pressed("throw_mouse") or Input.is_action_pressed("aim"):
-				aiming = true
-				_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
+				if pill_count <= 0 and not $NoAmmoSound.playing:
+					$NoAmmoSound.play()
+					ui.play_anim("no-pills")
+				else:
+					aiming = true
+					_aim(delta, BulletType.PILL if pill_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
 			elif Input.is_action_pressed("throw_mouse2") or Input.is_action_pressed("aim"):
-				aiming = true
-				_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
+				if pill_count <= 0 and not $NoAmmoSound.playing:
+					$NoAmmoSound.play()
+					ui.play_anim("no-capsules")
+				else:
+					aiming = true
+					_aim(delta, BulletType.CAPSULE if capsule_count > 0 else BulletType.EMPTY, AIM_LIMIT, AIM_ACC * 2)
 			else:
 				aiming = false
-				_aim(delta, BulletType.NONE, AIM_LIMIT / 2, AIM_ACC)
+				_aim(delta, BulletType.NONE, AIM_LIMIT, AIM_ACC)
 
 	
 	if state == PlayerStates.IDLE:
@@ -117,7 +129,7 @@ func _physics_process(delta):
 		if falling or not jumping:
 			velocity.y = -lerp(velocity.y, MAX_SPEED * 5, GRAVITY * delta)
 		else:
-			velocity.y -= GRAVITY * delta
+			velocity.y -= 2.5 * GRAVITY * delta
 	else:
 		velocity.y = velocity.y - get_floor_normal().normalized().y * 4
 		
@@ -379,43 +391,51 @@ func _set_animations(delta):
 	
 func _check_for_death():
 	
+	if current_hp <= 0:
+		print("hp 0")
+		_stumble()
+	
 	if is_on_wall():
 #		print("WAll")
 		pass
 		
 	# Death if collided and stopped
-	if resultant_velocity.length() < 3:
+	if resultant_velocity.length() < 1:
 		for i in range (0, get_slide_count() - 1):
 			var collision = get_slide_collision(i)
 #			print("Collision ", i, "  -  normal dot = ", collision.normal.dot(-self.global_transform.basis.z))
-			if collision != null:
+			if collision != null and not collision.collider.is_in_group("Enemies"):
 				var normal_dot = collision.normal.normalized().dot(-self.global_transform.basis.z.normalized())
 				if normal_dot < -0.3:
-					state = PlayerStates.STUMBLED
-#					camera.set_target_position("FALL")
-					anim_playback.travel("STUMBLE")
-					$FallenCollisionShape.disabled = false
-					camera.add_trauma(0.2)
-					yield(get_tree().create_timer(1), "timeout")
-					_die()
+					print("collision")
+					_stumble()
 
+func _stumble():
+	state = PlayerStates.STUMBLED
+	anim_playback.travel("STUMBLE")
+	if not $LandSound.playing:
+		$LandSound.play()
+	$FallenCollisionShape.disabled = false
+	camera.add_trauma(0.2)
+	burn_sound.play()
+	var wait: GDScriptFunctionState = yield(get_tree().create_timer(4), "timeout")
+	_die()
 
 func _die():
 	game_running = false
 	get_tree().call_deferred("reload_current_scene")
 	
 
-func on_Touch_Enemy(damage = 100):
-	velocity.x = 0
-	velocity.z = 0
+func on_Touch_Enemy(damage = 33.33):
+#	velocity.x = 0
+#	velocity.z = 0
+	print(damage)
 	infected_paricles.emitting = true
-	state = PlayerStates.STUMBLED
-#	camera.set_target_position("FALL")
-	anim_playback.travel("STUMBLE")
-	camera.add_trauma(0.2)
-	burn_sound.play()
-	var wait: GDScriptFunctionState = yield(get_tree().create_timer(4), "timeout")
-	_die()
+#	state = PlayerStates.STUMBLED
+	current_hp -= damage
+	ui.set_hp(current_hp)
+	
+	
 	
 
 func _on_CheckPoint_reached(body: CollisionObject):

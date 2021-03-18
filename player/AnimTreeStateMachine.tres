@@ -84,7 +84,7 @@ nodes/Speed/position = Vector2( 373.333, 106.667 )
 nodes/Strafe/node = SubResource( 18 )
 nodes/Strafe/position = Vector2( 133.333, 106.667 )
 nodes/output/position = Vector2( 1253.33, 160 )
-node_connections = [ "output", 0, "Jump", "Jump", 0, "Speed", "Jump", 1, "Animation", "Speed", 0, "Strafe" ]
+node_connections = [ "output", 0, "Jump", "Speed", 0, "Strafe", "Jump", 0, "Speed", "Jump", 1, "Animation" ]
 
 [sub_resource type="AnimationNodeAnimation" id=20]
 animation = "LookingAround"

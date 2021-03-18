@@ -21,6 +21,7 @@ var state = PillStates.IDLE
 var next_impulse = Vector3.ZERO
 var player: Player
 var is_thrown = false
+var exploded = false
 
 func _ready():
 	_set_params()
@@ -38,7 +39,7 @@ func _physics_process(delta):
 		default_timer.start()
 		
 	
-	if is_thrown:
+	if is_thrown and not exploded:
 		_check_for_collisions()
 	
 func _set_params():
@@ -86,11 +87,17 @@ func _check_for_collisions():
 		_explode()
 
 func _explode():
-	explosion.emitting = true
-	$ExplosionSound.play()
-	body.hide()
-	explosion_area.set_deferred("monitoring", true)
-	explosion_timer.start()
+	if is_thrown:
+		print("BOOOM")
+		exploded = true
+		explosion_area.scale = Vector3(1, 1, 1)
+		linear_velocity = Vector3.ZERO
+		$ExplosionArea/CSGSphere.show()
+		explosion.emitting = true
+		$ExplosionSound.play()
+		body.hide()
+	#	explosion_area.set_deferred("monitoring", true)
+		explosion_timer.start()
 	
 
 func _on_collected():
@@ -119,12 +126,17 @@ func _on_PickupArea_body_entered(body):
 			_on_hit()
 
 func _on_Timer_timeout():
-	queue_free()
-#	self.call_deferred("queue_free")
+	print("FREEEEE")
+	self.call_deferred("queue_free")
+	$Explosion.set_layer_mask_bit(2, false)
+	$Explosion.hide()
+	$Explosion.emitting = false
+	$ExplosionArea.hide()
+	
 
 
 func _on_ExplosionArea_body_entered(body):
-	if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
+	if exploded and (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
 			pickup_area.set_deferred("monitoring", false)
 			body.on_Pill_Hit(DAMAGE, player)

@@ -1,7 +1,7 @@
 extends RigidBody
 
 export(float, 0, 1000) var MAX_HP = 20
-export(float, 0, 1000) var DAMAGE = 10
+export(float, 0, 1000) var DAMAGE = 50
 export(float, 0, 10000) var SCORE = 100
 
 onready var anim_player: AnimationPlayer = $AnimationPlayer

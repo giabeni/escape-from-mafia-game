@@ -613,26 +613,22 @@ IS_START_POINT = true
 
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.9901, 20.5458 )
+JUMP_FORCE = 55.0
 JUMP_FRONT_ACC = 15.0
 LINEAR_SPEED_FACTOR_RATE = 1.01
 SPEED_FACTOR = 1.1
 
-[node name="Skeleton" parent="doctor-hero/Armature" index="0"]
-bones/4/bound_children = [ NodePath("NeckBone") ]
-bones/10/bound_children = [ NodePath("LeftHandBone") ]
-bones/26/bound_children = [ NodePath("RightHandBone") ]
-
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.995537, 0.0434442, 0.0837822, -0.0877166, 0.0983746, 0.991276, 0.0348231, -0.9942, 0.101746, 2.14526, 3.22657, -375.229 )
+transform = Transform( 0.656799, -0.118579, -0.744684, 0.752273, 0.17109, 0.636249, 0.0519622, -0.978093, 0.201575, -5.68531, 5.12403, -373.808 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.727873, 0.255989, -0.636137, -0.677113, 0.414781, -0.607844, 0.108258, 0.873169, 0.475242, 106.14, 30.2116, -249.475 )
+transform = Transform( 0.958696, -0.21427, 0.187056, 0.26292, 0.416687, -0.870198, 0.108515, 0.883436, 0.455812, 19.9784, 91.895, -243.073 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.832826, -0.176501, 0.524639, 0.531016, 0.522335, -0.667224, -0.15627, 0.834275, 0.528739, -87.5878, 57.044, -253.796 )
+transform = Transform( 0.0840051, -0.493934, 0.865432, 0.982826, 0.184274, 0.00977185, -0.164303, 0.84975, 0.50093, -107.745, -31.9308, -252.158 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )
@@ -683,7 +679,7 @@ process_material = SubResource( 6 )
 draw_pass_1 = SubResource( 8 )
 
 [node name="PoisonousSmoke" type="Particles" parent="Clouds"]
-transform = Transform( 1, 0, 0, 0, 1, 2.98024e-06, 0, -2.98024e-06, 1, -11.3275, 3.40836, 105.142 )
+transform = Transform( 1, 0, 0, 0, 1, 2.98024e-06, 0, -2.98024e-06, 1, -11.3275, 3.40833, 94.4785 )
 amount = 1024
 lifetime = 65.44
 speed_scale = 1.96

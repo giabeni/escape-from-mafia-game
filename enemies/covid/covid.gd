@@ -6,6 +6,7 @@ export(float, 0, 100) var SPEED = 10
 export(float, 0, 100) var ACC = 2
 export(float, 0, 100) var ANGULAR_ACC = 4
 export(float, 0, 10) var SPOT_DETECT_MARGIN = 2
+export(float, 0, 1000) var DAMAGE = 33.34
 
 var spots = []
 var current_spot_index: int = -1
@@ -95,7 +96,7 @@ func _explode():
 
 func _on_Area_body_entered(body: Spatial):
 	if body.is_in_group("Player") and body.has_method("on_Touch_Enemy"):
-		body.on_Touch_Enemy()
+		body.on_Touch_Enemy(DAMAGE)
 		_explode()
 
 func on_Pill_Hit(damage, player):

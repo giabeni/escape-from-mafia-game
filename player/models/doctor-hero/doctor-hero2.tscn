@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://player/models/doctor-hero/LowPoly.material" type="Material" id=1]
 [ext_resource path="res://player/models/doctor-hero/doctor-hero-anim-tree.tres" type="AnimationNodeBlendTree" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://player/models/jump.anim" type="Animation" id=18]
 [ext_resource path="res://assets/sounds/footstep1.mp3" type="AudioStream" id=19]
 [ext_resource path="res://assets/sounds/body-impact.mp3" type="AudioStream" id=20]
+[ext_resource path="res://assets/sounds/no-ammo.wav" type="AudioStream" id=21]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "BodyWithJacket"
@@ -4434,7 +4435,7 @@ bones/4/name = "mixamorig_neck"
 bones/4/parent = 3
 bones/4/rest = Transform( 1, 4.54747e-13, -8.52651e-14, -4.46612e-13, 0.996889, 0.0788163, 1.20841e-13, -0.0788163, 0.996889, 0, 36.3234, -1.1958e-06 )
 bones/4/enabled = true
-bones/4/bound_children = [  ]
+bones/4/bound_children = [ NodePath("NeckBone") ]
 bones/5/name = "mixamorig_head"
 bones/5/parent = 4
 bones/5/rest = Transform( 1, -5.04742e-28, 9.80909e-45, 5.04742e-28, 1, -4.16334e-17, 9.80909e-45, 4.16334e-17, 1, 0, 26.7453, -3.83089 )
@@ -4464,7 +4465,7 @@ bones/10/name = "mixamorig_left_hand"
 bones/10/parent = 9
 bones/10/rest = Transform( 0.825233, -0.204053, 0.526643, 0.240039, 0.970763, -7.37607e-07, -0.511246, 0.126415, 0.850086, 1.15455e-05, 82.9816, 8.7254e-06 )
 bones/10/enabled = true
-bones/10/bound_children = [  ]
+bones/10/bound_children = [ NodePath("LeftHandBone") ]
 bones/11/name = "mixamorig_left_hand_thumb_1"
 bones/11/parent = 10
 bones/11/rest = Transform( 0.941701, -0.242897, 0.232811, 0.319818, 0.861117, -0.395215, -0.104481, 0.446631, 0.888597, -6.38271, 8.07716, 1.26817 )
@@ -4544,7 +4545,7 @@ bones/26/name = "mixamorig_right_hand"
 bones/26/parent = 25
 bones/26/rest = Transform( 0.946974, 0.232193, -0.222094, -0.23814, 0.971231, 5.58793e-08, 0.215704, 0.0528894, 0.975025, -1.19209e-06, 82.97, -2.46167e-05 )
 bones/26/enabled = true
-bones/26/bound_children = [  ]
+bones/26/bound_children = [ NodePath("RightHandBone") ]
 bones/27/name = "mixamorig_right_hand_thumb_1"
 bones/27/parent = 26
 bones/27/rest = Transform( 0.93686, 0.254989, -0.23932, -0.333585, 0.857007, -0.392758, 0.10495, 0.447793, 0.887956, 6.06476, 7.72522, 1.55508 )
@@ -4685,7 +4686,7 @@ skin = SubResource( 2 )
 material/0 = null
 
 [node name="NeckBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.928713, 0.0726826, -0.363606, 0.361838, 0.0366453, 0.93152, 0.0810298, -0.996681, 0.00773364, 5.4771, -2.38152, -375.362 )
+transform = Transform( 0.995557, 0.0885003, -0.0321386, 0.028953, 0.0370471, 0.998894, 0.089593, -0.995387, 0.0343202, 4.25434, -3.59327, -375.335 )
 bone_name = "mixamorig_neck"
 
 [node name="InfectedParticles" type="Particles" parent="Armature/Skeleton/NeckBone"]
@@ -4693,6 +4694,7 @@ transform = Transform( -51.1876, 0.815471, -1.9281, 69.4116, 0.683922, -9.15773,
 emitting = false
 amount = 30
 lifetime = 0.38
+one_shot = true
 speed_scale = 0.5
 randomness = 0.7
 visibility_aabb = AABB( -2.55952, 348.149, -3.46313, 5.11904, 0.002, 6.92626 )
@@ -4700,11 +4702,11 @@ process_material = SubResource( 7 )
 draw_pass_1 = SubResource( 9 )
 
 [node name="LeftHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.911596, 0.0987819, -0.399043, -0.388015, 0.527382, -0.755851, 0.135785, 0.843865, 0.519088, 88.3502, 60.3871, -249.771 )
+transform = Transform( 0.697655, 0.288323, -0.655856, -0.702398, 0.45558, -0.546884, 0.141117, 0.842208, 0.520355, 107.051, 26.0965, -249.104 )
 bone_name = "mixamorig_left_hand"
 
 [node name="RightHandBone" type="BoneAttachment" parent="Armature/Skeleton"]
-transform = Transform( 0.691955, -0.321463, 0.64642, 0.702413, 0.506621, -0.499952, -0.166773, 0.799999, 0.576358, -102.629, 33.4585, -263.161 )
+transform = Transform( 0.881955, -0.156627, 0.444547, 0.453902, 0.536363, -0.711539, -0.126992, 0.829327, 0.544141, -83.8047, 61.0713, -259.976 )
 bone_name = "mixamorig_right_hand"
 
 [node name="CollectedEffects" type="Spatial" parent="."]
@@ -4926,7 +4928,7 @@ autostart = true
 
 [node name="JumpTimer" type="Timer" parent="."]
 process_mode = 0
-wait_time = 0.5
+wait_time = 0.4
 one_shot = true
 
 [node name="PillFireRateTimer" type="Timer" parent="."]
@@ -4946,16 +4948,22 @@ unit_db = 20.0
 stream = ExtResource( 9 )
 unit_db = 24.756
 
+[node name="NoAmmoSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 21 )
+unit_db = 13.565
+pitch_scale = 0.85
+
 [node name="RightStep" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 19 )
 unit_db = 17.538
 unit_size = 3.0
+pitch_scale = 0.82
 
 [node name="LeftStep" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 7 )
 unit_db = 17.538
 unit_size = 2.0
-pitch_scale = 1.28
+pitch_scale = 0.8
 
 [node name="BurnSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/no-ammo.wav-c69441525e3aa1e52b6e2170741afaca.sample"
+
+[deps]
+
+source_file="res://assets/sounds/no-ammo.wav"
+dest_files=[ "res://.import/no-ammo.wav-c69441525e3aa1e52b6e2170741afaca.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
