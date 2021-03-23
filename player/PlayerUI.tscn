@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://assets/fonts/Kaharsa.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://player/PlayerUI.gd" type="Script" id=2]
@@ -6,14 +6,14 @@
 [ext_resource path="res://assets/ui/heart.png" type="Texture" id=4]
 [ext_resource path="res://assets/ui/capsule.png" type="Texture" id=5]
 
-[sub_resource type="Gradient" id=10]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.514403, 1 )
-colors = PoolColorArray( 0.92549, 0.027451, 0.027451, 0.454902, 0.992188, 0.98056, 0.98056, 0, 0.92549, 0.027451, 0.027451, 0.454902 )
+colors = PoolColorArray( 0.92549, 0.027451, 0.027451, 0.784314, 0.992188, 0.98056, 0.98056, 0, 0.92549, 0.027451, 0.027451, 0.784314 )
 
-[sub_resource type="GradientTexture" id=11]
-gradient = SubResource( 10 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 0.0784314, 0.227451, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -27,7 +27,7 @@ corner_radius_bottom_left = 10
 shadow_color = Color( 1, 1, 1, 0.6 )
 shadow_size = 2
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.243137, 0, 0, 0.760784 )
 border_width_left = 2
 border_width_top = 2
@@ -42,9 +42,9 @@ shadow_color = Color( 0.788235, 0.298039, 0.254902, 0.6 )
 shadow_size = 19
 shadow_offset = Vector2( 0.337, 1.456 )
 
-[sub_resource type="CanvasItemMaterial" id=3]
+[sub_resource type="CanvasItemMaterial" id=5]
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 1, 0.0784314, 0.227451, 1 )
 border_width_left = 2
 border_width_top = 2
@@ -58,7 +58,7 @@ corner_radius_bottom_left = 10
 shadow_color = Color( 1, 1, 1, 0.6 )
 shadow_size = 2
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0.243137, 0.235294, 0.74902 )
 border_width_left = 2
 border_width_top = 2
@@ -73,14 +73,14 @@ shadow_color = Color( 0.254902, 0.788235, 0.568627, 0.239216 )
 shadow_size = 19
 shadow_offset = Vector2( 0.337, 1.456 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=8]
 size = 33
 outline_size = 1
 use_filter = true
 extra_spacing_char = 6
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.498039, 0.478431, 0.211765, 0.74902 )
 border_width_left = 2
 border_width_top = 2
@@ -95,16 +95,15 @@ shadow_color = Color( 0.254902, 0.658824, 0.788235, 0.239216 )
 shadow_size = 19
 shadow_offset = Vector2( 0.337, 1.456 )
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=10]
 size = 33
 outline_size = 1
 use_filter = true
 extra_spacing_char = 6
 font_data = ExtResource( 1 )
 
-[sub_resource type="Animation" id=9]
-resource_name = "damage"
-length = 1.6
+[sub_resource type="Animation" id=11]
+length = 2.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left/HP/HPProgressBar:custom_styles/fg:bg_color")
 tracks/0/interp = 1
@@ -124,10 +123,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.878431 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.878431 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=12]
@@ -162,6 +161,22 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
 }
 
+[sub_resource type="Animation" id=14]
+resource_name = "recover"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left/HP/HPProgressBar:custom_styles/fg:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.0509804, 0.827451, 0.027451, 1 ), Color( 1, 1, 1, 1 ), Color( 0.0509804, 0.827451, 0.027451, 1 ), Color( 1, 1, 1, 1 ), Color( 0.0509804, 0.827451, 0.027451, 1 ), Color( 1, 1, 1, 1 ), Color( 0.0509804, 0.827451, 0.027451, 1 ), Color( 1, 0.0784314, 0.227451, 1 ) ]
+}
+
 [node name="PlayerUI" type="Control"]
 pause_mode = 2
 anchor_right = 1.0
@@ -177,7 +192,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = SubResource( 11 )
+texture = SubResource( 2 )
 expand = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -222,8 +237,8 @@ rect_min_size = Vector2( 250, 20 )
 margin_right = 250.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 250, 20 )
-custom_styles/fg = SubResource( 1 )
-custom_styles/bg = SubResource( 2 )
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
 value = 50.0
 percent_visible = false
 __meta__ = {
@@ -231,7 +246,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Left/HP"]
-material = SubResource( 3 )
+material = SubResource( 5 )
 position = Vector2( 6.89697, 6.51758 )
 scale = Vector2( 0.123006, 0.122923 )
 texture = ExtResource( 4 )
@@ -256,8 +271,8 @@ margin_left = -30.0
 margin_right = 100.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 100, 45 )
-custom_styles/fg = SubResource( 4 )
-custom_styles/bg = SubResource( 5 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -270,7 +285,7 @@ margin_top = 9.0
 margin_right = 85.0
 margin_bottom = 41.0
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 8 )
 text = "10"
 align = 2
 __meta__ = {
@@ -278,7 +293,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/PillCounter"]
-material = SubResource( 3 )
+material = SubResource( 5 )
 position = Vector2( -36.0547, 22.8861 )
 scale = Vector2( 0.21565, 0.215503 )
 texture = ExtResource( 3 )
@@ -293,7 +308,7 @@ rect_min_size = Vector2( 120, 20 )
 margin_right = 120.0
 margin_bottom = 45.0
 rect_min_size = Vector2( 100, 45 )
-custom_styles/bg = SubResource( 7 )
+custom_styles/bg = SubResource( 9 )
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -305,7 +320,7 @@ margin_top = 9.0
 margin_right = 80.0
 margin_bottom = 41.0
 size_flags_horizontal = 4
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 8 )
 text = "10"
 align = 2
 __meta__ = {
@@ -313,7 +328,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="Sprite" parent="MarginContainer/VBoxContainer/Bottom/HSplitContainer/Right/CapsulesCounter"]
-material = SubResource( 3 )
+material = SubResource( 5 )
 position = Vector2( -3.98291, 22.9805 )
 rotation = 2.63425
 scale = Vector2( 0.21565, 0.215503 )
@@ -330,7 +345,7 @@ margin_right = 350.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 350, 0 )
 size_flags_horizontal = 8
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 1, 0.721569, 0.309804, 1 )
 text = "Score: 10000"
 scroll_active = false
@@ -347,7 +362,7 @@ margin_left = 616.0
 margin_right = 916.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 300, 0 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 0.372549, 0.811765, 0.470588, 1 )
 text = "Pills: 0"
 scroll_active = false
@@ -358,7 +373,7 @@ margin_left = 920.0
 margin_right = 1220.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 300, 0 )
-custom_fonts/normal_font = SubResource( 8 )
+custom_fonts/normal_font = SubResource( 10 )
 custom_colors/default_color = Color( 0.235294, 0.843137, 0.964706, 1 )
 text = "Capsules: 0"
 scroll_active = false
@@ -370,6 +385,7 @@ margin_bottom = 630.0
 size_flags_vertical = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/damage = SubResource( 9 )
+anims/damage = SubResource( 11 )
 anims/no-capsules = SubResource( 12 )
 anims/no-pills = SubResource( 13 )
+anims/recover = SubResource( 14 )

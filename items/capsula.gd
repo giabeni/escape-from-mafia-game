@@ -57,7 +57,7 @@ func _set_params():
 			self.set_collision_mask_bit(1, false) # Player
 			self.set_collision_mask_bit(2, true) # Enemies
 			pickup_area.set_collision_mask_bit(1, false) # Player
-			pickup_area.set_collision_mask_bit(2, true) # Enemies
+			pickup_area.set_collision_mask_bit(2, false) # Enemies
 			
 
 func _animate(delta):
@@ -74,11 +74,10 @@ func set_player(node):
 	player = node
 
 func throw(impulse, origin):
+	pickup_area.set_deferred("monitoring", true)
 	yield(get_tree().create_timer(0.3), "timeout")
 	state = PillStates.THROWN
-#	global_transform.origin = origin
 	next_impulse = impulse
-#	print("Next impulse = ", impulse)
 
 func _check_for_collisions():
 	var colliders = get_colliding_bodies()
@@ -88,15 +87,15 @@ func _check_for_collisions():
 
 func _explode():
 	if is_thrown:
-		print("BOOOM")
+		global_transform.basis.x = Vector3(1, 0, 0) # Vector pointing along the X axis
+		global_transform.basis.y = Vector3(0, 1, 0) # Vector pointing along the Y axis
+		global_transform.basis.z = Vector3(0, 0, 1) # Vector pointing along the Z axis
 		exploded = true
-		explosion_area.scale = Vector3(1, 1, 1)
 		linear_velocity = Vector3.ZERO
-		$ExplosionArea/CSGSphere.show()
-		explosion.emitting = true
+		$AnimationPlayer.play("explode")
 		$ExplosionSound.play()
 		body.hide()
-	#	explosion_area.set_deferred("monitoring", true)
+		explosion_area.set_deferred("monitoring", true)
 		explosion_timer.start()
 	
 
@@ -121,24 +120,17 @@ func _on_PickupArea_body_entered(body):
 	elif state == PillStates.THROWN:
 		if (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
-			pickup_area.set_deferred("monitoring", false)
 			body.on_Pill_Hit(DAMAGE, player)
 			_on_hit()
 
 func _on_Timer_timeout():
-	print("FREEEEE")
 	self.call_deferred("queue_free")
-	$Explosion.set_layer_mask_bit(2, false)
-	$Explosion.hide()
-	$Explosion.emitting = false
-	$ExplosionArea.hide()
 	
 
 
 func _on_ExplosionArea_body_entered(body):
 	if exploded and (body as Spatial).is_in_group("Enemies") and body.has_method("on_Pill_Hit"):
 			var point = body.global_transform.origin
-			pickup_area.set_deferred("monitoring", false)
 			body.on_Pill_Hit(DAMAGE, player)
 			_on_hit()
 		

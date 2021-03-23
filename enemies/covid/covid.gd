@@ -15,6 +15,7 @@ var current_spot: Vector3 = Vector3()
 var next_spot: Vector3 = Vector3()
 var velocity = Vector3.ZERO
 var type = "balloon"
+var can_damage = true
 
 onready var explosion: Particles = $ExplodeParticles
 onready var score_text: Spatial = $ScoreText
@@ -95,7 +96,8 @@ func _explode():
 	call_deferred("queue_free")
 
 func _on_Area_body_entered(body: Spatial):
-	if body.is_in_group("Player") and body.has_method("on_Touch_Enemy"):
+	if can_damage and body.is_in_group("Player") and body.has_method("on_Touch_Enemy"):
+		can_damage = false
 		body.on_Touch_Enemy(DAMAGE)
 		_explode()
 

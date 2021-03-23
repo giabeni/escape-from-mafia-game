@@ -179,7 +179,7 @@ GLASS_SURFACE = 7
 DETAIL_SURFACE = 4
 
 [node name="double-building" type="StaticBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -114.853, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -121.098, 0 )
 collision_layer = 524289
 
 [node name="BuildingDouble" type="MeshInstance" parent="double-building"]
@@ -215,6 +215,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.9521, 0 )
 shape = SubResource( 6 )
 
 [node name="EnemySpots" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.24463, 0 )
 
 [node name="1" type="Position3D" parent="EnemySpots"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.2307, -5.69006, 9.7914 )
@@ -238,10 +239,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2047, 12.9844, -8.71816 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0759, 5.18756, 5.85708 )
 
 [node name="ItemsPath" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.0564, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.81177, 0 )
 
 [node name="ObstaclesSpots" type="Spatial" parent="."]
-transform = Transform( 1.94707e-07, 0, 1, 0, 1, 0, -1, 0, 1.94707e-07, -1.42808, -0.682971, -0.766292 )
+transform = Transform( 1.94707e-07, 0, 1, 0, 1, 0, -1, 0, 1.94707e-07, -1.42808, -6.9276, -0.766292 )
 script = ExtResource( 10 )
 
 [node name="Path" type="Path" parent="ObstaclesSpots"]
@@ -251,9 +252,10 @@ curve = SubResource( 7 )
 [node name="RandomPoint" type="Position3D" parent="ObstaclesSpots/Path"]
 
 [node name="FallenArea" parent="." instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.182449, -99.2469, -0.161024 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.182449, -105.492, -0.161024 )
 
 [node name="InsideArea" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6.24463, 0 )
 
 [node name="CollisionShape3" type="CollisionShape" parent="InsideArea"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -94.9009, 0 )

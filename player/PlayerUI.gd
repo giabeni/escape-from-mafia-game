@@ -27,7 +27,10 @@ func set_hp(hp):
 	next_hp_value = hp
 	if hp < hp_bar.value:
 		$AnimationPlayer.play("damage")
-	
+	elif hp > hp_bar.value:
+		$AnimationPlayer.play("recover")
+		
+
 func set_score(score):
 	score_text.text = "Score: " + str(score)
 

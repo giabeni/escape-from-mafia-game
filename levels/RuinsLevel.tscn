@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=2]
+[gd_scene load_steps=62 format=2]
 
 [ext_resource path="res://levels/ProceduralLevel.gd" type="Script" id=1]
 [ext_resource path="res://levels/buildings/main/Building2.tscn" type="PackedScene" id=2]
@@ -40,6 +40,7 @@
 [ext_resource path="res://levels/InfoScreen.gd" type="Script" id=38]
 [ext_resource path="res://environments/main_env.tres" type="Environment" id=39]
 [ext_resource path="res://assets/particles/blackSmoke22.png" type="Texture" id=40]
+[ext_resource path="res://items/FirstAidKit.tscn" type="PackedScene" id=41]
 
 [sub_resource type="Animation" id=1]
 resource_local_to_scene = true
@@ -598,7 +599,7 @@ script = ExtResource( 1 )
 PLAYER_NODE = NodePath("doctor-hero")
 SECTIONS_ARRAY = [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 10 ), ExtResource( 8 ), ExtResource( 11 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ) ]
 ENEMIES_ARRAY = [ ExtResource( 12 ), ExtResource( 29 ) ]
-ITEMS_ARRAY = [ ExtResource( 28 ) ]
+ITEMS_ARRAY = [ ExtResource( 28 ), ExtResource( 41 ) ]
 LATERALS_ARRAY = [ ExtResource( 15 ), ExtResource( 36 ), ExtResource( 34 ), ExtResource( 37 ) ]
 BUILDING_MATERIALS = [ ExtResource( 23 ), ExtResource( 25 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 24 ) ]
 CURVE_PROB = 0.0
@@ -614,21 +615,21 @@ IS_START_POINT = true
 [node name="doctor-hero" parent="." instance=ExtResource( 32 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 52.9901, 20.5458 )
 JUMP_FORCE = 55.0
-JUMP_FRONT_ACC = 15.0
+JUMP_FRONT_ACC = 17.0
 LINEAR_SPEED_FACTOR_RATE = 1.01
 SPEED_FACTOR = 1.1
 
 [node name="NeckBone" parent="doctor-hero/Armature/Skeleton" index="5"]
-transform = Transform( 0.656799, -0.118579, -0.744684, 0.752273, 0.17109, 0.636249, 0.0519622, -0.978093, 0.201575, -5.68531, 5.12403, -373.808 )
+transform = Transform( 0.988613, 0.0942965, 0.117267, -0.12234, 0.0499299, 0.991231, 0.0876145, -0.994291, 0.0608976, 3.60454, -3.1313, -375.678 )
 
 [node name="InfectedParticles" parent="doctor-hero/Armature/Skeleton/NeckBone" index="0"]
 transform = Transform( 27.5004, -0.575296, -2.05999, 86.8092, 0.325122, -8.59285, 65.1309, -1.60412, 3.18771, 3.84143, -0.388397, -10.0878 )
 
 [node name="LeftHandBone" parent="doctor-hero/Armature/Skeleton" index="6"]
-transform = Transform( 0.958696, -0.21427, 0.187056, 0.26292, 0.416687, -0.870198, 0.108515, 0.883436, 0.455812, 19.9784, 91.895, -243.073 )
+transform = Transform( 0.606293, 0.341344, -0.718256, -0.778876, 0.437177, -0.449697, 0.160505, 0.83208, 0.530922, 110.586, 13.5485, -250.05 )
 
 [node name="RightHandBone" parent="doctor-hero/Armature/Skeleton" index="7"]
-transform = Transform( 0.0840051, -0.493934, 0.865432, 0.982826, 0.184274, 0.00977185, -0.164303, 0.84975, 0.50093, -107.745, -31.9308, -252.158 )
+transform = Transform( 0.934054, -0.0835062, 0.347229, 0.335599, 0.537726, -0.773449, -0.122126, 0.838974, 0.53029, -73.5374, 70.0901, -257.989 )
 
 [node name="AnimationPlayer" parent="doctor-hero" index="2"]
 anims/FallingIdle = SubResource( 1 )

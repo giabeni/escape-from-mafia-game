@@ -5,11 +5,12 @@ class_name Player
 export(float) var MAX_SPEED = 15
 export(float) var GRAVITY = 60
 export(float) var MAX_HP = 100
-export(float) var FRONTAL_ACC = 8
+export(float) var FRONTAL_ACC = 2
 export(float) var LATERAL_ACC = 8
 export(float) var ANGULAR_ACC = 10
 export(float) var JUMP_FORCE = 30
 export(float) var JUMP_FRONT_ACC = 14
+export(float) var JUMP_GRAVITY_FORCE = 2.5
 export(Vector2) var MOUSE_SENSITIVITY = Vector2(0.08, 0.08)
 export(Vector2) var AIM_LIMIT = Vector2(80, 80)
 export(Vector2) var AIM_ACC = Vector2(10, 10)
@@ -127,9 +128,9 @@ func _physics_process(delta):
 	
 	if not is_on_floor():
 		if falling or not jumping:
-			velocity.y = -lerp(velocity.y, MAX_SPEED * 5, GRAVITY * delta)
+			velocity.y = -lerp(velocity.y, MAX_SPEED * 1.5, GRAVITY * delta)
 		else:
-			velocity.y -= 2.5 * GRAVITY * delta
+			velocity.y -= JUMP_GRAVITY_FORCE * GRAVITY * delta
 	else:
 		velocity.y = velocity.y - get_floor_normal().normalized().y * 4
 		
@@ -218,12 +219,12 @@ func _get_jump(delta):
 	
 	
 	if Input.is_action_pressed("jump") and not is_on_floor() and jumping and not jump_timer.is_stopped():
-#		print('constant jump')
+		# if is jumping
 		velocity.y += JUMP_FORCE * delta * 2
 		current_front_acc_z = 1 + JUMP_FRONT_ACC * delta * 2
 		snap = Vector3.ZERO
 	elif Input.is_action_just_pressed("jump") and is_on_floor():
-#		print('initial jump')
+		# if just jumped
 		velocity.y = JUMP_FORCE / 1.5
 		current_front_acc_z = 1 + JUMP_FRONT_ACC / 2
 		jumping = true
@@ -342,9 +343,10 @@ func _throw_capsule(delta):
 		ui.set_capsules_count(capsule_count)
 
 func _set_sounds():
-	if not is_on_floor() or state == PlayerStates.STUMBLED:
-		$RightStep.stop()
-		$LeftStep.stop()
+	pass
+#	if not is_on_floor() or state == PlayerStates.STUMBLED:
+#		$RightStep.stop()
+#		$LeftStep.stop()
 
 func _set_animations(delta):
 	var strafe = "parameters/Main/RUNNING/Strafe/blend_position"
@@ -359,10 +361,6 @@ func _set_animations(delta):
 		PlayerStates.RUNNING:
 			if anim_playback.get_current_node() in ["FALLING_JUMP", "JUMP"]: 
 				if is_on_floor():
-#					if not $RightStep.playing:
-#						$RightStep.play()
-#					if not $LeftStep.playing:
-#						 $LeftStep.play()
 					if not $LandSound.playing:
 						$LandSound.play()
 					jumping = false
@@ -421,6 +419,7 @@ func _stumble():
 	var wait: GDScriptFunctionState = yield(get_tree().create_timer(4), "timeout")
 	_die()
 
+
 func _die():
 	game_running = false
 	get_tree().call_deferred("reload_current_scene")
@@ -429,31 +428,36 @@ func _die():
 func on_Touch_Enemy(damage = 33.33):
 #	velocity.x = 0
 #	velocity.z = 0
-	print(damage)
+#	print(damage)
+	$HurtSound.play()
 	infected_paricles.emitting = true
 #	state = PlayerStates.STUMBLED
 	current_hp -= damage
 	ui.set_hp(current_hp)
 	
 	
-	
-
 func _on_CheckPoint_reached(body: CollisionObject):
 	if body.get_instance_id() == self.get_instance_id():
 		SPEED_FACTOR += LINEAR_SPEED_FACTOR_RATE
+
 
 func on_Collected_Pill():
 	$CollectedEffects/PillCollected.rotate_z(deg2rad(rand_range(-45, 45)))
 	collect_anim_player.play("pill_collected")
 	pill_count = pill_count + 1
 	ui.set_pill_count(pill_count)
-	
-func on_PowerUp_Collected(power_up = "CAPSULE"):
+
+
+func on_PowerUp_Collected(power_up = "CAPSULE", value = 0):
 	match power_up:
 		"CAPSULE":
 			collect_anim_player.play("capsule_collected")
 			capsule_count = capsule_count + 1
 			ui.set_capsules_count(capsule_count)
+		"FIRST_AID_KIT":
+			collect_anim_player.play("medkit_collected")
+			current_hp += value
+			ui.set_hp(current_hp)
 
 func _on_ScoreTimer_timeout():
 	if state == PlayerStates.RUNNING:
